@@ -68,6 +68,12 @@
         "thumbnails": [],
         "label": "Recipe Photo"
       }
+    },
+    "color": {
+      "type": "Color",
+      "config": {
+        "label": "Recipe Color"
+      }
     }
   },
   "Notes": {
@@ -82,21 +88,53 @@
     }
   },
   "Ingredients": {
-    "ingredients": {
-      "type": "Group",
+    "ingredient_slices": {
+      "type": "Slices",
+      "fieldset": "Slice zone",
       "config": {
-        "fields": {
-          "ingredient": {
-            "type": "StructuredText",
-            "config": {
-              "single": "paragraph, strong, em, hyperlink",
-              "allowTargetBlank": true,
-              "label": "Ingredient",
-              "placeholder": "Ingredient name and quantity"
-            }
-          }
+        "labels": {
+          "ingredient": [],
+          "ingredient_heading": []
         },
-        "label": "Ingredients List"
+        "choices": {
+          "ingredient": {
+            "type": "Slice",
+            "fieldset": "Ingredient",
+            "description": "Quantity and Name",
+            "icon": "restaurant",
+            "display": "list",
+            "non-repeat": {
+              "ingredient": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "paragraph, strong, em, hyperlink",
+                  "allowTargetBlank": true,
+                  "label": "Ingredient",
+                  "placeholder": "Ingredient name and quantity"
+                }
+              }
+            },
+            "repeat": {}
+          },
+          "ingredient_heading": {
+            "type": "Slice",
+            "fieldset": "Ingredient Heading",
+            "description": "Heading for New Section",
+            "icon": "text_format",
+            "display": "list",
+            "non-repeat": {
+              "ingredient_heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading4",
+                  "label": "Ingredient Heading",
+                  "placeholder": "Write a new heading here."
+                }
+              }
+            },
+            "repeat": {}
+          }
+        }
       }
     }
   },
@@ -153,12 +191,20 @@
   },
   "Related Recipes": {
     "related_recipes": {
-      "type": "Link",
+      "type": "Group",
       "config": {
-        "select": "document",
-        "customtypes": ["recipe"],
-        "label": "Related Recipes",
-        "placeholder": "Select a related recipe"
+        "fields": {
+          "related_recipe": {
+            "type": "Link",
+            "config": {
+              "select": "document",
+              "customtypes": ["recipe"],
+              "label": "Recipe",
+              "placeholder": "Select a related recipe"
+            }
+          }
+        },
+        "label": "Related Recipes"
       }
     }
   },
