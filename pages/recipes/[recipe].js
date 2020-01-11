@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentByUID } from '../../utils/prismic';
-import styles from '../../styles/recipes-detail.scss';
+import styles from '../../styles/recipe-detail.scss';
 
 class RecipeDetail extends Component {
   static async getInitialProps(context) {

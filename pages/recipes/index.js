@@ -4,7 +4,7 @@ import { RichText } from 'prismic-reactjs';
 import { fetchDocumentsByType } from '../../utils/prismic';
 import styles from '../../styles/homepage.scss';
 
-class RecipeOverview extends Component {
+class RecipesOverview extends Component {
   static async getInitialProps(context) {
     const { req, res } = context;
     const nextCookies = getCookies(context);
@@ -22,7 +22,7 @@ class RecipeOverview extends Component {
     const { recipes } = this.props;
 
     return (
-      <div id="recipe-overview">
+      <div id="recipes-overview">
         <h1>View All Recipes</h1>
         {recipes && (
           <ul>
@@ -40,4 +40,4 @@ class RecipeOverview extends Component {
   }
 }
 
-export default RecipeOverview;
+export default RecipesOverview;
