@@ -1,0 +1,43 @@
+{
+  "name": "5047-cooking",
+  "version": "1.0.0",
+  "description": "A recipe website using Next.js and Prismic",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": "https://github.com/karlyhoffman/recipe-website.git",
+  "author": "Karly <karlyhoffman@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "core-js": "^3.6.3",
+    "dotenv": "^8.2.0",
+    "next": "^9.1.7",
+    "next-cookies": "^2.0.3",
+    "node-sass": "^4.13.0",
+    "postcss-nested": "^4.2.1",
+    "prismic-javascript": "^2.1.5",
+    "prismic-reactjs": "^1.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "url-loader": "^3.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.7.3",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-import": "^0.13.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "prettier": "^1.19.1",
+    "sass-loader": "^8.0.1"
+  }
+}
