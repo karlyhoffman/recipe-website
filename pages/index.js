@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import getCookies from "next-cookies";
+import React, { Component } from 'react';
+import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
-import { fetchDocumentsByType } from "../utils/prismic";
-import styles from "../styles/homepage.scss";
+import { fetchDocumentsByType } from '../utils/prismic';
+import styles from '../styles/homepage.scss';
 
 class Homepage extends Component {
   static async getInitialProps(context) {
     const { req, res } = context;
     const nextCookies = getCookies(context);
-    const ref = nextCookies["io.prismic.preview"] || null;
+    const ref = nextCookies['io.prismic.preview'] || null;
 
-    const recipes = await fetchDocumentsByType({ type: "recipe", req });
+    const recipes = await fetchDocumentsByType({ type: 'recipe', req });
 
     if (res)
-      res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");
+      res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
     return { recipes: recipes.results || [] };
   }

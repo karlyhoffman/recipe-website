@@ -47,3 +47,4 @@ package-lock.json
 # Next.js static build files
 out/
 config.json
+.vscode/settings.json

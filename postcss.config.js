@@ -2,9 +2,9 @@ module.exports = ctx => {
   const plugins = {
     autoprefixer: {
       ...ctx.options.autoprefixer,
-      flexbox: "no-2009"
+      flexbox: 'no-2009'
     },
-    "postcss-nested": {}
+    'postcss-nested': {}
   };
 
   return { plugins };

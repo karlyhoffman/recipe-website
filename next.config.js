@@ -1,7 +1,10 @@
-const withCSS = require("@zeit/next-css");
+/* eslint-disable prettier/prettier */
+/* eslint-disable global-require */
+/* eslint-disable import/no-extraneous-dependencies */
+const withCSS = require('@zeit/next-css');
 
 module.exports = withCSS({
-  target: "serverless",
+  target: 'serverless',
   webpack(config, { defaultLoaders }) {
 
     /** Uncomment if polyfills are needed */
@@ -21,7 +24,7 @@ module.exports = withCSS({
     config.module.rules.push({
       test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
       use: {
-        loader: "url-loader",
+        loader: 'url-loader',
         options: {
           limit: 100000
         }
@@ -33,12 +36,12 @@ module.exports = withCSS({
       use: [
         defaultLoaders.babel,
         {
-          loader: require("styled-jsx/webpack").loader,
+          loader: require('styled-jsx/webpack').loader,
           options: {
-            type: "scoped"
+            type: 'scoped'
           }
         },
-        "sass-loader"
+        'sass-loader'
       ]
     });
 

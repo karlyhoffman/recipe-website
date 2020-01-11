@@ -1,5 +1,5 @@
-import PrismicLib from "prismic-javascript";
-import { PRISMIC_API_URL, PRISMIC_ACCESS_TOKEN } from "../config.json";
+import PrismicLib from 'prismic-javascript';
+import { PRISMIC_API_URL, PRISMIC_ACCESS_TOKEN } from '../config.json';
 
 let frontClient;
 
@@ -17,11 +17,14 @@ export const Client = (req = null) => {
 export const Prismic = PrismicLib;
 
 export const fetchDocumentsByType = async ({ type, req, options }) =>
-  Client(req).query(Prismic.Predicates.at("document.type", type), options);
+  Client(req).query(Prismic.Predicates.at('document.type', type), options);
+
+export const fetchDocumentByUID = async ({ type, id, req, options }) =>
+  Client(req).query(Prismic.Predicates.at(`my.${type}.uid`, id), options);
 
 export const linkResolver = doc => {
   if (doc && doc.type) {
-    if (doc.type === "recipe") return `/recipes/${doc.uid}`;
+    if (doc.type === 'recipe') return `/recipes/${doc.uid}`;
   }
-  return "/";
+  return '/';
 };
