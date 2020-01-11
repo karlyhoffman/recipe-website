@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
-import { fetchDocumentsByType } from '../utils/prismic';
-import styles from '../styles/homepage.scss';
+import { fetchDocumentsByType } from '../../utils/prismic';
+import styles from '../../styles/homepage.scss';
 
-class Homepage extends Component {
+class RecipeOverview extends Component {
   static async getInitialProps(context) {
     const { req, res } = context;
     const nextCookies = getCookies(context);
@@ -22,14 +22,17 @@ class Homepage extends Component {
     const { recipes } = this.props;
 
     return (
-      <div id="homepage">
-        <h1>5047 Cooking</h1>
-
-        <h2>Favorite Recipes</h2>
-        <p>Coming Soon</p>
-
-        <h2>Recipes to Cook Next</h2>
-        <p>Coming Soon</p>
+      <div id="recipe-overview">
+        <h1>View All Recipes</h1>
+        {recipes && (
+          <ul>
+            {React.Children.toArray(
+              recipes.map(recipe => (
+                <li>{RichText.asText(recipe.data.title)}</li>
+              ))
+            )}
+          </ul>
+        )}
 
         <style jsx>{styles}</style>
       </div>
@@ -37,4 +40,4 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+export default RecipeOverview;
