@@ -1,0 +1,29 @@
+{
+  "Main": {
+    "cuisine_tag": {
+      "type": "Text",
+      "config": {
+        "label": "Cuisine Name",
+        "placeholder": "What's the name of the cuisine?"
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Cuisine Slug",
+        "placeholder": "cuisine-slug"
+      }
+    },
+    "cuisine_tag_icon": {
+      "type": "Image",
+      "config": {
+        "constraint": {
+          "width": 60,
+          "height": 60
+        },
+        "thumbnails": [],
+        "label": "Cuisine Icon"
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Main": {
+    "season_tag": {
+      "type": "Text",
+      "config": {
+        "label": "Season",
+        "placeholder": "Write the season here."
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Season Slug",
+        "placeholder": "season-slug"
+      }
+    },
+    "season_tag_icon": {
+      "type": "Image",
+      "config": {
+        "constraint": {
+          "width": 60,
+          "height": 60
+        },
+        "thumbnails": [],
+        "label": "Season Icon"
+      }
+    }
+  }
+}

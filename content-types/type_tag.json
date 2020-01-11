@@ -1,0 +1,29 @@
+{
+  "Main": {
+    "type_tag": {
+      "type": "Text",
+      "config": {
+        "label": "Dish Type",
+        "placeholder": "i.e Side, Main, Dessert"
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Type Slug",
+        "placeholder": "dish-type-slug"
+      }
+    },
+    "type_tag_icon": {
+      "type": "Image",
+      "config": {
+        "constraint": {
+          "width": 60,
+          "height": 60
+        },
+        "thumbnails": [],
+        "label": "Dish Type Icon"
+      }
+    }
+  }
+}

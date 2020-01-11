@@ -1,0 +1,29 @@
+{
+  "Main": {
+    "day_tag": {
+      "type": "Text",
+      "config": {
+        "label": "Day of the Week Tag",
+        "placeholder": "i.e. Weekday, Weekend"
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Day Slug",
+        "placeholder": "day-of-the-week-slug"
+      }
+    },
+    "day_tag_icon": {
+      "type": "Image",
+      "config": {
+        "constraint": {
+          "width": 60,
+          "height": 60
+        },
+        "thumbnails": [],
+        "label": "Tag Icon"
+      }
+    }
+  }
+}

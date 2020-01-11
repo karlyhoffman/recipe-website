@@ -1,0 +1,21 @@
+{
+  "Main": {
+    "next_recipes": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "next_recipe": {
+            "type": "Link",
+            "config": {
+              "select": "document",
+              "customtypes": ["recipe"],
+              "label": "Next Recipe to Cook",
+              "placeholder": "Select a Recipe"
+            }
+          }
+        },
+        "label": "Recipes to Cook Next"
+      }
+    }
+  }
+}

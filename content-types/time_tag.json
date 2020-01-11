@@ -1,0 +1,29 @@
+{
+  "Main": {
+    "time_tag": {
+      "type": "Text",
+      "config": {
+        "label": "Time",
+        "placeholder": "i.e. 30 Minutes, 1 Hour, etc."
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Time Slug",
+        "placeholder": "time-slug"
+      }
+    },
+    "time_tag_icon": {
+      "type": "Image",
+      "config": {
+        "constraint": {
+          "width": 60,
+          "height": 60
+        },
+        "thumbnails": [],
+        "label": "Tag Icon"
+      }
+    }
+  }
+}
