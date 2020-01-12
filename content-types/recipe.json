@@ -15,6 +15,20 @@
         "placeholder": "recipe-slug"
       }
     },
+    "minutes_prep": {
+      "type": "Number",
+      "config": {
+        "label": "Prep Time",
+        "placeholder": "Minutes"
+      }
+    },
+    "minutes_total": {
+      "type": "Number",
+      "config": {
+        "label": "Total Time",
+        "placeholder": "Minutes"
+      }
+    },
     "source": {
       "type": "StructuredText",
       "config": {
@@ -36,22 +50,6 @@
       "config": {
         "label": "Cost",
         "placeholder": "Rough cost of meal"
-      }
-    },
-    "prep_time": {
-      "type": "StructuredText",
-      "config": {
-        "single": "paragraph, strong, em",
-        "label": "Prep Time",
-        "placeholder": "How long to prep ingredients?"
-      }
-    },
-    "total_time": {
-      "type": "StructuredText",
-      "config": {
-        "single": "paragraph, strong, em",
-        "label": "Total Time",
-        "placeholder": "Total time to cook recipe"
       }
     },
     "last_cooked_date": {
@@ -275,23 +273,6 @@
           }
         },
         "label": "Season Tags"
-      }
-    },
-    "time_tags": {
-      "type": "Group",
-      "config": {
-        "fields": {
-          "time_tag": {
-            "type": "Link",
-            "config": {
-              "select": "document",
-              "customtypes": ["time_tag"],
-              "label": "Time Tag",
-              "placeholder": "Select a Time Tag"
-            }
-          }
-        },
-        "label": "Time Tags"
       }
     },
     "day_tags": {
