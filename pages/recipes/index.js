@@ -23,7 +23,21 @@ class RecipesOverview extends Component {
 
     return (
       <div id="recipes-overview">
-        <h1>View All Recipes</h1>
+        <h1>Recipes</h1>
+
+        {/* SEARCH/FILTER TODO:
+            - Text Search Bar
+            - Tag Filters:
+              - tag types
+                - Cuisine
+                - Dish Type
+                - Ingredient
+                - Season
+                - Day (Weekend or Weekday)
+              - time
+              - cost
+          */}
+
         {recipes && (
           <ul>
             {React.Children.toArray(

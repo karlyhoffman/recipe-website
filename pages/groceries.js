@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentsByType } from '../utils/prismic';
-import styles from '../styles/homepage.scss';
+import styles from '../styles/groceries.scss';
 
-class Homepage extends Component {
+class Groceries extends Component {
   static async getInitialProps(context) {
     const { req, res } = context;
     const nextCookies = getCookies(context);
@@ -22,17 +22,17 @@ class Homepage extends Component {
     const { recipes } = this.props;
 
     return (
-      <div id="homepage">
-        <h1>5047 Cooking</h1>
+      <div id="groceries">
+        <h1>Grocery List</h1>
+        {/* TODO:
+            - Ability to select multiple recipes
+            - Once a recipe is selected, add ingredients to list
+            - Add "edit" button: ability to rearrange or remove ingredients from list
+          */}
 
-        <h2>Favorite Recipes</h2>
-        <p>Coming Soon</p>
-
-        <h2>Recipes to Cook Next</h2>
-        <p>Coming Soon</p>
-
-        <h2>Recipes That Haven&apos;t Been Cooked in a While</h2>
-        <p>Coming Soon</p>
+        <ul>
+          <li>Ingredient to buy</li>
+        </ul>
 
         <style jsx>{styles}</style>
       </div>
@@ -40,4 +40,4 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+export default Groceries;
