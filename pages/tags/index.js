@@ -19,7 +19,6 @@ class TagsOverview extends Component {
     ] = await Promise.all([
       fetchDocumentsByType({ type: 'cuisine_tag', req }),
       fetchDocumentsByType({ type: 'ingredient_tag', req }),
-      fetchDocumentsByType({ type: 'time_tag', req }),
       fetchDocumentsByType({ type: 'season_tag', req }),
       fetchDocumentsByType({ type: 'type_tag', req }),
       fetchDocumentsByType({ type: 'day_tag', req })
@@ -46,7 +45,6 @@ class TagsOverview extends Component {
     const {
       cuisineTags,
       ingredientTags,
-      timeTags,
       seasonTags,
       dishTypeTags,
       dayTags
@@ -55,7 +53,6 @@ class TagsOverview extends Component {
     console.log({
       cuisineTags,
       ingredientTags,
-      timeTags,
       seasonTags,
       dishTypeTags,
       dayTags
