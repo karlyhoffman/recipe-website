@@ -17,7 +17,7 @@ A simple website to view recipes by tags.
 yarn
 
 # serve with hot reload at localhost:3000
-yarn install
+yarn dev
 
 # build for production with minification
 yarn build
