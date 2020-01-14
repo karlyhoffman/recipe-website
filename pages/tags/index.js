@@ -12,7 +12,6 @@ class TagsOverview extends Component {
     const [
       cuisineTags,
       ingredientTags,
-      timeTags,
       seasonTags,
       dishTypeTags,
       dayTags
@@ -30,7 +29,6 @@ class TagsOverview extends Component {
     return {
       cuisineTags: cuisineTags.results || [],
       ingredientTags: ingredientTags.results || [],
-      timeTags: timeTags.results || [],
       seasonTags: seasonTags.results || [],
       dishTypeTags: dishTypeTags.results || [],
       dayTags: dayTags.results || []
