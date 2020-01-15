@@ -21,8 +21,7 @@ class RecipeDetail extends Component {
 
   formatTime = time => {
     const hours = Math.floor(time / 60);
-    const minutes =
-      (time % 60).toString().length === 1 ? `0${time % 60}` : time % 60;
+    const minutes = time % 60 < 10 ? `0${time % 60}` : time % 60;
     return `${hours}:${minutes}`;
   };
 
@@ -66,7 +65,7 @@ class RecipeDetail extends Component {
               </p>
             )}
             {photo && photo.url && <p>Photo: {photo.url}</p>}
-            {notes && (
+            {!!notes.length && (
               <>
                 <p>Notes:</p>
                 {RichText.render(notes)}
