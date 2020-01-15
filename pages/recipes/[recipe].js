@@ -19,6 +19,13 @@ class RecipeDetail extends Component {
     return { recipe: recipe.results[0] || {} };
   }
 
+  formatTime = time => {
+    const hours = Math.floor(time / 60);
+    const minutes =
+      (time % 60).toString().length === 1 ? `0${time % 60}` : time % 60;
+    return `${hours}:${minutes}`;
+  };
+
   render() {
     const { recipe } = this.props;
 
@@ -29,13 +36,12 @@ class RecipeDetail extends Component {
       source,
       servings,
       cost,
-      prep_time: prepTime,
-      total_time: totalTime,
-      last_cooked_date: dateLastCooked,
+      minutes_prep: prepTime,
+      minutes_total: totalTime,
       recipe_photo: photo,
       recipe_notes: notes,
       ingredients,
-      body,
+      body: instructions,
       related_recipes: relatedRecipes,
       main_ingredient_tags: ingredientTags,
       cuisine_tags: cuisineTags,
@@ -46,8 +52,56 @@ class RecipeDetail extends Component {
     } = recipe.data;
 
     return (
-      <div id="recipe-detail">
-        <h1>{RichText.asText(title)}</h1>
+      <div id="recipe-detail" className="container">
+        <div className="row about">
+          <div className="col-12">
+            <h1>{RichText.asText(title)}</h1>
+            {source && RichText.render(source)}
+            {servings && <p>Servings: {servings}</p>}
+            {cost && <p>${cost}</p>}
+            {prepTime && <p>Prep: {this.formatTime(prepTime)}</p>}
+            {totalTime && (
+              <p>
+                <b>Total Time</b>: {this.formatTime(totalTime)}
+              </p>
+            )}
+            {photo && photo.url && <p>Photo: {photo.url}</p>}
+            {notes && (
+              <>
+                <p>Notes:</p>
+                {RichText.render(notes)}
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="row ingredients">
+          <div className="col-12">
+            <h2>Ingredients</h2>
+            {/* Ingredients Slice */}
+          </div>
+        </div>
+
+        <div className="row instructions">
+          <div className="col-12">
+            <h2>Instructions</h2>
+            {/* Instructions Slice */}
+          </div>
+        </div>
+
+        {!!relatedRecipes.length && (
+          <div className="row related">
+            <div className="col-12">
+              <h2>Related Recipes</h2>
+            </div>
+          </div>
+        )}
+
+        <div className="row tags">
+          <div className="col-12">
+            <h2>Tags</h2>
+          </div>
+        </div>
 
         <style jsx>{styles}</style>
       </div>
