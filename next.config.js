@@ -41,7 +41,13 @@ module.exports = withCSS({
             type: 'scoped'
           }
         },
-        'sass-loader'
+        'sass-loader',
+        {
+          loader: 'sass-resources-loader',
+          options: {
+            resources: ['./styles/global/variables.scss']
+          }
+        }
       ]
     });
 
