@@ -22,17 +22,30 @@ class Homepage extends Component {
     const { recipes } = this.props;
 
     return (
-      <div id="homepage">
-        <h1>5047 Cooking</h1>
+      <div id="homepage" className="container">
+        <div className="row">
+          <div className="col-12">
+            <h1>5047 Cooking</h1>
+          </div>
+        </div>
 
-        <h2>Favorite Recipes</h2>
-        <p>Coming Soon</p>
+        <div className="row">
+          <div className="col-12 col-md-6">
+            <h2>Favorite Recipes</h2>
+            <p>Coming Soon</p>
+          </div>
+          <div className="col-12 col-md-6">
+            <h2>Recipes to Cook Next</h2>
+            <p>Coming Soon</p>
+          </div>
+        </div>
 
-        <h2>Recipes to Cook Next</h2>
-        <p>Coming Soon</p>
-
-        <h2>Recipes That Haven&apos;t Been Cooked in a While</h2>
-        <p>Coming Soon</p>
+        <div className="row">
+          <div className="col-12">
+            <h2>Recipes That Haven&apos;t Been Cooked in a While</h2>
+            <p>Coming Soon</p>
+          </div>
+        </div>
 
         <style jsx>{styles}</style>
       </div>
