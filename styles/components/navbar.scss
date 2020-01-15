@@ -1,0 +1,14 @@
+header#navbar {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: white;
+  padding: 10px 25px;
+
+  ul li {
+    display: inline-block;
+  }
+}

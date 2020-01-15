@@ -1,12 +1,28 @@
 import React from 'react';
+import Link from 'next/link';
+import componentStyles from '../styles/components/navbar.scss';
 
 const Navbar = () => {
   return (
-    <header>
+    <header id="navbar">
       <ul>
-        <li>Nav Item 1</li>
-        <li>Nav Item 2</li>
+        <li>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/recipes">
+            <a>All Recipes</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/groceries">
+            <a>Grocery List</a>
+          </Link>
+        </li>
       </ul>
+      <style jsx>{componentStyles}</style>
     </header>
   );
 };

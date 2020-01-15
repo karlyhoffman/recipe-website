@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
+import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
-import { fetchDocumentsByType } from '../../utils/prismic';
+import { fetchDocumentsByType, linkResolver } from '../../utils/prismic';
 import styles from '../../styles/homepage.scss';
 
 class RecipesOverview extends Component {
@@ -42,7 +43,11 @@ class RecipesOverview extends Component {
           <ul>
             {React.Children.toArray(
               recipes.map(recipe => (
-                <li>{RichText.asText(recipe.data.title)}</li>
+                <li>
+                  <Link href={linkResolver(recipe)}>
+                    <a>{RichText.asText(recipe.data.title)}</a>
+                  </Link>
+                </li>
               ))
             )}
           </ul>
