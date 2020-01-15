@@ -3,7 +3,7 @@ import getCookies from 'next-cookies';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentsByType, linkResolver } from '../../utils/prismic';
-import styles from '../../styles/homepage.scss';
+import styles from '../../styles/pages/homepage.scss';
 
 class RecipesOverview extends Component {
   static async getInitialProps(context) {
