@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentsByType } from '../utils/prismic';
-import styles from '../styles/pages/homepage.scss';
+import '../styles/pages/homepage.scss';
 
 class Homepage extends Component {
   static async getInitialProps(context) {
@@ -46,8 +46,6 @@ class Homepage extends Component {
             <p>Coming Soon</p>
           </div>
         </div>
-
-        <style jsx>{styles}</style>
       </div>
     );
   }

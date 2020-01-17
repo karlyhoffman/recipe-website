@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { fetchDocumentsByType } from '../../utils/prismic';
-import styles from '../../styles/pages/homepage.scss';
+import '../../styles/pages/homepage.scss';
 
 class TagsOverview extends Component {
   static async getInitialProps(context) {
@@ -59,8 +59,6 @@ class TagsOverview extends Component {
     return (
       <div id="tags-overview">
         <h1>View Recipes By Tags</h1>
-
-        <style jsx>{styles}</style>
       </div>
     );
   }

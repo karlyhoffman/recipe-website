@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentByUID } from '../../utils/prismic';
-import styles from '../../styles/pages/recipe-detail.scss';
+import '../../styles/pages/recipe-detail.scss';
 
 class RecipeDetail extends Component {
   static async getInitialProps(context) {
@@ -61,7 +61,6 @@ class RecipeDetail extends Component {
       cuisine_tags: cuisineTags,
       type_tags: typeTags,
       season_tags: seasonTags,
-      time_tags: timeTags,
       day_tags: dayTags
     } = recipe.data;
 
@@ -126,8 +125,6 @@ class RecipeDetail extends Component {
             <h2>Tags</h2>
           </div>
         </div>
-
-        <style jsx>{styles}</style>
       </div>
     );
   }
