@@ -25,6 +25,21 @@ class RecipeDetail extends Component {
     return `${hours}:${minutes}`;
   };
 
+  renderTextSlice = ({ slice_type: type, primary }) => {
+    switch (type) {
+      case 'ingredient_heading':
+        return RichText.render(primary.ingredient_heading);
+      case 'ingredient':
+        return RichText.render(primary.ingredient);
+      case 'instruction_heading':
+        return RichText.render(primary.instruction_heading);
+      case 'recipe_instruction':
+        return RichText.render(primary.instruction);
+      default:
+        return null;
+    }
+  };
+
   render() {
     const { recipe } = this.props;
 
@@ -39,7 +54,7 @@ class RecipeDetail extends Component {
       minutes_total: totalTime,
       recipe_photo: photo,
       recipe_notes: notes,
-      ingredients,
+      ingredient_slices: ingredients,
       body: instructions,
       related_recipes: relatedRecipes,
       main_ingredient_tags: ingredientTags,
@@ -74,19 +89,29 @@ class RecipeDetail extends Component {
           </div>
         </div>
 
-        <div className="row ingredients">
-          <div className="col-12">
-            <h2>Ingredients</h2>
-            {/* Ingredients Slice */}
+        {!!ingredients.length && (
+          <div className="row ingredients">
+            <div className="col-12">
+              <h2>Ingredients</h2>
+              {React.Children.toArray(
+                ingredients.map(ingredient => this.renderTextSlice(ingredient))
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="row instructions">
-          <div className="col-12">
-            <h2>Instructions</h2>
-            {/* Instructions Slice */}
+        {!!instructions.length && (
+          <div className="row instructions">
+            <div className="col-12">
+              <h2>Instructions</h2>
+              {React.Children.toArray(
+                instructions.map(instruction =>
+                  this.renderTextSlice(instruction)
+                )
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {!!relatedRecipes.length && (
           <div className="row related">
