@@ -1,7 +1,25 @@
 /* @styled-jsx=global */
 @import './vendor/normalize.scss';
 @import './vendor/bootstrap/bootstrap-grid.scss';
+@import './global/fonts.scss';
+
+html {
+  font-size: 100%;
+}
 
 body {
-  padding-top: 75px; // for fixed navbar
+  font-family: $montserrat;
+  font-size: 0.95rem;
+  line-height: 2;
+  letter-spacing: 0.5px;
+  padding-top: 60px; // for fixed navbar
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: $montserrat-bold;
+    line-height: 1.25;
+  }
+
+  strong, b {
+    font-family: $montserrat-semi-bold;
+  }
 }
