@@ -6,9 +6,10 @@ header#navbar {
   right: 0;
   z-index: 10;
   background-color: $white;
-  padding: 10px 25px;
+  font-size: 0.875rem;
 
   ul li {
     display: inline-block;
+    margin-right: 15px;
   }
 }

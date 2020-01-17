@@ -5,7 +5,7 @@ import componentStyles from '../styles/components/navbar.scss';
 const Navbar = () => {
   return (
     <header id="navbar">
-      <ul>
+      <ul className="container">
         <li>
           <Link href="/">
             <a>Home</a>
