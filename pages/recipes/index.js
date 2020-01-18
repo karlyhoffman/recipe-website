@@ -11,7 +11,11 @@ class RecipesOverview extends Component {
     const nextCookies = getCookies(context);
     const ref = nextCookies['io.prismic.preview'] || null;
 
-    const recipes = await fetchDocumentsByType({ type: 'recipe', req });
+    const recipes = await fetchDocumentsByType({
+      type: 'recipe',
+      req,
+      options: { orderings: '[my.recipe.title]' }
+    });
 
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
@@ -23,35 +27,39 @@ class RecipesOverview extends Component {
     const { recipes } = this.props;
 
     return (
-      <div id="recipes-overview">
-        <h1>Recipes</h1>
+      <div id="recipes-overview" className="container">
+        <div className="row">
+          <div className="col-12">
+            <h1>Recipes</h1>
 
-        {/* SEARCH/FILTER TODO:
-            - Text Search Bar
-            - Tag Filters:
-              - tag types
-                - Cuisine
-                - Dish Type
-                - Ingredient
-                - Season
-                - Day (Weekend or Weekday)
-              - time
-              - cost
-          */}
+            {/* SEARCH/FILTER TODO:
+              - Text Search Bar
+              - Tag Filters:
+                - tag types
+                  - Cuisine
+                  - Dish Type
+                  - Ingredient
+                  - Season
+                  - Day (Weekend or Weekday)
+                - time
+                - cost
+            */}
 
-        {recipes && (
-          <ul>
-            {React.Children.toArray(
-              recipes.map(recipe => (
-                <li>
-                  <Link href={linkResolver(recipe)}>
-                    <a>{RichText.asText(recipe.data.title)}</a>
-                  </Link>
-                </li>
-              ))
+            {recipes && (
+              <ul>
+                {React.Children.toArray(
+                  recipes.map(recipe => (
+                    <li>
+                      <Link href={linkResolver(recipe)}>
+                        <a>{RichText.asText(recipe.data.title)}</a>
+                      </Link>
+                    </li>
+                  ))
+                )}
+              </ul>
             )}
-          </ul>
-        )}
+          </div>
+        </div>
       </div>
     );
   }

@@ -48,13 +48,13 @@ class TagsOverview extends Component {
       weekdayTags
     } = this.props;
 
-    console.log({
-      cuisineTags,
-      ingredientTags,
-      seasonTags,
-      dishTypeTags,
-      weekdayTags
-    });
+    // console.log({
+    //   cuisineTags,
+    //   ingredientTags,
+    //   seasonTags,
+    //   dishTypeTags,
+    //   weekdayTags
+    // });
 
     return (
       <div id="tags-overview">

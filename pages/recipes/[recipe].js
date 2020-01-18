@@ -64,13 +64,13 @@ class RecipeDetail extends Component {
       weekday_tag: weekdayTag
     } = recipe.data;
 
-    console.log({
-      ingredientTags,
-      cuisineTags,
-      typeTags,
-      seasonTags,
-      weekdayTag
-    });
+    // console.log({
+    //   ingredientTags,
+    //   cuisineTags,
+    //   typeTags,
+    //   seasonTags,
+    //   weekdayTag
+    // });
 
     return (
       <div id="recipe-detail" className="container">

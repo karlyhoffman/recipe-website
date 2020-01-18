@@ -22,17 +22,21 @@ class Groceries extends Component {
     const { recipes } = this.props;
 
     return (
-      <div id="groceries">
-        <h1>Grocery List</h1>
-        {/* TODO:
-            - Ability to select multiple recipes
-            - Once a recipe is selected, add ingredients to list
-            - Add "edit" button: ability to rearrange or remove ingredients from list
-          */}
+      <div id="groceries" className="container">
+        <div className="row">
+          <div className="col-12">
+            <h1>Grocery List</h1>
+            {/* TODO:
+                - Ability to select multiple recipes
+                - Once a recipe is selected, add ingredients to list
+                - Add "edit" button: ability to rearrange or remove ingredients from list
+            */}
 
-        <ul>
-          <li>Ingredient to buy</li>
-        </ul>
+            <ul>
+              <li>Ingredient to buy</li>
+            </ul>
+          </div>
+        </div>
       </div>
     );
   }
