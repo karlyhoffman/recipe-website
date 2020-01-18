@@ -64,6 +64,14 @@ class RecipeDetail extends Component {
       day_tags: dayTags
     } = recipe.data;
 
+    // console.log(
+    //   ingredientTags,
+    //   cuisineTags,
+    //   typeTags,
+    //   seasonTags,
+    //   dayTags
+    // );
+
     return (
       <div id="recipe-detail" className="container">
         <div className="row about">
@@ -71,7 +79,7 @@ class RecipeDetail extends Component {
             <h1>{RichText.asText(title)}</h1>
             {source && RichText.render(source)}
             {servings && <p>Servings: {servings}</p>}
-            {cost && <p>${cost}</p>}
+            {cost && <p>Estimated Cost: ${cost}</p>}
             {prepTime && <p>Prep: {this.formatTime(prepTime)}</p>}
             {totalTime && (
               <p>
@@ -79,16 +87,19 @@ class RecipeDetail extends Component {
               </p>
             )}
             {photo && photo.url && <p>Photo: {photo.url}</p>}
-            {!!notes.length && (
-              <>
-                <p>Notes:</p>
-                {RichText.render(notes)}
-              </>
-            )}
           </div>
         </div>
 
-        {!!ingredients.length && (
+        {notes && RichText.asText(notes) && (
+          <div className="row notes">
+            <div className="col-12">
+              <h2>Notes:</h2>
+              {RichText.render(notes)}
+            </div>
+          </div>
+        )}
+
+        {ingredients && (
           <div className="row ingredients">
             <div className="col-12">
               <h2>Ingredients</h2>
@@ -99,7 +110,7 @@ class RecipeDetail extends Component {
           </div>
         )}
 
-        {!!instructions.length && (
+        {instructions && (
           <div className="row instructions">
             <div className="col-12">
               <h2>Instructions</h2>
@@ -112,7 +123,7 @@ class RecipeDetail extends Component {
           </div>
         )}
 
-        {!!relatedRecipes.length && (
+        {relatedRecipes && (
           <div className="row related">
             <div className="col-12">
               <h2>Related Recipes</h2>
@@ -124,6 +135,31 @@ class RecipeDetail extends Component {
           <div className="col-12">
             <h2>Tags</h2>
           </div>
+          {ingredientTags && (
+            <div className="col-12 col-md-4">
+              <h3>Ingredients</h3>
+            </div>
+          )}
+          {cuisineTags && (
+            <div className="col-12 col-md-4">
+              <h3>Cuisine</h3>
+            </div>
+          )}
+          {typeTags && (
+            <div className="col-12 col-md-4">
+              <h3>Dish Type</h3>
+            </div>
+          )}
+          {seasonTags && (
+            <div className="col-12 col-md-4">
+              <h3>Season</h3>
+            </div>
+          )}
+          {dayTags && (
+            <div className="col-12 col-md-4">
+              <h3>Day</h3>
+            </div>
+          )}
         </div>
       </div>
     );

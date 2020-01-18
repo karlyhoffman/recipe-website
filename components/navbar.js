@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import componentStyles from '../styles/components/navbar.scss';
+import '../styles/components/navbar.scss';
 
 const Navbar = () => {
   return (
@@ -22,7 +22,6 @@ const Navbar = () => {
           </Link>
         </li>
       </ul>
-      <style jsx>{componentStyles}</style>
     </header>
   );
 };

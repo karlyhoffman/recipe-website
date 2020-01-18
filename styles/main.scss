@@ -6,18 +6,22 @@ html {
 }
 
 body {
-  font-family: $montserrat;
-  font-size: 0.95rem;
+  font-family: $alegreya;
+  font-size: 1rem;
   line-height: 2;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   padding-top: 55px; // for fixed navbar
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: $montserrat-bold;
     line-height: 1.25;
+
+
+    font-family: $merriweather;
+    letter-spacing: normal;
+    font-weight: 800;
   }
 
   strong, b {
-    font-family: $montserrat-semi-bold;
+    font-weight: 700;
   }
 }

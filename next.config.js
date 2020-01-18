@@ -57,7 +57,7 @@ module.exports = {
           {
             loader: ExtractCssChunks.loader,
             options: {
-              hot: process.env.NODE_ENV === 'development',
+              hot: true,
               reloadAll: true
             }
           },

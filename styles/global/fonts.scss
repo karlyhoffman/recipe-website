@@ -1,72 +1,50 @@
 @font-face {
-  font-family: 'Montserrat Bold';
-  src: url('/fonts/Montserrat/montserrat-bold.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-bold.woff') format('woff');
+  font-family: 'Merriweather Sans';
+  src: url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBold.woff2') format('woff2'),
+       url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Merriweather Sans';
+  src: url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBoldItalic.woff2') format('woff2'),
+       url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBoldItalic.woff') format('woff');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-Bold.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Montserrat Bold Italic';
-  src: url('/fonts/Montserrat/montserrat-bold-italic.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-bold-italic.woff') format('woff');
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-BoldItalic.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-BoldItalic.woff') format('woff');
   font-weight: 700;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Montserrat Semi Bold';
-  src: url('/fonts/Montserrat/montserrat-semi-bold.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-semi-bold.woff') format('woff');
-  font-weight: 600;
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-Regular.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-Regular.woff') format('woff');
+  font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Montserrat Semi Bold Italic';
-  src: url('/fonts/Montserrat/montserrat-semi-bold-italic.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-semi-bold-italic.woff') format('woff');
-  font-weight: 600;
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-Italic.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-Italic.woff') format('woff');
+  font-weight: 400;
   font-style: italic;
 }
 
-@font-face {
-  font-family: 'Montserrat Medium';
-  src: url('/fonts/Montserrat/montserrat-medium.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-medium.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Montserrat Medium Italic';
-  src: url('/fonts/Montserrat/montserrat-medium-italic.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-medium-italic.woff') format('woff');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/fonts/Montserrat/montserrat-light.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-light.woff') format('woff');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Montserrat Italic';
-  src: url('/fonts/Montserrat/montserrat-light-italic.woff2') format('woff2'),
-       url('/fonts/Montserrat/montserrat-light-italic.woff') format('woff');
-  font-weight: 300;
-  font-style: italic;
-}
-
-$montserrat-bold: 'Montserrat Bold', sans-serif;
-$montserrat-bold-italic: 'Montserrat Bold Italic', sans-serif;
-$montserrat-semi-bold: 'Montserrat Semi Bold', sans-serif;
-$montserrat-semi-bold-italic: 'Montserrat Semi Bold Italic', sans-serif;
-$montserrat-medium: 'Montserrat Medium', sans-serif;
-$montserrat-medium-italic: 'Montserrat Medium Italic', sans-serif;
-$montserrat: 'Montserrat', sans-serif;
-$montserrat-italic: 'Montserrat Italic', sans-serif;
+$merriweather: 'Merriweather Sans', sans-serif;
+$alegreya: 'Alegreya', serif;

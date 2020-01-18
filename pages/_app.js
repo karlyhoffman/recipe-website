@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import App from 'next/app';
 import Navbar from '../components/navbar';
-import globalStyles from '../styles/main.scss';
+import '../styles/main.scss';
 
 export default class RecipeApp extends App {
   render() {
@@ -15,7 +15,6 @@ export default class RecipeApp extends App {
         </Head>
         <Navbar />
         <Component {...pageProps} />
-        <style jsx>{globalStyles}</style>
       </>
     );
   }
