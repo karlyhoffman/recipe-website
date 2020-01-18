@@ -69,7 +69,8 @@ module.exports = {
             options: {
               resources: [
                 './styles/global/variables.scss',
-                './styles/global/fonts.scss'
+                './styles/global/fonts.scss',
+                './styles/vendor/bootstrap/bootstrap-grid.scss'
               ]
             }
           }

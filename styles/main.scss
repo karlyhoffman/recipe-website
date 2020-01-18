@@ -1,28 +1,7 @@
 @import './vendor/normalize.scss';
-@import './vendor/bootstrap/bootstrap-grid.scss';
-
-html {
-  font-size: 17px;
-}
+@import './global/typography.scss';
 
 body {
-  font-family: $alegreya;
-  font-size: 1rem;
-  line-height: 2;
-  letter-spacing: 0.65px;
-  padding-top: 55px; // for fixed navbar
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: $merriweather;
-    line-height: 1.25;
-    letter-spacing: -0.5px;
-  }
-
-  h1 {
-    letter-spacing: -1.2px;
-  }
-
-  strong, b {
-    font-weight: 700;
-  }
+  color: $black;
+  padding-top: $navbar-height;
 }

@@ -52,7 +52,9 @@ class RecipeDetail extends Component {
       cost,
       minutes_prep: prepTime,
       minutes_total: totalTime,
+      last_cooked_date: lastCooked,
       recipe_photo: photo,
+      color,
       recipe_notes: notes,
       ingredient_slices: ingredients,
       body: instructions,
@@ -64,102 +66,114 @@ class RecipeDetail extends Component {
       weekday_tag: weekdayTag
     } = recipe.data;
 
-    // console.log({
-    //   ingredientTags,
-    //   cuisineTags,
-    //   typeTags,
-    //   seasonTags,
-    //   weekdayTag
-    // });
+    const hasHeroImg = photo && photo.url;
 
     return (
-      <div id="recipe-detail" className="container">
-        <div className="row about">
-          <div className="col-12">
-            <h1>{RichText.asText(title)}</h1>
-            {source && RichText.render(source)}
-            {servings && <p>Servings: {servings}</p>}
-            {cost && <p>Estimated Cost: ${cost}</p>}
-            {prepTime && <p>Prep: {this.formatTime(prepTime)}</p>}
-            {totalTime && (
-              <p>
-                <b>Total Time</b>: {this.formatTime(totalTime)}
-              </p>
-            )}
-            {photo && photo.url && <p>Photo: {photo.url}</p>}
-          </div>
+      <div id="recipe-detail" className="container-fluid px-0">
+        <div
+          className="hero-img"
+          style={{
+            backgroundColor: color || '#232323'
+          }}
+        >
+          {hasHeroImg && <img src={photo.url} alt="" />}
         </div>
 
-        {notes && RichText.asText(notes) && (
-          <div className="row notes">
-            <div className="col-12">
-              <h2>Notes:</h2>
-              {RichText.render(notes)}
+        <div
+          className={`body container-fluid ${hasHeroImg ? 'has-hero-img' : ''}`}
+        >
+          <div className="container">
+            <div className="row about">
+              <div className="col-12">
+                <h1 style={{ color: hasHeroImg ? '#333' : color }}>
+                  {RichText.asText(title)}
+                </h1>
+                {source && RichText.render(source)}
+                {servings && <p>Servings: {servings}</p>}
+                {cost && <p>Estimated Cost: ${cost}</p>}
+                {prepTime && <p>Prep: {this.formatTime(prepTime)}</p>}
+                {totalTime && (
+                  <p>
+                    <b>Total Time</b>: {this.formatTime(totalTime)}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-        )}
 
-        {ingredients && (
-          <div className="row ingredients">
-            <div className="col-12">
-              <h2>Ingredients</h2>
-              {React.Children.toArray(
-                ingredients.map(ingredient => this.renderTextSlice(ingredient))
+            {notes && RichText.asText(notes) && (
+              <div className="row notes">
+                <div className="col-12">
+                  <h2>Notes:</h2>
+                  {RichText.render(notes)}
+                </div>
+              </div>
+            )}
+
+            {ingredients && (
+              <div className="row ingredients">
+                <div className="col-12">
+                  <h2>Ingredients</h2>
+                  {React.Children.toArray(
+                    ingredients.map(ingredient =>
+                      this.renderTextSlice(ingredient)
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+
+            {instructions && (
+              <div className="row instructions">
+                <div className="col-12">
+                  <h2>Instructions</h2>
+                  {React.Children.toArray(
+                    instructions.map(instruction =>
+                      this.renderTextSlice(instruction)
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+
+            {relatedRecipes && (
+              <div className="row related">
+                <div className="col-12">
+                  <h2>Related Recipes</h2>
+                </div>
+              </div>
+            )}
+
+            <div className="row tags">
+              <div className="col-12">
+                <h2>Tags</h2>
+              </div>
+              {ingredientTags && (
+                <div className="col-12 col-md-4">
+                  <h3>Ingredients</h3>
+                </div>
+              )}
+              {cuisineTags && (
+                <div className="col-12 col-md-4">
+                  <h3>Cuisine</h3>
+                </div>
+              )}
+              {typeTags && (
+                <div className="col-12 col-md-4">
+                  <h3>Dish Type</h3>
+                </div>
+              )}
+              {seasonTags && (
+                <div className="col-12 col-md-4">
+                  <h3>Season</h3>
+                </div>
+              )}
+              {weekdayTag && weekdayTag === 'Yes' && (
+                <div className="col-12 col-md-4">
+                  <h3>Weekday</h3>
+                </div>
               )}
             </div>
           </div>
-        )}
-
-        {instructions && (
-          <div className="row instructions">
-            <div className="col-12">
-              <h2>Instructions</h2>
-              {React.Children.toArray(
-                instructions.map(instruction =>
-                  this.renderTextSlice(instruction)
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        {relatedRecipes && (
-          <div className="row related">
-            <div className="col-12">
-              <h2>Related Recipes</h2>
-            </div>
-          </div>
-        )}
-
-        <div className="row tags">
-          <div className="col-12">
-            <h2>Tags</h2>
-          </div>
-          {ingredientTags && (
-            <div className="col-12 col-md-4">
-              <h3>Ingredients</h3>
-            </div>
-          )}
-          {cuisineTags && (
-            <div className="col-12 col-md-4">
-              <h3>Cuisine</h3>
-            </div>
-          )}
-          {typeTags && (
-            <div className="col-12 col-md-4">
-              <h3>Dish Type</h3>
-            </div>
-          )}
-          {seasonTags && (
-            <div className="col-12 col-md-4">
-              <h3>Season</h3>
-            </div>
-          )}
-          {weekdayTag && weekdayTag === 'Yes' && (
-            <div className="col-12 col-md-4">
-              <h3>Weekday</h3>
-            </div>
-          )}
         </div>
       </div>
     );
