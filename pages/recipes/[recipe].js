@@ -61,16 +61,16 @@ class RecipeDetail extends Component {
       cuisine_tags: cuisineTags,
       type_tags: typeTags,
       season_tags: seasonTags,
-      day_tags: dayTags
+      weekday_tag: weekdayTag
     } = recipe.data;
 
-    // console.log(
-    //   ingredientTags,
-    //   cuisineTags,
-    //   typeTags,
-    //   seasonTags,
-    //   dayTags
-    // );
+    console.log({
+      ingredientTags,
+      cuisineTags,
+      typeTags,
+      seasonTags,
+      weekdayTag
+    });
 
     return (
       <div id="recipe-detail" className="container">
@@ -155,9 +155,9 @@ class RecipeDetail extends Component {
               <h3>Season</h3>
             </div>
           )}
-          {dayTags && (
+          {weekdayTag && weekdayTag === 'Yes' && (
             <div className="col-12 col-md-4">
-              <h3>Day</h3>
+              <h3>Weekday</h3>
             </div>
           )}
         </div>

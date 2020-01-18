@@ -14,13 +14,13 @@ class TagsOverview extends Component {
       ingredientTags,
       seasonTags,
       dishTypeTags,
-      dayTags
+      weekdayTags
     ] = await Promise.all([
       fetchDocumentsByType({ type: 'cuisine_tag', req }),
       fetchDocumentsByType({ type: 'ingredient_tag', req }),
       fetchDocumentsByType({ type: 'season_tag', req }),
       fetchDocumentsByType({ type: 'type_tag', req }),
-      fetchDocumentsByType({ type: 'day_tag', req })
+      fetchDocumentsByType({ type: 'weekday_tag', req })
     ]);
 
     if (res)
@@ -31,7 +31,7 @@ class TagsOverview extends Component {
       ingredientTags: ingredientTags.results || [],
       seasonTags: seasonTags.results || [],
       dishTypeTags: dishTypeTags.results || [],
-      dayTags: dayTags.results || []
+      weekdayTags
     };
   }
 
@@ -45,7 +45,7 @@ class TagsOverview extends Component {
       ingredientTags,
       seasonTags,
       dishTypeTags,
-      dayTags
+      weekdayTags
     } = this.props;
 
     console.log({
@@ -53,7 +53,7 @@ class TagsOverview extends Component {
       ingredientTags,
       seasonTags,
       dishTypeTags,
-      dayTags
+      weekdayTags
     });
 
     return (

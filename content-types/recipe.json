@@ -275,21 +275,12 @@
         "label": "Season Tags"
       }
     },
-    "day_tags": {
-      "type": "Group",
+    "weekday_tag": {
+      "type": "Select",
       "config": {
-        "fields": {
-          "day_tag": {
-            "type": "Link",
-            "config": {
-              "select": "document",
-              "customtypes": ["day_tag"],
-              "label": "Day Tag",
-              "placeholder": "Select a Day Tag (ie Weekday)"
-            }
-          }
-        },
-        "label": "Day Tags"
+        "options": ["No", "Yes"],
+        "default_value": "No",
+        "label": "Weekday Meal"
       }
     }
   }
