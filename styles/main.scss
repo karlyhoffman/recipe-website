@@ -2,7 +2,7 @@
 @import './vendor/bootstrap/bootstrap-grid.scss';
 
 html {
-  font-size: 100%;
+  font-size: 17px;
 }
 
 body {
@@ -15,11 +15,11 @@ body {
   h1, h2, h3, h4, h5, h6 {
     font-family: $merriweather;
     line-height: 1.25;
-    letter-spacing: normal;
+    letter-spacing: -0.5px;
   }
 
   h1 {
-    letter-spacing: -0.9px;
+    letter-spacing: -1.2px;
   }
 
   strong, b {
