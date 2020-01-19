@@ -50,7 +50,9 @@ $hero-height-lg: 400px;
     }
 
     .about {
-      font-size: 1.075rem;
+      @include media-breakpoint-up(md) {
+        font-size: 1.075rem;
+      }
 
       h5, p, pre {
         margin: 0 0 5px 0;
