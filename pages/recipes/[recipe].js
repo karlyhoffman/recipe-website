@@ -125,13 +125,12 @@ class RecipeDetail extends Component {
                   {RichText.render(notes)}
                 </div>
               )}
-              <div className="col-12 source d-flex">
-                {source &&
-                  React.Children.toArray([
-                    <p className="label">Source:</p>,
-                    RichText.render(source)
-                  ])}
-              </div>
+              {source && !!source.length && (
+                <div className="col-12 source d-flex">
+                  <p className="label">Source:</p>
+                  {RichText.render(source)}
+                </div>
+              )}
               <div className="col-12">
                 <div className="line" />
               </div>
@@ -163,6 +162,7 @@ class RecipeDetail extends Component {
               </div>
             </div>
 
+            {/* TODO: Filter out blank documents */}
             {relatedRecipes && !!relatedRecipes.length && (
               <div className="row related">
                 <div className="col-12">
