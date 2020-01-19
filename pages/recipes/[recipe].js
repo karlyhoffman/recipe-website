@@ -83,62 +83,84 @@ class RecipeDetail extends Component {
           className={`body container-fluid ${hasHeroImg ? 'has-hero-img' : ''}`}
         >
           <div className="container">
-            <div className="row about">
+            <div className="row">
               <div className="col-12">
                 <h1 style={{ color: hasHeroImg ? '#333' : color }}>
                   {RichText.asText(title)}
                 </h1>
-                {source && RichText.render(source)}
-                {servings && <p>Servings: {servings}</p>}
-                {cost && <p>Estimated Cost: ${cost}</p>}
-                {prepTime && <p>Prep: {this.formatTime(prepTime)}</p>}
-                {totalTime && (
-                  <p>
-                    <b>Total Time</b>: {this.formatTime(totalTime)}
-                  </p>
-                )}
               </div>
             </div>
+            <div className="row about">
+              <div className="col-12 col-lg-6">
+                <div className="row mb-lg-0 mb-3 specs">
+                  <div className="col-6">
+                    {prepTime && <p>Prep: {this.formatTime(prepTime)}</p>}
+                    {totalTime && (
+                      <p>
+                        <b>Total Time</b>: {this.formatTime(totalTime)}
+                      </p>
+                    )}
+                  </div>
+                  <div className="col-6">
+                    {servings && <p>Servings: {servings}</p>}
+                    {cost && <p>Estimated Cost: ${cost}</p>}
+                  </div>
 
-            {notes && RichText.asText(notes) && (
-              <div className="row notes">
-                <div className="col-12">
-                  <h2>Notes:</h2>
-                  {RichText.render(notes)}
+                  <div className="col-12 source">
+                    {source &&
+                      React.Children.toArray([
+                        <p className="label">Source:</p>,
+                        RichText.render(source)
+                      ])}
+                  </div>
                 </div>
               </div>
-            )}
+              <div className="col-12 col-lg-6 notes">
+                {notes &&
+                  RichText.asText(notes) &&
+                  React.Children.toArray([
+                    <h5>Notes:</h5>,
+                    RichText.render(notes)
+                  ])}
+              </div>
+              <div className="col-12">
+                <div className="line" />
+              </div>
+            </div>
+          </div>
 
-            {ingredients && (
-              <div className="row ingredients">
-                <div className="col-12">
-                  <h2>Ingredients</h2>
-                  {React.Children.toArray(
+          <div className="container">
+            <div className="row steps">
+              <div className="col-12 col-md-4 ingredients">
+                <h2 className="heading">Ingredients</h2>
+                {ingredients &&
+                  React.Children.toArray(
                     ingredients.map(ingredient =>
                       this.renderTextSlice(ingredient)
                     )
                   )}
-                </div>
               </div>
-            )}
-
-            {instructions && (
-              <div className="row instructions">
-                <div className="col-12">
-                  <h2>Instructions</h2>
-                  {React.Children.toArray(
+              <div className="col-12 col-md-8 instructions">
+                <h2 className="heading">Instructions</h2>
+                {instructions &&
+                  React.Children.toArray(
                     instructions.map(instruction =>
                       this.renderTextSlice(instruction)
                     )
                   )}
-                </div>
               </div>
-            )}
+              <div className="col-12">
+                <div className="line" />
+              </div>
+            </div>
 
-            {relatedRecipes && (
+            {relatedRecipes && !!relatedRecipes.length && (
               <div className="row related">
                 <div className="col-12">
                   <h2>Related Recipes</h2>
+                </div>
+                <div className="col-12">
+                  <div className="line" />
                 </div>
               </div>
             )}

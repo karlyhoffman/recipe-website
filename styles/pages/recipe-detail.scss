@@ -37,13 +37,56 @@ $hero-height-lg: 400px;
 
     &.has-hero-img {
       margin-top: $hero-height-sm - $navbar-height;
-    }
-
-    @include media-breakpoint-up(md) {
       padding-top: 30px;
 
-      &.has-hero-img {
+      @include media-breakpoint-up(md) {
         margin-top: $hero-height-lg - $navbar-height;
+      }
+    }
+
+    .line {
+      margin-top: 40px;
+      margin-bottom: 15px;
+    }
+
+    .about {
+      font-size: 1.075rem;
+      padding-top: 15px;
+
+      @media screen and (max-width: 415px) {
+        font-size: 4vw;
+      }
+
+      h5, p, pre {
+        margin: 0 0 5px 0;
+      }
+
+      .source {
+        display: flex;
+        color: $grey;
+        font-size: 12px;
+        padding-top: 10px;
+
+        .label {
+          padding-right: 7px;
+        }
+      }
+    }
+
+    .steps {
+
+      .ingredients {
+
+        @include media-breakpoint-up(md) {
+          p {
+            font-size: 1.075rem;
+          }
+
+          &.fixed {
+            max-height: 100vh;
+            overflow-y: scroll;
+          }
+        }
       }
     }
   }

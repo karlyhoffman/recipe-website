@@ -4,4 +4,11 @@
 body {
   color: $black;
   padding-top: $navbar-height;
+
+  .line {
+    display: block;
+    background-color: $light-grey;
+    width: 100%;
+    height: 1px;
+  }
 }
