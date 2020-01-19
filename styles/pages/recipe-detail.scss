@@ -45,27 +45,25 @@ $hero-height-lg: 400px;
     }
 
     .line {
-      margin-top: 40px;
-      margin-bottom: 15px;
+      margin-top: 30px;
+      margin-bottom: 10px;
     }
 
     .about {
       font-size: 1.075rem;
-      padding-top: 15px;
-
-      @media screen and (max-width: 415px) {
-        font-size: 4vw;
-      }
 
       h5, p, pre {
         margin: 0 0 5px 0;
       }
 
+      .notes {
+        padding-top: 15px;
+      }
+
       .source {
-        display: flex;
         color: $grey;
         font-size: 12px;
-        padding-top: 10px;
+        padding-top: 15px;
 
         .label {
           padding-right: 7px;

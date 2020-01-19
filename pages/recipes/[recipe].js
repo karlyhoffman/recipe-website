@@ -91,36 +91,45 @@ class RecipeDetail extends Component {
               </div>
             </div>
             <div className="row about">
-              <div className="col-12 col-lg-6">
-                <div className="row mb-lg-0 mb-3 specs">
-                  <div className="col-6">
-                    {prepTime && <p>Prep: {this.formatTime(prepTime)}</p>}
-                    {totalTime && (
-                      <p>
-                        <b>Total Time</b>: {this.formatTime(totalTime)}
-                      </p>
-                    )}
-                  </div>
-                  <div className="col-6">
-                    {servings && <p>Servings: {servings}</p>}
-                    {cost && <p>Estimated Cost: ${cost}</p>}
-                  </div>
-
-                  <div className="col-12 source">
-                    {source &&
-                      React.Children.toArray([
-                        <p className="label">Source:</p>,
-                        RichText.render(source)
-                      ])}
-                  </div>
-                </div>
+              <div className="col-12 col-md-6 col-lg-3">
+                {prepTime && (
+                  <p>
+                    <strong>Prep</strong>: {this.formatTime(prepTime)}
+                  </p>
+                )}
               </div>
-              <div className="col-12 col-lg-6 notes">
-                {notes &&
-                  RichText.asText(notes) &&
+              <div className="col-12 col-md-6 col-lg-3">
+                {totalTime && (
+                  <p>
+                    <strong>Total Time</strong>: {this.formatTime(totalTime)}
+                  </p>
+                )}
+              </div>
+              <div className="col-12 col-md-6 col-lg-3">
+                {servings && (
+                  <p>
+                    <strong>Servings</strong>: {servings}
+                  </p>
+                )}
+              </div>
+              <div className="col-12 col-md-6 col-lg-3">
+                {cost && (
+                  <p>
+                    <strong>Estimated Cost</strong>: ${cost}
+                  </p>
+                )}
+              </div>
+              {notes && RichText.asText(notes) && (
+                <div className="col-12 notes">
+                  <strong>Notes:</strong>
+                  {RichText.render(notes)}
+                </div>
+              )}
+              <div className="col-12 source d-flex">
+                {source &&
                   React.Children.toArray([
-                    <h5>Notes:</h5>,
-                    RichText.render(notes)
+                    <p className="label">Source:</p>,
+                    RichText.render(source)
                   ])}
               </div>
               <div className="col-12">
