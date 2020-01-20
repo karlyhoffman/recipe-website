@@ -8,7 +8,8 @@ body {
   line-height: 1.5;
   letter-spacing: 0.75px;
 
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: $merriweather;
     line-height: 1.25;
   }

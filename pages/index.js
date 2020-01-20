@@ -15,51 +15,106 @@ class Homepage extends Component {
     const nextCookies = getCookies(context);
     const ref = nextCookies['io.prismic.preview'] || null;
 
-    const [recipes, nextRecipes, favoritesList] = await Promise.all([
+    const [
+      nextRecipesList,
+      favoriteRecipesList,
+      recipesByDate
+    ] = await Promise.all([
+      fetchDocumentsByType({ type: 'cook_next_list', req }),
+      fetchDocumentsByType({ type: 'favorites_list', req }),
       fetchDocumentsByType({
         type: 'recipe',
         req,
-        options: { orderings: '[my.recipe.title]', pageSize: 25 }
-      }),
-      fetchDocumentsByType({ type: 'cook_next_list', req })
+        options: {
+          fetchLinks: '[my.recipe.last_cooked_date]',
+          pageSize: 25,
+          orderings: '[my.recipe.last_cooked_date]'
+        }
+      })
     ]);
 
     const cookNextList = [];
-    if (nextRecipes && nextRecipes.results && nextRecipes.results[0].data) {
-      const IDsToFetch = [];
-      // Find already fetched recipe data
-      const { next_recipes: nextRecipeList } = nextRecipes.results[0].data;
-      nextRecipeList
+    if (
+      nextRecipesList &&
+      nextRecipesList.results &&
+      nextRecipesList.results[0].data
+    ) {
+      const { next_recipes: nextRecipes } = nextRecipesList.results[0].data;
+      const IDsToFetch = nextRecipes
         .map(recipe => recipe.next_recipe.id)
-        .forEach(recipeID => {
-          const recipeData = recipes.results.find(
-            recipe => recipe.id === recipeID
-          );
-          return recipeData
-            ? cookNextList.push(recipeData)
-            : IDsToFetch.push(recipeID);
-        });
+        .filter(recipe => recipe);
 
       if (IDsToFetch.length) {
-        const recipeData = await fetchDocumentsByIDs({ ids: IDsToFetch, req });
+        const recipeData = await fetchDocumentsByIDs({
+          ids: IDsToFetch,
+          req,
+          options: { orderings: '[my.recipe.title]', pageSize: 30 }
+        });
         if (recipeData.results) cookNextList.push(...recipeData.results);
       }
     }
 
-    const favoriteRecipes = [];
+    const favoritesList = [];
+    if (
+      favoriteRecipesList &&
+      favoriteRecipesList.results &&
+      favoriteRecipesList.results[0].data
+    ) {
+      const {
+        favorite_recipes: favoriteRecipes
+      } = favoriteRecipesList.results[0].data;
+      const IDsToFetch = favoriteRecipes
+        .map(recipe => recipe.favorite_recipe.id)
+        .filter(recipe => recipe);
+
+      if (IDsToFetch.length) {
+        const recipeData = await fetchDocumentsByIDs({
+          ids: IDsToFetch,
+          req,
+          options: { orderings: '[my.recipe.title]', pageSize: 30 }
+        });
+        if (recipeData.results) favoritesList.push(...recipeData.results);
+      }
+    }
+
+    const recipeIdeas = [];
+    if (recipesByDate && recipesByDate.results) {
+      const recipesWithDates = recipesByDate.results.filter(
+        recipe => recipe.data.last_cooked_date
+      );
+      recipeIdeas.push(...recipesWithDates);
+      // Fetch more recipes if list is short
+      if (recipeIdeas.length < 10) {
+        const moreRecipesByDate = await fetchDocumentsByType({
+          type: 'recipe',
+          req,
+          options: {
+            fetchLinks: '[my.recipe.last_cooked_date]',
+            pageSize: 25,
+            after: recipesByDate.results[recipesByDate.results.length - 1].id,
+            orderings: '[my.recipe.last_cooked_date]'
+          }
+        });
+        const moreRecipes = moreRecipesByDate.results.filter(
+          recipe => recipe.data.last_cooked_date
+        );
+        recipeIdeas.push(...moreRecipes);
+      }
+    }
 
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
     return {
-      recipes: recipes.results || [],
       cookNextList,
-      favoriteRecipes
+      favoritesList,
+      recipeIdeas
     };
   }
 
   render() {
-    const { recipes, cookNextList, favoritesList } = this.props;
+    const { cookNextList, favoritesList, recipeIdeas } = this.props;
+    const recipeIdeasLimit = 10;
 
     return (
       <div id="homepage" className="container">
@@ -68,14 +123,10 @@ class Homepage extends Component {
             <h1>5047 Cooking</h1>
           </div>
         </div>
-
         <div className="row">
-          <div className="col-12">
-            <h2>Recipes</h2>
-          </div>
-          <div className="col-12 col-md-4">
-            <h3>Cook Next</h3>
-            {cookNextList && (
+          <div className="col-12 col-md-6">
+            <h3>Recipes of the Week</h3>
+            {cookNextList ? (
               <ul>
                 {React.Children.toArray(
                   cookNextList.map(recipe => (
@@ -87,25 +138,36 @@ class Homepage extends Component {
                   ))
                 )}
               </ul>
+            ) : (
+              <p>No recipes selected.</p>
             )}
           </div>
-          <div className="col-12 col-md-4">
-            <h3>Recipe Ideas</h3>
-            <p>Coming Soon</p>
-          </div>
-          <div className="col-12 col-md-4">
-            <h3>Favorite Recipes</h3>
-            <p>Coming Soon</p>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-12">
-            <h2>View All</h2>
-            {recipes && (
+          <div className="col-12 col-md-6">
+            <h3>Ideas for Next Week</h3>
+            {recipeIdeas ? (
               <ul>
                 {React.Children.toArray(
-                  recipes.map(recipe => (
+                  recipeIdeas.map((recipe, index) =>
+                    index < recipeIdeasLimit ? (
+                      <li>
+                        <Link href={linkResolver(recipe)}>
+                          <a>{RichText.asText(recipe.data.title)}</a>
+                        </Link>
+                      </li>
+                    ) : null
+                  )
+                )}
+              </ul>
+            ) : (
+              <p>No recipes available.</p>
+            )}
+          </div>
+          <div className="col-12">
+            <h3>Favorite Recipes</h3>
+            {favoritesList ? (
+              <ul>
+                {React.Children.toArray(
+                  favoritesList.map(recipe => (
                     <li>
                       <Link href={linkResolver(recipe)}>
                         <a>{RichText.asText(recipe.data.title)}</a>
@@ -114,6 +176,8 @@ class Homepage extends Component {
                   ))
                 )}
               </ul>
+            ) : (
+              <p>No favorite recipes selected.</p>
             )}
           </div>
         </div>
