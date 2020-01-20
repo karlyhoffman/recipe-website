@@ -67,7 +67,7 @@ export default ({ parentContainer, sibling, className, children }) => {
           sibling &&
           sibling.current &&
           sibling.current.getBoundingClientRect().height
-            ? sibling.current.getBoundingClientRect().height - 150
+            ? sibling.current.getBoundingClientRect().height
             : '100%'
       }}
     >
