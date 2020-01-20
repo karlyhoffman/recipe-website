@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentByUID } from '../../utils/prismic';
+import StickyElement from '../../components/StickyElement';
 import '../../styles/pages/recipe-detail.scss';
 
 class RecipeDetail extends Component {
@@ -17,6 +18,13 @@ class RecipeDetail extends Component {
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
     return { recipe: recipe.results[0] || {} };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.stickyContainer = React.createRef();
+    this.instructionsColumn = React.createRef();
   }
 
   formatTime = time => {
@@ -138,24 +146,31 @@ class RecipeDetail extends Component {
           </div>
 
           <div className="container">
-            <div className="row steps">
+            <div className="row steps" ref={this.stickyContainer}>
               <div className="col-12 col-md-4 ingredients">
-                <h2 className="heading">Ingredients</h2>
-                {ingredients &&
-                  React.Children.toArray(
-                    ingredients.map(ingredient =>
-                      this.renderTextSlice(ingredient)
-                    )
-                  )}
+                <StickyElement
+                  parentContainer={this.stickyContainer}
+                  sibling={this.instructionsColumn}
+                >
+                  <h2 className="heading">Ingredients</h2>
+                  {ingredients &&
+                    React.Children.toArray(
+                      ingredients.map(ingredient =>
+                        this.renderTextSlice(ingredient)
+                      )
+                    )}
+                </StickyElement>
               </div>
               <div className="col-12 col-md-8 instructions">
-                <h2 className="heading">Instructions</h2>
-                {instructions &&
-                  React.Children.toArray(
-                    instructions.map(instruction =>
-                      this.renderTextSlice(instruction)
-                    )
-                  )}
+                <div ref={this.instructionsColumn}>
+                  <h2 className="heading">Instructions</h2>
+                  {instructions &&
+                    React.Children.toArray(
+                      instructions.map(instruction =>
+                        this.renderTextSlice(instruction)
+                      )
+                    )}
+                </div>
               </div>
               <div className="col-12">
                 <div className="line" />

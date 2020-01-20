@@ -1,0 +1,20 @@
+.sticky-element {
+  max-width: 25vw;
+
+  &.above {
+    // position: absolute;
+  }
+
+  &.fixed {
+    position: fixed;
+    top: $navbar-height;
+    overflow-y: scroll;
+    padding-bottom: 200px;
+  }
+
+  &.below {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+  }
+}
