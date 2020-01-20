@@ -1,5 +1,7 @@
 .sticky-element {
-  max-width: 25vw;
+  @include media-breakpoint-up(md) {
+    max-width: 25vw;
+  }
 
   &.above {
     // position: absolute;
