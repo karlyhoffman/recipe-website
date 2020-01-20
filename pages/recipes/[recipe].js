@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
-import { fetchDocumentByUID } from '../../utils/prismic';
+import { fetchDocumentByUID, linkResolver } from '../../utils/prismic';
 import StickyElement from '../../components/StickyElement';
 import '../../styles/pages/recipe-detail.scss';
 
@@ -38,11 +38,11 @@ class RecipeDetail extends Component {
       case 'ingredient_heading':
         return RichText.render(primary.ingredient_heading);
       case 'ingredient':
-        return RichText.render(primary.ingredient);
+        return RichText.render(primary.ingredient, linkResolver);
       case 'instruction_heading':
         return RichText.render(primary.instruction_heading);
       case 'recipe_instruction':
-        return RichText.render(primary.instruction);
+        return RichText.render(primary.instruction, linkResolver);
       default:
         return null;
     }

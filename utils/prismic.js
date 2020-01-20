@@ -3,6 +3,11 @@ import { PRISMIC_API_URL, PRISMIC_ACCESS_TOKEN } from '../config.json';
 
 let frontClient;
 
+const filterForNull = suspectArray => {
+  const filteredPageIDs = suspectArray.filter(el => el != null);
+  return filteredPageIDs;
+};
+
 export const Client = (req = null) => {
   // prevent generate new instance for client side since we don't need the refreshed request object.
   if (!req && frontClient) return frontClient;
@@ -18,6 +23,12 @@ export const Prismic = PrismicLib;
 
 export const fetchDocumentsByType = async ({ type, req, options }) =>
   Client(req).query(Prismic.Predicates.at('document.type', type), options);
+
+export const fetchDocumentsByIDs = async ({ ids, req, options }) =>
+  Client(req).query(
+    Prismic.Predicates.in('document.id', filterForNull(ids)),
+    options
+  );
 
 export const fetchDocumentByUID = async ({ type, id, req, options }) =>
   Client(req).query(Prismic.Predicates.at(`my.${type}.uid`, id), options);

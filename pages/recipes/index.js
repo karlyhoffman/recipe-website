@@ -14,7 +14,7 @@ class RecipesOverview extends Component {
     const recipes = await fetchDocumentsByType({
       type: 'recipe',
       req,
-      options: { orderings: '[my.recipe.title]' }
+      options: { orderings: '[my.recipe.title]', pageSize: 100 }
     });
 
     if (res)
