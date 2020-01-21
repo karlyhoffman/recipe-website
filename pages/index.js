@@ -48,7 +48,7 @@ class Homepage extends Component {
         const recipeData = await fetchDocumentsByIDs({
           ids: IDsToFetch,
           req,
-          options: { orderings: '[my.recipe.title]', pageSize: 30 }
+          options: { pageSize: 30 }
         });
         if (recipeData.results) cookNextList.push(...recipeData.results);
       }
@@ -124,25 +124,23 @@ class Homepage extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-12 col-md-6">
+          <div className="col-12">
             <h3>Recipes of the Week</h3>
             {cookNextList ? (
-              <ul>
+              <div className="card-container d-md-flex">
                 {React.Children.toArray(
                   cookNextList.map(recipe => (
-                    <li>
-                      <Link href={linkResolver(recipe)}>
-                        <a>{RichText.asText(recipe.data.title)}</a>
-                      </Link>
-                    </li>
+                    <Link href={linkResolver(recipe)}>
+                      <a className="card">{RichText.asText(recipe.data.title)}</a>
+                    </Link>
                   ))
                 )}
-              </ul>
+              </div>
             ) : (
               <p>No recipes selected.</p>
             )}
           </div>
-          <div className="col-12 col-md-6">
+          <div className="col-12">
             <h3>Ideas for Next Week</h3>
             {recipeIdeas ? (
               <ul>

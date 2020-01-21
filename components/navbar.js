@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import '../styles/components/navbar.scss';
 
-const Navbar = () => {
+export default () => {
   return (
     <header id="navbar">
       <ul className="container">
@@ -25,5 +25,3 @@ const Navbar = () => {
     </header>
   );
 };
-
-export default Navbar;

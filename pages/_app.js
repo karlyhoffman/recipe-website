@@ -2,7 +2,7 @@
 import React from 'react';
 import Head from 'next/head';
 import App from 'next/app';
-import Navbar from '../components/navbar';
+import Navbar from '../components/Navbar';
 import '../styles/main.scss';
 
 export default class RecipeApp extends App {
