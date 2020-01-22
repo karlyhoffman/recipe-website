@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
+import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
-import { fetchDocumentByUID, linkResolver } from '../../utils/prismic';
+import {
+  fetchDocumentByUID,
+  fetchDocumentsByIDs,
+  linkResolver
+} from '../../utils/prismic';
 import StickyElement from '../../components/StickyElement';
 import '../../styles/pages/recipe-detail.scss';
 
@@ -14,10 +19,24 @@ class RecipeDetail extends Component {
     const id = query.recipe;
     const recipe = await fetchDocumentByUID({ type: 'recipe', id, req });
 
+    // Fetch related recipes
+    const relatedRecipes = [];
+    const results = recipe.results[0] || null;
+    if (
+      results &&
+      results.data &&
+      results.data.related_recipes[0] &&
+      results.data.related_recipes[0].related_recipe
+    ) {
+      const ids = results.data.related_recipes.map(el => el.related_recipe.id);
+      const related = await fetchDocumentsByIDs({ ids, req });
+      if (related.results) relatedRecipes.push(...related.results);
+    }
+
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
-    return { recipe: recipe.results[0] || {} };
+    return { recipe: results || {}, relatedRecipes };
   }
 
   constructor(props) {
@@ -49,7 +68,7 @@ class RecipeDetail extends Component {
   };
 
   render() {
-    const { recipe } = this.props;
+    const { recipe, relatedRecipes } = this.props;
 
     if (!recipe.data) return <div>No Recipe Data Found</div>;
 
@@ -66,7 +85,6 @@ class RecipeDetail extends Component {
       recipe_notes: notes,
       ingredient_slices: ingredients,
       body: instructions,
-      related_recipes: relatedRecipes,
       main_ingredient_tags: ingredientTags,
       cuisine_tags: cuisineTags,
       type_tags: typeTags,
@@ -177,11 +195,21 @@ class RecipeDetail extends Component {
               </div>
             </div>
 
-            {/* TODO: Filter out blank documents */}
             {relatedRecipes && !!relatedRecipes.length && (
               <div className="row related">
                 <div className="col-12">
                   <h2>Related Recipes</h2>
+                  <ul>
+                    {React.Children.toArray(
+                      relatedRecipes.map(related => (
+                        <li>
+                          <Link href={linkResolver(related)}>
+                            <a>{RichText.asText(related.data.title)}</a>
+                          </Link>
+                        </li>
+                      ))
+                    )}
+                  </ul>
                 </div>
                 <div className="col-12">
                   <div className="line" />
