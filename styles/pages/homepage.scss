@@ -1,19 +1,2 @@
 #homepage {
-
-  .card-container {
-    justify-content: flex-start;
-
-    a.card {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-basis: 300px;
-      text-align: center;
-      text-decoration: none;
-      box-shadow: -2px 3px 8px -3px rgba($color: $black, $alpha: 0.6);
-      margin-right: 2.5%;
-      margin-bottom: 15px;
-      padding: 30px;
-    }
-  }
 }

@@ -131,7 +131,9 @@ class Homepage extends Component {
                 {React.Children.toArray(
                   cookNextList.map(recipe => (
                     <Link href={linkResolver(recipe)}>
-                      <a className="card">{RichText.asText(recipe.data.title)}</a>
+                      <a className="card">
+                        {RichText.asText(recipe.data.title)}
+                      </a>
                     </Link>
                   ))
                 )}

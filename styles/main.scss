@@ -16,4 +16,21 @@ body {
     padding: 0;
     list-style: none;
   }
+
+  .card-container {
+    justify-content: flex-start;
+
+    a.card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-basis: 300px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 1px 2px 5px 1px rgba($color: $black, $alpha: 0.5);
+      margin-right: 2.5%;
+      margin-bottom: 15px;
+      padding: 30px;
+    }
+  }
 }
