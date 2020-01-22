@@ -33,7 +33,7 @@ export default ({ parentContainer, sibling, className, children }) => {
             // if top of section is at top of viewport
             // or if bottom of element is above bottom of section
             if (stickyClass !== 'fixed') setStickyClass('fixed');
-          } else if (parentBottom - navbarHeight <= height + navbarHeight) {
+          } else if (parentBottom - navbarHeight <= height - navbarHeight) {
             // if bottom of section is at or above bottom of viewport
             if (stickyClass !== 'below') setStickyClass('below');
           }
