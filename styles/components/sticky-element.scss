@@ -1,6 +1,13 @@
 .sticky-element {
+
   @include media-breakpoint-up(md) {
-    max-width: 25vw;
+    width: 26vw;
+    max-width: 210px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    width: 29vw;
+    max-width: 350px;
   }
 
   &.above {

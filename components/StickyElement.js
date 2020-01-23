@@ -28,7 +28,7 @@ export default ({ parentContainer, sibling, className, children }) => {
             if (stickyClass !== 'above') setStickyClass('above');
           } else if (
             parentTop === navbarHeight ||
-            parentBottom - navbarHeight > height + navbarHeight
+            parentBottom - navbarHeight > height - navbarHeight
           ) {
             // if top of section is at top of viewport
             // or if bottom of element is above bottom of section
@@ -63,12 +63,7 @@ export default ({ parentContainer, sibling, className, children }) => {
       }`}
       style={{
         maxHeight:
-          stickyClass === 'fixed' &&
-          sibling &&
-          sibling.current &&
-          sibling.current.getBoundingClientRect().height
-            ? sibling.current.getBoundingClientRect().height
-            : '100%'
+          stickyClass === 'fixed' && window ? window.innerHeight - 90 : '100%'
       }}
     >
       {children}
