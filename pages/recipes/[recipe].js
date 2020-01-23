@@ -96,12 +96,7 @@ class RecipeDetail extends Component {
 
     return (
       <div id="recipe-detail" className="container-fluid px-0">
-        <div
-          className="hero-img"
-          style={{
-            backgroundColor: color || '#232323'
-          }}
-        >
+        <div className="hero-img">
           {hasHeroImg && <img src={photo.url} alt="" />}
         </div>
 
