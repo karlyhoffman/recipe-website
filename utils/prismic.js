@@ -36,6 +36,10 @@ export const fetchDocumentByUID = async ({ type, id, req, options }) =>
 export const linkResolver = doc => {
   if (doc && doc.type) {
     if (doc.type === 'recipe') return `/recipes/${doc.uid}`;
+    if (doc.type === 'ingredient_tag') return `/tags/ingredients/${doc.uid}`;
+    if (doc.type === 'cuisine_tag') return `/tags/cuisines/${doc.uid}`;
+    if (doc.type === 'type_tag') return `/tags/dish-types/${doc.uid}`;
+    if (doc.type === 'season_tag') return `/tags/seasons/${doc.uid}`;
   }
   return '/';
 };

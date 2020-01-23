@@ -19,24 +19,58 @@ class RecipeDetail extends Component {
     const id = query.recipe;
     const recipe = await fetchDocumentByUID({ type: 'recipe', id, req });
 
-    // Fetch related recipes
     const relatedRecipes = [];
+    const tags = [];
     const results = recipe.results[0] || null;
-    if (
-      results &&
-      results.data &&
-      results.data.related_recipes[0] &&
-      results.data.related_recipes[0].related_recipe
-    ) {
-      const ids = results.data.related_recipes.map(el => el.related_recipe.id);
-      const related = await fetchDocumentsByIDs({ ids, req });
-      if (related.results) relatedRecipes.push(...related.results);
+
+    if (results && results.data) {
+      // Fetch related recipes
+      if (
+        results.data.related_recipes[0] &&
+        results.data.related_recipes[0].related_recipe
+      ) {
+        const ids = results.data.related_recipes.map(
+          el => el.related_recipe.id
+        );
+        const related = await fetchDocumentsByIDs({ ids, req });
+        if (related.results) relatedRecipes.push(...related.results);
+      }
+
+      // Fetch tag data
+      const tagIDs = [];
+      const {
+        main_ingredient_tags: ingredientTags,
+        cuisine_tags: cuisineTags,
+        type_tags: typeTags,
+        season_tags: seasonTags
+      } = results.data;
+
+      const ingredientIDs = ingredientTags
+        .map(el => el.ingredient_tag.id)
+        .filter(tagID => tagID);
+      if (ingredientIDs.length) tagIDs.push(...ingredientIDs);
+
+      const cuisineIDs = cuisineTags
+        .map(el => el.cuisine_tag.id)
+        .filter(tagID => tagID);
+      if (cuisineIDs.length) tagIDs.push(...cuisineIDs);
+
+      const typeIDs = typeTags.map(el => el.type_tag.id).filter(tagID => tagID);
+      if (typeIDs.length) tagIDs.push(...typeIDs);
+
+      const seasonIDs = seasonTags
+        .map(el => el.season_tag.id)
+        .filter(tagID => tagID);
+      if (seasonIDs.length) tagIDs.push(...seasonIDs);
+
+      const tagData = await fetchDocumentsByIDs({ ids: tagIDs, req });
+      if (tagData.results) tags.push(...tagData.results);
     }
 
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
-    return { recipe: results || {}, relatedRecipes };
+    return { recipe: results || {}, relatedRecipes, tags };
   }
 
   constructor(props) {
@@ -68,7 +102,7 @@ class RecipeDetail extends Component {
   };
 
   render() {
-    const { recipe, relatedRecipes } = this.props;
+    const { recipe, relatedRecipes, tags } = this.props;
 
     if (!recipe.data) return <div>No Recipe Data Found</div>;
 
@@ -79,7 +113,6 @@ class RecipeDetail extends Component {
       cost,
       minutes_prep: prepTime,
       minutes_total: totalTime,
-      last_cooked_date: lastCooked,
       recipe_photo: photo,
       color,
       recipe_notes: notes,
@@ -216,29 +249,87 @@ class RecipeDetail extends Component {
               <div className="col-12">
                 <h2>Tags</h2>
               </div>
-              {ingredientTags && (
-                <div className="col-12 col-md-4">
+              {!!ingredientTags.length && (
+                <div className="col-12 col-md-3">
                   <h3>Ingredients</h3>
+                  <ul>
+                    {React.Children.toArray(
+                      ingredientTags.map(tag => (
+                        <li>
+                          <Link href={linkResolver(tag.ingredient_tag)}>
+                            <a>
+                              {tags.find(t => t.id === tag.ingredient_tag.id)
+                                .data.ingredient_tag || ''}
+                            </a>
+                          </Link>
+                        </li>
+                      ))
+                    )}
+                  </ul>
                 </div>
               )}
-              {cuisineTags && (
-                <div className="col-12 col-md-4">
+              {!!cuisineTags.length && (
+                <div className="col-12 col-md-3">
                   <h3>Cuisine</h3>
+                  <ul>
+                    {React.Children.toArray(
+                      cuisineTags.map(tag => (
+                        <li>
+                          <Link href={linkResolver(tag.cuisine_tag)}>
+                            <a>
+                              {tags.find(t => t.id === tag.cuisine_tag.id).data
+                                .cuisine_tag || ''}
+                            </a>
+                          </Link>
+                        </li>
+                      ))
+                    )}
+                  </ul>
                 </div>
               )}
-              {typeTags && (
-                <div className="col-12 col-md-4">
+              {!!typeTags.length && weekdayTag && weekdayTag === 'Yes' && (
+                <div className="col-12 col-md-3">
                   <h3>Dish Type</h3>
+                  <ul>
+                    {React.Children.toArray(
+                      typeTags.map(tag => (
+                        <li>
+                          <Link href={linkResolver(tag.type_tag)}>
+                            <a>
+                              {tags.find(t => t.id === tag.type_tag.id).data
+                                .type_tag || ''}
+                            </a>
+                          </Link>
+                        </li>
+                      ))
+                    )}
+                    {weekdayTag && weekdayTag === 'Yes' && (
+                      <li>
+                        <Link href="/tags/weekday-meals">
+                          <a>Weekday Meal</a>
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
                 </div>
               )}
-              {seasonTags && (
-                <div className="col-12 col-md-4">
+              {!!seasonTags.length && (
+                <div className="col-12 col-md-3">
                   <h3>Season</h3>
-                </div>
-              )}
-              {weekdayTag && weekdayTag === 'Yes' && (
-                <div className="col-12 col-md-4">
-                  <h3>Weekday</h3>
+                  <ul>
+                    {React.Children.toArray(
+                      seasonTags.map(tag => (
+                        <li>
+                          <Link href={linkResolver(tag.season_tag)}>
+                            <a>
+                              {tags.find(t => t.id === tag.season_tag.id).data
+                                .season_tag || ''}
+                            </a>
+                          </Link>
+                        </li>
+                      ))
+                    )}
+                  </ul>
                 </div>
               )}
             </div>
