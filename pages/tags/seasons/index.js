@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { fetchDocumentsByType } from '../../../utils/prismic';
+import TagOverviewLayout from '../../../components/TagOverviewLayout';
 
 class SeasonTagsOverview extends Component {
   static async getInitialProps(context) {
@@ -10,7 +11,8 @@ class SeasonTagsOverview extends Component {
 
     const seasonTags = await fetchDocumentsByType({
       type: 'season_tag',
-      req
+      req,
+      options: { orderings: '[my.season_tag.season_tag]', pageSize: 100 }
     });
 
     if (res)
@@ -25,9 +27,11 @@ class SeasonTagsOverview extends Component {
     const { seasonTags } = this.props;
 
     return (
-      <div id="tags-overview">
-        <h1>View Dish Type Tags</h1>
-      </div>
+      <TagOverviewLayout
+        tags={seasonTags}
+        label="Season Tags"
+        titleKey="season_tag"
+      />
     );
   }
 }

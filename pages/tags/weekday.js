@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { Prismic, Client } from '../../utils/prismic';
+import TagOverviewLayout from '../../components/TagOverviewLayout';
 
 class WeekdayTagDetail extends Component {
   static async getInitialProps(context) {
@@ -8,26 +9,23 @@ class WeekdayTagDetail extends Component {
     const nextCookies = getCookies(context);
     const ref = nextCookies['io.prismic.preview'] || null;
 
-    const weekdayTags = await Client(req).query(
-      Prismic.Predicates.at('my.recipe.weekday_tag', 'Yes')
+    const weekdayRecipes = await Client(req).query(
+      Prismic.Predicates.at('my.recipe.weekday_tag', 'Yes'),
+      { orderings: '[my.recipe.title]', pageSize: 100 }
     );
 
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
     return {
-      weekdayTags: weekdayTags.results || []
+      weekdayRecipes: weekdayRecipes.results || []
     };
   }
 
   render() {
-    const { weekdayTags } = this.props;
+    const { weekdayRecipes } = this.props;
 
-    return (
-      <div id="tags-overview">
-        <h1>View Dish Type Tags</h1>
-      </div>
-    );
+    return <TagOverviewLayout tags={weekdayRecipes} label="Weekday Meals" />;
   }
 }
 

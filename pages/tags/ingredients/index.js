@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { fetchDocumentsByType } from '../../../utils/prismic';
+import TagOverviewLayout from '../../../components/TagOverviewLayout';
 
 class IngredientTagsOverview extends Component {
   static async getInitialProps(context) {
@@ -10,7 +11,11 @@ class IngredientTagsOverview extends Component {
 
     const ingredientTags = await fetchDocumentsByType({
       type: 'ingredient_tag',
-      req
+      req,
+      options: {
+        orderings: '[my.ingredient_tag.ingredient_tag]',
+        pageSize: 100
+      }
     });
 
     if (res)
@@ -25,9 +30,11 @@ class IngredientTagsOverview extends Component {
     const { ingredientTags } = this.props;
 
     return (
-      <div id="tags-overview">
-        <h1>View Dish Type Tags</h1>
-      </div>
+      <TagOverviewLayout
+        tags={ingredientTags}
+        label="Main Ingredient Tags"
+        titleKey="ingredient_tag"
+      />
     );
   }
 }

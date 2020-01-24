@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import { fetchDocumentsByType } from '../../../utils/prismic';
+import TagOverviewLayout from '../../../components/TagOverviewLayout';
 
 class DishTypeOverview extends Component {
   static async getInitialProps(context) {
@@ -8,7 +9,11 @@ class DishTypeOverview extends Component {
     const nextCookies = getCookies(context);
     const ref = nextCookies['io.prismic.preview'] || null;
 
-    const dishTypeTags = await fetchDocumentsByType({ type: 'type_tag', req });
+    const dishTypeTags = await fetchDocumentsByType({
+      type: 'type_tag',
+      req,
+      options: { orderings: '[my.type_tag.type_tag]', pageSize: 100 }
+    });
 
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
@@ -22,9 +27,11 @@ class DishTypeOverview extends Component {
     const { dishTypeTags } = this.props;
 
     return (
-      <div id="tags-overview">
-        <h1>View Dish Type Tags</h1>
-      </div>
+      <TagOverviewLayout
+        tags={dishTypeTags}
+        label="Dish Type Tags"
+        titleKey="type_tag"
+      />
     );
   }
 }
