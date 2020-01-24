@@ -21,31 +21,33 @@ class TagsOverview extends Component {
         <div className="row">
           <div className="col-12">
             <h1>Tag Categories</h1>
-          </div>
-          <div className="col-6 col-md-4">
-            <Link href="/tags/ingredients">
-              <a>Ingredients</a>
-            </Link>
-          </div>
-          <div className="col-6 col-md-4">
-            <Link href="/tags/cuisines">
-              <a>Cuisines</a>
-            </Link>
-          </div>
-          <div className="col-6 col-md-4">
-            <Link href="/tags/dish-types">
-              <a>Dish Types</a>
-            </Link>
-          </div>
-          <div className="col-6 col-md-4">
-            <Link href="/tags/seasons">
-              <a>Seasons</a>
-            </Link>
-          </div>
-          <div className="col-6 col-md-4">
-            <Link href="/tags/weekday">
-              <a>Weekday Meals</a>
-            </Link>
+            <ul>
+              <li>
+                <Link href="/tags/ingredients">
+                  <a>Ingredients</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/tags/cuisines">
+                  <a>Cuisines</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/tags/dish-types">
+                  <a>Dish Types</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/tags/seasons">
+                  <a>Seasons</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/tags/weekday">
+                  <a>Weekday Meals</a>
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

@@ -17,6 +17,11 @@ export default () => {
           </Link>
         </li>
         <li>
+          <Link href="/tags">
+            <a>Tags</a>
+          </Link>
+        </li>
+        <li>
           <Link href="/groceries">
             <a>Grocery List</a>
           </Link>

@@ -31,6 +31,7 @@ class SeasonTagsOverview extends Component {
         tags={seasonTags}
         label="Season Tags"
         titleKey="season_tag"
+        seasonTags
       />
     );
   }
