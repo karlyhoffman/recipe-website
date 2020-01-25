@@ -9,8 +9,56 @@ header#navbar {
   font-size: 1rem;
   line-height: 1.5;
 
-  ul li {
-    display: inline-block;
-    margin-right: 15px;
+  ul {
+    display: flex;
+
+    li {
+      position: relative;
+    }
+
+    &:not(.sub-menu) li {
+      display: inline-block;
+      margin-right: 15px;
+    }
+
+    .sub-menu {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      max-height: 0;
+      overflow: hidden;
+      background-color: $white;
+
+      span.label {
+        color: $med-grey;
+        font-family: $merriweather;
+        font-size: 0.75rem;
+      }
+
+      li {
+        position: relative;
+        display: block;
+        height: 0;
+        opacity: 0;
+        white-space: nowrap;
+        padding: 0 0 6px 0;
+        transition: opacity 350ms $ease 0ms, height 350ms $ease 0ms;
+      }
+    }
+
+    li.has-sub {
+      max-width: 55px;
+
+      &:hover .sub-menu {
+        max-height: 100%;
+        overflow: visible;
+        transition: max-height 350ms $ease 0ms;
+
+        li {
+          height: 25px;
+          opacity: 1;
+        }
+      }
+    }
   }
 }
