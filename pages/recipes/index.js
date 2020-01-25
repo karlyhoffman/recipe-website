@@ -31,20 +31,39 @@ class RecipesOverview extends Component {
         <div className="row">
           <div className="col-12">
             <h1>Recipes</h1>
-
-            {/* SEARCH/FILTER TODO:
-              - Text Search Bar
-              - Tag Filters:
-                - tag types
-                  - Cuisine
-                  - Dish Type
-                  - Ingredient
-                  - Season
-                  - Day (Weekend or Weekday)
-                - time
-                - cost
-            */}
-
+          </div>
+          <div className="col-12">
+            <h2>Tag Categories</h2>
+            <ul>
+              <li>
+                <Link href="/recipes/ingredients">
+                  <a>Ingredients</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/recipes/cuisines">
+                  <a>Cuisines</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/recipes/dish-types">
+                  <a>Dish Types</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/recipes/seasons">
+                  <a>Seasons</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/recipes/weekday">
+                  <a>Weekday Meals</a>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="col-12">
+            <h2>All Recipes</h2>
             {recipes && (
               <ul>
                 {React.Children.toArray(

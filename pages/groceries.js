@@ -32,9 +32,10 @@ class Groceries extends Component {
                 - Add "edit" button: ability to rearrange or remove ingredients from list
             */}
 
-            <ul>
+            {/* <ul>
               <li>Ingredient to buy</li>
-            </ul>
+            </ul> */}
+            <p>Coming soon.</p>
           </div>
         </div>
       </div>

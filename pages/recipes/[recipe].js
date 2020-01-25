@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import Link from 'next/link';
+import Error from 'next/error';
 import { RichText } from 'prismic-reactjs';
 import {
   fetchDocumentByUID,
@@ -104,7 +105,7 @@ class RecipeDetail extends Component {
   render() {
     const { recipe, relatedRecipes, tags } = this.props;
 
-    if (!recipe.data) return <div>No Recipe Data Found</div>;
+    if (!recipe.data) return <Error statusCode={404} />;
 
     const {
       title,
@@ -305,7 +306,7 @@ class RecipeDetail extends Component {
                     )}
                     {weekdayTag && weekdayTag === 'Yes' && (
                       <li>
-                        <Link href="/tags/weekday-meals">
+                        <Link href="/recipes/weekday">
                           <a>Weekday Meal</a>
                         </Link>
                       </li>

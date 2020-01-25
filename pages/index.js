@@ -71,7 +71,7 @@ class Homepage extends Component {
         const recipeData = await fetchDocumentsByIDs({
           ids: IDsToFetch,
           req,
-          options: { orderings: '[my.recipe.title]', pageSize: 30 }
+          options: { pageSize: 50 }
         });
         if (recipeData.results) favoritesList.push(...recipeData.results);
       }

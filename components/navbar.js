@@ -3,6 +3,7 @@ import Link from 'next/link';
 import '../styles/components/navbar.scss';
 
 export default () => {
+  // TODO: hookup to CMS
   return (
     <header id="navbar">
       <ul className="container">
@@ -13,12 +14,7 @@ export default () => {
         </li>
         <li>
           <Link href="/recipes">
-            <a>All Recipes</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/tags">
-            <a>Tags</a>
+            <a>Recipes</a>
           </Link>
         </li>
         <li>
