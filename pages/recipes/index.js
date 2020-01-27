@@ -66,15 +66,13 @@ class RecipesOverview extends Component {
             <h2>All Recipes</h2>
             {recipes && (
               <ul>
-                {React.Children.toArray(
-                  recipes.map(recipe => (
-                    <li>
-                      <Link href={linkResolver(recipe)}>
-                        <a>{RichText.asText(recipe.data.title)}</a>
-                      </Link>
-                    </li>
-                  ))
-                )}
+                {recipes.map(recipe => (
+                  <li key={recipe.id}>
+                    <Link href={linkResolver(recipe)}>
+                      <a>{RichText.asText(recipe.data.title)}</a>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             )}
           </div>

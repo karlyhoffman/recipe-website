@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import getCookies from 'next-cookies';
 import Link from 'next/link';
 import Error from 'next/error';
@@ -201,7 +201,7 @@ class RecipeDetail extends Component {
                 >
                   <h2 className="heading">Ingredients</h2>
                   {ingredients &&
-                    React.Children.toArray(
+                    Children.toArray(
                       ingredients.map(ingredient =>
                         this.renderTextSlice(ingredient)
                       )
@@ -212,7 +212,7 @@ class RecipeDetail extends Component {
                 <div ref={this.instructionsColumn}>
                   <h2 className="heading">Instructions</h2>
                   {instructions &&
-                    React.Children.toArray(
+                    Children.toArray(
                       instructions.map(instruction =>
                         this.renderTextSlice(instruction)
                       )
@@ -229,7 +229,7 @@ class RecipeDetail extends Component {
                 <div className="col-12">
                   <h2>Related Recipes</h2>
                   <ul>
-                    {React.Children.toArray(
+                    {Children.toArray(
                       relatedRecipes.map(related => (
                         <li>
                           <Link href={linkResolver(related)}>
@@ -254,7 +254,7 @@ class RecipeDetail extends Component {
                 <div className="col-12 col-md-3">
                   <h3>Ingredients</h3>
                   <ul>
-                    {React.Children.toArray(
+                    {Children.toArray(
                       ingredientTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.ingredient_tag)}>
@@ -273,7 +273,7 @@ class RecipeDetail extends Component {
                 <div className="col-12 col-md-3">
                   <h3>Cuisine</h3>
                   <ul>
-                    {React.Children.toArray(
+                    {Children.toArray(
                       cuisineTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.cuisine_tag)}>
@@ -292,7 +292,7 @@ class RecipeDetail extends Component {
                 <div className="col-12 col-md-3">
                   <h3>Dish Type</h3>
                   <ul>
-                    {React.Children.toArray(
+                    {Children.toArray(
                       typeTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.type_tag)}>
@@ -318,7 +318,7 @@ class RecipeDetail extends Component {
                 <div className="col-12 col-md-3">
                   <h3>Season</h3>
                   <ul>
-                    {React.Children.toArray(
+                    {Children.toArray(
                       seasonTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.season_tag)}>

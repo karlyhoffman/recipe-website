@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import getCookies from 'next-cookies';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
@@ -128,7 +128,7 @@ class Homepage extends Component {
             <h3>Recipes of the Week</h3>
             {cookNextList ? (
               <div className="card-container d-md-flex">
-                {React.Children.toArray(
+                {Children.toArray(
                   cookNextList.map(recipe => (
                     <Link href={linkResolver(recipe)}>
                       <a className="card">
@@ -146,7 +146,7 @@ class Homepage extends Component {
             <h3>Ideas for Next Week</h3>
             {recipeIdeas ? (
               <ul>
-                {React.Children.toArray(
+                {Children.toArray(
                   recipeIdeas.map((recipe, index) =>
                     index < recipeIdeasLimit ? (
                       <li>
@@ -166,7 +166,7 @@ class Homepage extends Component {
             <h3>Favorite Recipes</h3>
             {favoritesList ? (
               <ul>
-                {React.Children.toArray(
+                {Children.toArray(
                   favoritesList.map(recipe => (
                     <li>
                       <Link href={linkResolver(recipe)}>
