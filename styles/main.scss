@@ -1,7 +1,9 @@
 @import './vendor/normalize.scss';
 @import './global/typography.scss';
+@import './components/grocery-list.scss';
 
 body {
+  box-sizing: border-box;
   color: $black;
   padding-top: $navbar-height;
 
@@ -27,7 +29,7 @@ body {
       flex-basis: 300px;
       text-align: center;
       text-decoration: none;
-      box-shadow: 1px 2px 5px 1px rgba($color: $black, $alpha: 0.5);
+      box-shadow: $box-shadow;
       margin-right: 2.5%;
       margin-bottom: 15px;
       padding: 30px;
