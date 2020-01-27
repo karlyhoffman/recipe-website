@@ -13,17 +13,6 @@
         "label": "Cuisine Slug",
         "placeholder": "cuisine-slug"
       }
-    },
-    "cuisine_tag_icon": {
-      "type": "Image",
-      "config": {
-        "constraint": {
-          "width": 60,
-          "height": 60
-        },
-        "thumbnails": [],
-        "label": "Cuisine Icon"
-      }
     }
   }
 }

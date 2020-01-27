@@ -13,17 +13,6 @@
         "label": "Ingredient Slug",
         "placeholder": "ingredient-slug"
       }
-    },
-    "ingredient_tag_icon": {
-      "type": "Image",
-      "config": {
-        "constraint": {
-          "width": 60,
-          "height": 60
-        },
-        "thumbnails": [],
-        "label": "Ingredient Icon"
-      }
     }
   }
 }
