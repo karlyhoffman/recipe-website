@@ -24,17 +24,17 @@ export default ({ parentContainer, sibling, className, children }) => {
 
         if (height < siblingHeight) {
           if (parentTop > navbarHeight) {
-            // if top of section is above top of viewport
+            // if top of section is above top of viewport (navbar in this case)
             if (stickyClass !== 'above') setStickyClass('above');
           } else if (
             parentTop === navbarHeight ||
-            parentBottom - navbarHeight > height - navbarHeight
+            parentBottom - 100 > height
           ) {
-            // if top of section is at top of viewport
-            // or if bottom of element is above bottom of section
+            // if top of section is at the navbar
+            // or if bottom of element is above bottom of section (-margin and padding)
             if (stickyClass !== 'fixed') setStickyClass('fixed');
-          } else if (parentBottom - navbarHeight <= height - navbarHeight) {
-            // if bottom of section is at or above bottom of viewport
+          } else if (parentBottom - 100 <= height) {
+            // if bottom of section (-margin and padding) is at or above bottom of viewport
             if (stickyClass !== 'below') setStickyClass('below');
           }
         }
