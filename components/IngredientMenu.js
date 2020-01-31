@@ -3,28 +3,32 @@ import '../styles/components/ingredient-menu.scss';
 
 export default ({ parentContainer, sibling, className, children }) => {
   const menu = useRef(null);
+  const [fontSize, setFontSize] = useState(false);
   const [stickyClass, setStickyClass] = useState('above');
 
   const checkScrollPosition = () => {
-    const elmt = menu.current;
-    const parentElmt = parentContainer.current;
-    const siblingElmt = sibling.current;
+    const el = menu.current;
+    const parentEl = parentContainer.current;
+    const siblingEl = sibling.current;
     const isDesktop = window && window.innerWidth > 768;
 
     if (isDesktop) {
-      if (elmt && siblingElmt && parentElmt) {
-        const { height } = elmt.getBoundingClientRect();
-        const { height: siblingHeight } = siblingElmt.getBoundingClientRect();
+      if (el && siblingEl && parentEl) {
+        const { height } = el.getBoundingClientRect();
+        const { height: siblingHeight } = siblingEl.getBoundingClientRect();
         const {
           top: parentTop,
           bottom: parentBottom
-        } = parentElmt.getBoundingClientRect();
+        } = parentEl.getBoundingClientRect();
 
         const navbarHeight = 60;
 
-        if (height < siblingHeight) {
+        console.log(height, siblingHeight);
+
+        if (height < siblingHeight - 25) {
           if (parentTop > navbarHeight) {
             // if top of section is above top of viewport (navbar in this case)
+            setFontSize(false);
             if (stickyClass !== 'above') setStickyClass('above');
           } else if (
             parentTop === navbarHeight ||
@@ -32,7 +36,10 @@ export default ({ parentContainer, sibling, className, children }) => {
           ) {
             // if top of section is at the navbar
             // or if bottom of element is above bottom of section (-margin and padding)
-            if (stickyClass !== 'fixed') setStickyClass('fixed');
+            if (stickyClass !== 'fixed') {
+              if (height > window.innerHeight - 90) setFontSize(true);
+              setStickyClass('fixed');
+            }
           } else if (parentBottom - 100 <= height) {
             // if bottom of section (-margin and padding) is at or above bottom of viewport
             if (stickyClass !== 'below') setStickyClass('below');
@@ -60,11 +67,7 @@ export default ({ parentContainer, sibling, className, children }) => {
       ref={menu}
       className={`ingredient-menu ${stickyClass}${
         className ? ` ${className}` : ''
-      }`}
-      style={{
-        maxHeight:
-          stickyClass === 'fixed' && window ? window.innerHeight - 90 : '100%'
-      }}
+      }${fontSize ? ' font-sm' : ''}`}
     >
       {children}
     </div>
