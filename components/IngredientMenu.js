@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../styles/components/sticky-element.scss';
+import '../styles/components/ingredient-menu.scss';
 
 export default ({ parentContainer, sibling, className, children }) => {
-  const stickyElement = useRef(null);
+  const menu = useRef(null);
   const [stickyClass, setStickyClass] = useState('above');
 
   const checkScrollPosition = () => {
-    const elmt = stickyElement.current;
+    const elmt = menu.current;
     const parentElmt = parentContainer.current;
     const siblingElmt = sibling.current;
     const isDesktop = window && window.innerWidth > 768;
@@ -57,8 +57,8 @@ export default ({ parentContainer, sibling, className, children }) => {
 
   return (
     <div
-      ref={stickyElement}
-      className={`sticky-element ${stickyClass}${
+      ref={menu}
+      className={`ingredient-menu ${stickyClass}${
         className ? ` ${className}` : ''
       }`}
       style={{

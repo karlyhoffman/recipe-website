@@ -8,7 +8,7 @@ import {
   fetchDocumentsByIDs,
   linkResolver
 } from '../../utils/prismic';
-import StickyElement from '../../components/StickyElement';
+import IngredientMenu from '../../components/IngredientMenu';
 import '../../styles/pages/recipe-detail.scss';
 
 class RecipeDetail extends Component {
@@ -195,7 +195,7 @@ class RecipeDetail extends Component {
           <div className="container">
             <div className="row steps" ref={this.stickyContainer}>
               <div className="col-12 col-md-4 ingredients">
-                <StickyElement
+                <IngredientMenu
                   parentContainer={this.stickyContainer}
                   sibling={this.instructionsColumn}
                 >
@@ -206,7 +206,7 @@ class RecipeDetail extends Component {
                         this.renderTextSlice(ingredient)
                       )
                     )}
-                </StickyElement>
+                </IngredientMenu>
               </div>
               <div className="col-12 col-md-8 instructions">
                 <div ref={this.instructionsColumn}>
