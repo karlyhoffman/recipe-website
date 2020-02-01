@@ -126,7 +126,7 @@ class Homepage extends Component {
         <div className="row">
           <div className="col-12">
             <h3>Recipes of the Week</h3>
-            {cookNextList ? (
+            {cookNextList && cookNextList.length ? (
               <div className="card-container d-md-flex">
                 {Children.toArray(
                   cookNextList.map(recipe => (
