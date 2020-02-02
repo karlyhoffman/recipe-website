@@ -140,9 +140,7 @@ class RecipeDetail extends Component {
           <div className="container">
             <div className="row">
               <div className="col-12">
-                <h1 style={{ color: hasHeroImg ? '#333' : color }}>
-                  {RichText.asText(title)}
-                </h1>
+                <h1>{RichText.asText(title)}</h1>
               </div>
             </div>
             <div className="row about">

@@ -41,7 +41,23 @@ $hero-height-lg: 400px;
 
       @include media-breakpoint-up(md) {
         margin-top: $hero-height-lg - $navbar-height;
+
+        h1 {
+          margin-bottom: 50px;
+        }
       }
+    }
+
+    h1 {
+      // Black Background
+      @include media-breakpoint-up(md) {
+        background-color: $black;
+        color: $white;
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 22px 10px 20px;
+      }
+      //
     }
 
     .line {

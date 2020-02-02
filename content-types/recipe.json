@@ -66,12 +66,6 @@
         "thumbnails": [],
         "label": "Recipe Photo"
       }
-    },
-    "color": {
-      "type": "Color",
-      "config": {
-        "label": "Recipe Color"
-      }
     }
   },
   "Notes": {
