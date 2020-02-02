@@ -23,9 +23,7 @@ export default ({ parentContainer, sibling, className, children }) => {
 
         const navbarHeight = 60;
 
-        console.log(height, siblingHeight);
-
-        if (height < siblingHeight - 25) {
+        if (height < siblingHeight - 50) {
           if (parentTop > navbarHeight) {
             // if top of section is above top of viewport (navbar in this case)
             setFontSize(false);
