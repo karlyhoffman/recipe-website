@@ -256,7 +256,7 @@ class RecipeDetail extends Component {
                       ingredientTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.ingredient_tag)}>
-                            <a>
+                            <a className="tag ingredient">
                               {tags.find(t => t.id === tag.ingredient_tag.id)
                                 .data.ingredient_tag || ''}
                             </a>
@@ -275,7 +275,7 @@ class RecipeDetail extends Component {
                       cuisineTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.cuisine_tag)}>
-                            <a>
+                            <a className="tag cuisine">
                               {tags.find(t => t.id === tag.cuisine_tag.id).data
                                 .cuisine_tag || ''}
                             </a>
@@ -294,7 +294,7 @@ class RecipeDetail extends Component {
                       typeTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.type_tag)}>
-                            <a>
+                            <a className="tag type">
                               {tags.find(t => t.id === tag.type_tag.id).data
                                 .type_tag || ''}
                             </a>
@@ -305,7 +305,7 @@ class RecipeDetail extends Component {
                     {weekdayTag && weekdayTag === 'Yes' && (
                       <li>
                         <Link href="/recipes/weekday">
-                          <a>Weekday Meal</a>
+                          <a className="tag weekday">Weekday Meal</a>
                         </Link>
                       </li>
                     )}
@@ -320,7 +320,7 @@ class RecipeDetail extends Component {
                       seasonTags.map(tag => (
                         <li>
                           <Link href={linkResolver(tag.season_tag)}>
-                            <a>
+                            <a className="tag season">
                               {tags.find(t => t.id === tag.season_tag.id).data
                                 .season_tag || ''}
                             </a>
