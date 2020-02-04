@@ -1,54 +1,59 @@
-#grocery-list .list-item {
-  display: block;
-  position: relative;
-  box-shadow: $box-shadow;
-  margin-bottom: 20px;
-  padding: 5px 15px;
+form#grocery-list {
 
-  input {
-    border: none;
-    width: 100%;
-    width: calc(100% - 33px);
-    white-space: normal;
-    padding: 5px;
+  ul li.list-item {
+    margin-bottom: 10px;
   }
 
-  button.remove {
-    opacity: 0;
-    display: block;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    bottom: 10px;
-    width: 25px;
-    border: none;
+  &.editing {
 
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background-color: #333;
-      border-radius: 2px;
-    }
+    ul li.list-item {
+      display: block;
+      position: relative;
+      box-shadow: $box-shadow;
+      padding: 5px 15px;
 
-    &:before {
-      transform: translateY(-2px) rotate(45deg);
-    }
+      input {
+        border: none;
+        width: 100%;
+        width: calc(100% - 33px);
+        white-space: normal;
+        padding: 5px;
+      }
 
-    &:after {
-      transform: translateY(-2px) rotate(-45deg);
-    }
-  }
+      button.remove {
+        display: block;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        bottom: 10px;
+        width: 25px;
+        border: none;
+        opacity: 0.35;
 
-  &:hover button.remove {
-    opacity: 0.35;
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background-color: #333;
+          border-radius: 2px;
+        }
 
-    &:hover {
-      opacity: 1;
+        &:before {
+          transform: translateY(-2px) rotate(45deg);
+        }
+
+        &:after {
+          transform: translateY(-2px) rotate(-45deg);
+        }
+      }
+
+      &:hover button.remove {
+        opacity: 1;
+      }
     }
   }
 }

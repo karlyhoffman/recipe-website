@@ -3,6 +3,7 @@ import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentsByType, fetchDocumentsByIDs } from '../utils/prismic';
 import GroceryList from '../components/GroceryList';
+import '../styles/pages/groceries.scss';
 
 class Groceries extends Component {
   static async getInitialProps(context) {
@@ -54,21 +55,45 @@ class Groceries extends Component {
     };
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: false
+    };
+  }
+
+  toggleEditMode = () => {
+    this.setState((state, props) => ({
+      isEditing: !state.isEditing
+    }));
+  };
+
   render() {
     const { recipes, nextIngredients } = this.props;
+    const { isEditing } = this.state;
 
     return (
       <div id="groceries" className="container">
         <div className="row">
+          <div className="col-12 d-flex col-title">
+            <h1>Grocery List</h1>
+            <button
+              className={isEditing ? 'edit-btn editing' : 'edit-btn'}
+              onClick={this.toggleEditMode}
+              type="button"
+            >
+              {!isEditing ? 'Edit' : 'Done'}
+            </button>
+          </div>
           <div className="col-12">
-            <h1 className="mb-3">Grocery List</h1>
             {/* TODO:
                 - Ability to select multiple recipes
                 - Once a recipe is selected, add ingredients to list
                 - Add "edit" button: ability to rearrange order
             */}
-            <p className="subhead mt-0 mb-4">Ingredients for Recipes of the Week </p>
-            {nextIngredients && <GroceryList ingredients={nextIngredients} />}
+            {nextIngredients && (
+              <GroceryList ingredients={nextIngredients} {...{ isEditing }} />
+            )}
           </div>
         </div>
       </div>

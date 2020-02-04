@@ -1,6 +1,7 @@
 import React, { Children, useState } from 'react';
+import '../styles/components/grocery-list.scss';
 
-export default ({ ingredients }) => {
+export default ({ ingredients, isEditing = false }) => {
   const ingredientList = ingredients.map(ingredient => ingredient[0].text);
   const [groceries, setGroceries] = useState(ingredientList);
 
@@ -18,22 +19,28 @@ export default ({ ingredients }) => {
   };
 
   return (
-    <form id="grocery-list">
+    <form id="grocery-list" className={isEditing ? 'editing' : ''}>
       <ul>
         {Children.toArray(
           groceries.map((grocery, i) => (
             <li className="list-item">
-              <input
-                type="text"
-                value={grocery}
-                onChange={e => updateTodoAtIndex(e, i)}
-              />
-              <button
-                className="remove"
-                onClick={() => removeItemAtIndex(i)}
-                type="button"
-                aria-label="Close"
-              />
+              {isEditing ? (
+                <>
+                  <input
+                    type="text"
+                    value={grocery}
+                    onChange={e => updateTodoAtIndex(e, i)}
+                  />
+                  <button
+                    className="remove"
+                    onClick={() => removeItemAtIndex(i)}
+                    type="button"
+                    aria-label="Close"
+                  />
+                </>
+              ) : (
+                grocery
+              )}
             </li>
           ))
         )}
