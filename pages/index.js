@@ -18,10 +18,19 @@ class Homepage extends Component {
     const [
       nextRecipesList,
       favoriteRecipesList,
+      recentlyAdded,
       recipesByDate
     ] = await Promise.all([
       fetchDocumentsByType({ type: 'cook_next_list', req }),
       fetchDocumentsByType({ type: 'favorites_list', req }),
+      fetchDocumentsByType({
+        type: 'recipe',
+        req,
+        options: {
+          orderings: '[document.first_publication_date desc]',
+          pageSize: 10
+        }
+      }),
       fetchDocumentsByType({
         type: 'recipe',
         req,
@@ -108,12 +117,18 @@ class Homepage extends Component {
     return {
       cookNextList,
       favoritesList,
+      recentlyAdded: recentlyAdded.results || [],
       recipeIdeas
     };
   }
 
   render() {
-    const { cookNextList, favoritesList, recipeIdeas } = this.props;
+    const {
+      cookNextList,
+      favoritesList,
+      recentlyAdded,
+      recipeIdeas
+    } = this.props;
     const recipeIdeasLimit = 10;
 
     return (
@@ -142,7 +157,9 @@ class Homepage extends Component {
               <p>No recipes selected.</p>
             )}
           </div>
-          <div className="col-12">
+        </div>
+        <div className="row mt-md-3">
+          <div className="col-12 col-md-6">
             <h3>Ideas for Next Week</h3>
             {recipeIdeas ? (
               <ul>
@@ -156,6 +173,24 @@ class Homepage extends Component {
                       </li>
                     ) : null
                   )
+                )}
+              </ul>
+            ) : (
+              <p>No recipes available.</p>
+            )}
+          </div>
+          <div className="col-12 col-md-6">
+            <h3>Recently Added Recipes</h3>
+            {recentlyAdded ? (
+              <ul>
+                {Children.toArray(
+                  recentlyAdded.map(recipe => (
+                    <li>
+                      <Link href={linkResolver(recipe)}>
+                        <a>{RichText.asText(recipe.data.title)}</a>
+                      </Link>
+                    </li>
+                  ))
                 )}
               </ul>
             ) : (
