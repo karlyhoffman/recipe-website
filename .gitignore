@@ -48,3 +48,5 @@ package-lock.json
 out/
 config.json
 .vscode/settings.json
+
+.now

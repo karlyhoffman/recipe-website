@@ -35,11 +35,36 @@ export const fetchDocumentByUID = async ({ type, id, req, options }) =>
 
 export const linkResolver = doc => {
   if (doc && doc.type) {
-    if (doc.type === 'recipe') return `/recipes/${doc.uid}`;
-    if (doc.type === 'ingredient_tag') return `/recipes/ingredients/${doc.uid}`;
-    if (doc.type === 'cuisine_tag') return `/recipes/cuisines/${doc.uid}`;
-    if (doc.type === 'type_tag') return `/recipes/dish-types/${doc.uid}`;
-    if (doc.type === 'season_tag') return `/recipes/seasons/${doc.uid}`;
+    if (doc.type === 'recipe')
+      return { href: '/recipes/[recipe]', as: `/recipes/${doc.uid}` };
+
+    if (doc.type === 'ingredient_tag')
+      return {
+        href: '/recipes/ingredients/[ingredient-tag]',
+        as: `/recipes/ingredients/${doc.uid}`
+      };
+
+    if (doc.type === 'cuisine_tag')
+      return {
+        href: '/recipes/cuisines/[cuisine-tag]',
+        as: `/recipes/cuisines/${doc.uid}`
+      };
+
+    if (doc.type === 'type_tag')
+      return {
+        href: '/recipes/dish-types/[dish-type]',
+        as: `/recipes/dish-types/${doc.uid}`
+      };
+
+    if (doc.type === 'season_tag')
+      return {
+        href: '/recipes/seasons/[season]',
+        as: `/recipes/seasons/${doc.uid}`
+      };
   }
-  return '/';
+
+  return {
+    href: '/index',
+    as: `/`
+  };
 };

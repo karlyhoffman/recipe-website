@@ -145,7 +145,7 @@ class Homepage extends Component {
               <div className="card-container d-md-flex">
                 {Children.toArray(
                   cookNextList.map(recipe => (
-                    <Link href={linkResolver(recipe)}>
+                    <Link {...linkResolver(recipe)}>
                       <a className="card">
                         {RichText.asText(recipe.data.title)}
                       </a>
@@ -167,7 +167,7 @@ class Homepage extends Component {
                   recipeIdeas.map((recipe, index) =>
                     index < recipeIdeasLimit ? (
                       <li>
-                        <Link href={linkResolver(recipe)}>
+                        <Link {...linkResolver(recipe)}>
                           <a>{RichText.asText(recipe.data.title)}</a>
                         </Link>
                       </li>
@@ -186,7 +186,7 @@ class Homepage extends Component {
                 {Children.toArray(
                   recentlyAdded.map(recipe => (
                     <li>
-                      <Link href={linkResolver(recipe)}>
+                      <Link {...linkResolver(recipe)}>
                         <a>{RichText.asText(recipe.data.title)}</a>
                       </Link>
                     </li>
@@ -204,7 +204,7 @@ class Homepage extends Component {
                 {Children.toArray(
                   favoritesList.map(recipe => (
                     <li>
-                      <Link href={linkResolver(recipe)}>
+                      <Link {...linkResolver(recipe)}>
                         <a>{RichText.asText(recipe.data.title)}</a>
                       </Link>
                     </li>

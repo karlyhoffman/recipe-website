@@ -69,7 +69,7 @@ class TagDetail extends Component {
               <ul>
                 {recipes.map(recipe => (
                   <li key={recipe.id}>
-                    <Link href={linkResolver(recipe)}>
+                    <Link {...linkResolver(recipe)}>
                       <a>{RichText.asText(recipe.data.title)}</a>
                     </Link>
                   </li>

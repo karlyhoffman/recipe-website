@@ -16,7 +16,7 @@ export default ({ tags, label = 'Tags', titleKey, seasonTags }) => {
         <ul>
           {mainSeasons.map(tag => (
             <li key={tag.id}>
-              <Link href={linkResolver(tag)}>
+              <Link {...linkResolver(tag)}>
                 <a>
                   {titleKey
                     ? tag.data[titleKey]
@@ -30,7 +30,7 @@ export default ({ tags, label = 'Tags', titleKey, seasonTags }) => {
         <ul>
           {other.map(tag => (
             <li key={tag.id}>
-              <Link href={linkResolver(tag)}>
+              <Link {...linkResolver(tag)}>
                 <a>
                   {titleKey
                     ? tag.data[titleKey]
@@ -55,7 +55,7 @@ export default ({ tags, label = 'Tags', titleKey, seasonTags }) => {
                 <ul>
                   {tags.map(tag => (
                     <li key={tag.id}>
-                      <Link href={linkResolver(tag)}>
+                      <Link {...linkResolver(tag)}>
                         <a>
                           {titleKey
                             ? tag.data[titleKey]

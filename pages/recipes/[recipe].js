@@ -115,7 +115,6 @@ class RecipeDetail extends Component {
       minutes_prep: prepTime,
       minutes_total: totalTime,
       recipe_photo: photo,
-      color,
       recipe_notes: notes,
       ingredient_slices: ingredients,
       body: instructions,
@@ -230,7 +229,7 @@ class RecipeDetail extends Component {
                     {Children.toArray(
                       relatedRecipes.map(related => (
                         <li>
-                          <Link href={linkResolver(related)}>
+                          <Link {...linkResolver(related)}>
                             <a>{RichText.asText(related.data.title)}</a>
                           </Link>
                         </li>
@@ -255,7 +254,7 @@ class RecipeDetail extends Component {
                     {Children.toArray(
                       ingredientTags.map(tag => (
                         <li>
-                          <Link href={linkResolver(tag.ingredient_tag)}>
+                          <Link {...linkResolver(tag.ingredient_tag)}>
                             <a className="tag ingredient">
                               {tags.find(t => t.id === tag.ingredient_tag.id)
                                 .data.ingredient_tag || ''}
@@ -274,7 +273,7 @@ class RecipeDetail extends Component {
                     {Children.toArray(
                       cuisineTags.map(tag => (
                         <li>
-                          <Link href={linkResolver(tag.cuisine_tag)}>
+                          <Link {...linkResolver(tag.cuisine_tag)}>
                             <a className="tag cuisine">
                               {tags.find(t => t.id === tag.cuisine_tag.id).data
                                 .cuisine_tag || ''}
@@ -293,7 +292,7 @@ class RecipeDetail extends Component {
                     {Children.toArray(
                       typeTags.map(tag => (
                         <li>
-                          <Link href={linkResolver(tag.type_tag)}>
+                          <Link {...linkResolver(tag.type_tag)}>
                             <a className="tag type">
                               {tags.find(t => t.id === tag.type_tag.id).data
                                 .type_tag || ''}
@@ -319,7 +318,7 @@ class RecipeDetail extends Component {
                     {Children.toArray(
                       seasonTags.map(tag => (
                         <li>
-                          <Link href={linkResolver(tag.season_tag)}>
+                          <Link {...linkResolver(tag.season_tag)}>
                             <a className="tag season">
                               {tags.find(t => t.id === tag.season_tag.id).data
                                 .season_tag || ''}

@@ -7,12 +7,12 @@ export default () => {
     <header id="navbar">
       <ul className="container">
         <li>
-          <Link href="/">
+          <Link href="/" as="/">
             <a>Home</a>
           </Link>
         </li>
         <li className="has-sub">
-          <Link href="/recipes">
+          <Link href="/recipes" as="/recipes">
             <a>Recipes</a>
           </Link>
           <ul className="sub-menu">
@@ -20,34 +20,34 @@ export default () => {
               <span className="label">BY TAG</span>
             </li>
             <li>
-              <Link href="/recipes/ingredients">
+              <Link href="/recipes/ingredients" as="/recipes/ingredients">
                 <a>Ingredients</a>
               </Link>
             </li>
             <li>
-              <Link href="/recipes/cuisines">
+              <Link href="/recipes/cuisines" as="/recipes/cuisines">
                 <a>Cuisines</a>
               </Link>
             </li>
             <li>
-              <Link href="/recipes/dish-types">
+              <Link href="/recipes/dish-types" as="/recipes/dish-types">
                 <a>Dish Types</a>
               </Link>
             </li>
             <li>
-              <Link href="/recipes/seasons">
+              <Link href="/recipes/seasons" as="/recipes/seasons">
                 <a>Seasons</a>
               </Link>
             </li>
             <li>
-              <Link href="/recipes/weekday">
+              <Link href="/recipes/weekday" as="/recipes/weekday">
                 <a>Weekday Meals</a>
               </Link>
             </li>
           </ul>
         </li>
         <li>
-          <Link href="/groceries">
+          <Link href="/groceries" as="/groceries">
             <a>Grocery List</a>
           </Link>
         </li>
