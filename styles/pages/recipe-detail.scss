@@ -84,10 +84,14 @@ $hero-height-lg: 400px;
         align-items: start;
         color: $grey;
         font-size: 12px;
+        padding-top: 15px;
 
         .label {
-          margin-top: 15px;
           padding-right: 7px;
+        }
+
+        a {
+          text-decoration: underline;
         }
       }
     }

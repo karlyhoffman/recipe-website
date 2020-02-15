@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 /* eslint-disable no-param-reassign */
-module.exports = {
+const withSass = require('@zeit/next-sass');
+
+module.exports = withSass({
   webpack: (config, { defaultLoaders }) => {
     const originalEntry = config.entry;
     config.entry = async () => {
@@ -27,14 +29,6 @@ module.exports = {
     config.module.rules.push({
       test: /\.scss$/,
       use: [
-        defaultLoaders.babel,
-        {
-          loader: require('styled-jsx/webpack').loader,
-          options: {
-            type: 'scoped'
-          }
-        },
-        'sass-loader',
         {
           loader: 'sass-resources-loader',
           options: {
@@ -50,4 +44,4 @@ module.exports = {
 
     return config;
   }
-};
+});

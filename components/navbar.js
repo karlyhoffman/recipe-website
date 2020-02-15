@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import styles from '../styles/components/navbar.scss';
+import '../styles/components/navbar.scss';
 
 export default () => {
   return (
@@ -52,7 +52,6 @@ export default () => {
           </Link>
         </li>
       </ul>
-      <style jsx>{styles}</style>
     </header>
   );
 };

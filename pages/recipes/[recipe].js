@@ -9,7 +9,7 @@ import {
   linkResolver
 } from '../../utils/prismic';
 import IngredientMenu from '../../components/IngredientMenu';
-import styles from '../../styles/pages/recipe-detail.scss';
+import '../../styles/pages/recipe-detail.scss';
 
 class RecipeDetail extends Component {
   static async getInitialProps(context) {
@@ -333,7 +333,6 @@ class RecipeDetail extends Component {
             </div>
           </div>
         </div>
-        <style jsx>{styles}</style>
       </div>
     );
   }

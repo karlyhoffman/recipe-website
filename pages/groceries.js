@@ -3,7 +3,7 @@ import getCookies from 'next-cookies';
 import { RichText } from 'prismic-reactjs';
 import { fetchDocumentsByType, fetchDocumentsByIDs } from '../utils/prismic';
 import GroceryList from '../components/GroceryList';
-import styles from '../styles/pages/groceries.scss';
+import '../styles/pages/groceries.scss';
 
 class Groceries extends Component {
   static async getInitialProps(context) {
@@ -96,7 +96,6 @@ class Groceries extends Component {
             )}
           </div>
         </div>
-        <style jsx>{styles}</style>
       </div>
     );
   }

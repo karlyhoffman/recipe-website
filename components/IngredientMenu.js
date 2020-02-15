@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from '../styles/components/ingredient-menu.scss';
+import '../styles/components/ingredient-menu.scss';
 
 export default ({ parentContainer, sibling, className, children }) => {
   const menu = useRef(null);
@@ -68,8 +68,6 @@ export default ({ parentContainer, sibling, className, children }) => {
       }${fontSize ? ' font-sm' : ''}`}
     >
       {children}
-
-      <style jsx>{styles}</style>
     </div>
   );
 };
