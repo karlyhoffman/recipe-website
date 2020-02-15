@@ -26,7 +26,7 @@
 
   &.fixed {
     position: fixed;
-    top: 0;
+    top: $navbar-height;
     overflow-y: scroll;
   }
 
