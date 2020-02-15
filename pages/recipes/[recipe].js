@@ -9,7 +9,7 @@ import {
   linkResolver
 } from '../../utils/prismic';
 import IngredientMenu from '../../components/IngredientMenu';
-import '../../styles/pages/recipe-detail.scss';
+import styles from '../../styles/pages/recipe-detail.scss';
 
 class RecipeDetail extends Component {
   static async getInitialProps(context) {
@@ -178,7 +178,7 @@ class RecipeDetail extends Component {
                 </div>
               )}
               {source && !!source.length && (
-                <div className="col-12 source d-flex">
+                <div className="col-12 source">
                   <p className="label">Source:</p>
                   {RichText.render(source)}
                 </div>
@@ -333,6 +333,7 @@ class RecipeDetail extends Component {
             </div>
           </div>
         </div>
+        <style jsx>{styles}</style>
       </div>
     );
   }

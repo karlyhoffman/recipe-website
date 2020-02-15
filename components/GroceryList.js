@@ -1,5 +1,5 @@
 import React, { Children, useState } from 'react';
-import '../styles/components/grocery-list.scss';
+import styles from '../styles/components/grocery-list.scss';
 
 export default ({ ingredients, isEditing = false }) => {
   const ingredientList = ingredients.map(ingredient => ingredient[0].text);
@@ -45,6 +45,8 @@ export default ({ ingredients, isEditing = false }) => {
           ))
         )}
       </ul>
+
+      <style jsx>{styles}</style>
     </form>
   );
 };

@@ -1,12 +1,45 @@
+/* @styled-jsx=global */
 @import './vendor/normalize.scss';
-@import './global/typography.scss';
-// @import './components/grocery-list.scss';
 
 body {
   box-sizing: border-box;
   color: $black;
+  font-family: $alegreya;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  letter-spacing: 0.75px;
   padding-top: $navbar-height;
   padding-bottom: 45px;
+
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: $merriweather;
+    line-height: 1.25;
+  }
+
+  h1 {
+    letter-spacing: -0.5px;
+
+    @include media-breakpoint-down(md) {
+      font-size: 2.2rem;
+    }
+  }
+
+  h2, h3, h4, h5, h6 {
+    letter-spacing: -0.25px;
+  }
+
+  strong, b {
+    font-weight: 700;
+  }
+
+  p {
+    margin: 15px 0;
+  }
+
+  a {
+    color: $black;
+  }
 
   .line {
     display: block;

@@ -7,7 +7,7 @@ import {
   fetchDocumentsByIDs,
   linkResolver
 } from '../utils/prismic';
-import '../styles/pages/homepage.scss';
+import styles from '../styles/pages/homepage.scss';
 
 class Homepage extends Component {
   static async getInitialProps(context) {
@@ -216,6 +216,7 @@ class Homepage extends Component {
             )}
           </div>
         </div>
+        <style jsx>{styles}</style>
       </div>
     );
   }

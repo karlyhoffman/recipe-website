@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import { linkResolver } from '../utils/prismic';
-import '../styles/pages/tags-overview.scss';
+import styles from '../styles/pages/tags-overview.scss';
 
 export default ({ tags, label = 'Tags', titleKey, seasonTags }) => {
   const seasons = ['fall', 'winter', 'spring', 'summer'];
@@ -74,6 +74,7 @@ export default ({ tags, label = 'Tags', titleKey, seasonTags }) => {
           )}
         </div>
       </div>
+      <style jsx>{styles}</style>
     </div>
   );
 };
