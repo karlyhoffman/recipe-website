@@ -5,7 +5,7 @@ import '../styles/components/navbar.scss';
 export default () => {
   return (
     <header id="navbar">
-      <ul className="container">
+      <ul className="nav-menu container my-0">
         <li>
           <Link href="/" as="/">
             <a>Home</a>

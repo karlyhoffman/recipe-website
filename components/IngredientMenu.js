@@ -21,9 +21,9 @@ export default ({ parentContainer, sibling, className, children }) => {
           bottom: parentBottom
         } = parentEl.getBoundingClientRect();
 
-        const navbarHeight = 60;
+        const navbarHeight = 0;
 
-        if (height < siblingHeight - 50) {
+        if (height < siblingHeight) {
           if (parentTop > navbarHeight) {
             // if top of section is above top of viewport (navbar in this case)
             setFontSize(false);

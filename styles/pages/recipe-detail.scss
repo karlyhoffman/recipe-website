@@ -9,13 +9,9 @@ $hero-height-lg: 400px;
     top: 0;
     left: 0;
     right: 0;
-    height: $hero-height-sm;
+    height: 500px;
     overflow: hidden;
     z-index: -1;
-
-    @include media-breakpoint-up(md) {
-      height: $hero-height-lg;
-    }
 
     img {
       display: block;
@@ -36,11 +32,11 @@ $hero-height-lg: 400px;
     background-color: $white;
 
     &.has-hero-img {
-      margin-top: $hero-height-sm - $navbar-height;
+      margin-top: $hero-height-sm;
       padding-top: 30px;
 
       @include media-breakpoint-up(md) {
-        margin-top: $hero-height-lg - $navbar-height;
+        margin-top: $hero-height-lg;
 
         h1 {
           margin-bottom: 50px;
