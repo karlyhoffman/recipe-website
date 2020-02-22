@@ -22,25 +22,29 @@ export default ({ parentContainer, sibling, className, children }) => {
         } = parentEl.getBoundingClientRect();
 
         const navbarHeight = 27;
+        const bottomPadding = 70;
 
-        if (height < siblingHeight - navbarHeight) {
+        // If menu is shorter than instructions
+        if (height < siblingHeight + navbarHeight) {
+          // if top of section is above top of viewport (navbar in this case)
           if (parentTop > navbarHeight) {
-            // if top of section is above top of viewport (navbar in this case)
             setFontSize(false);
             if (stickyClass !== 'above') setStickyClass('above');
-          } else if (
+          }
+          // if top of section is at the navbar
+          // or if bottom of element is above bottom of section (-margin and padding)
+          else if (
             parentTop === navbarHeight ||
-            parentBottom - 100 > height
+            parentBottom - bottomPadding > height
           ) {
-            // if top of section is at the navbar
-            // or if bottom of element is above bottom of section (-margin and padding)
             if (stickyClass !== 'fixed') {
               if (height > window.innerHeight - 90) setFontSize(true);
               setStickyClass('fixed');
             }
-          } else if (parentBottom - 100 <= height) {
-            // if bottom of section (-margin and padding) is at or above bottom of viewport
-            if (stickyClass !== 'below') setStickyClass('below');
+          }
+          // else make positioned at bottom of section
+          else if (stickyClass !== 'below') {
+            setStickyClass('below');
           }
         }
       }
