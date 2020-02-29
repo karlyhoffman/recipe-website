@@ -285,7 +285,7 @@ class RecipeDetail extends Component {
                   </ul>
                 </div>
               )}
-              {!!typeTags.length && weekdayTag && weekdayTag === 'Yes' && (
+              {!!typeTags.length && (
                 <div className="col-12 col-md-3">
                   <h3>Dish Type</h3>
                   <ul>
