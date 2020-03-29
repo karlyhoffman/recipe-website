@@ -36,7 +36,7 @@ class Homepage extends Component {
         req,
         options: {
           fetchLinks: '[my.recipe.last_cooked_date]',
-          pageSize: 25,
+          pageSize: 100,
           orderings: '[my.recipe.last_cooked_date]'
         }
       })
