@@ -197,7 +197,7 @@ class Homepage extends Component {
               <p>No recipes available.</p>
             )}
           </div>
-          <div className="col-12">
+          <div className="col-12 col-md-6">
             <h3>Favorite Recipes</h3>
             {favoritesList ? (
               <ul>

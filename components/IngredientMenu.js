@@ -51,18 +51,18 @@ export default ({ parentContainer, sibling, className, children }) => {
     } else if (stickyClass !== '') setStickyClass('');
   };
 
-  useEffect(() => {
-    // componentDidMount + componentDidUpdate
-    checkScrollPosition();
-    window.addEventListener('scroll', checkScrollPosition);
-    window.addEventListener('resize', checkScrollPosition);
+  // useEffect(() => {
+  //   // componentDidMount + componentDidUpdate
+  //   checkScrollPosition();
+  //   window.addEventListener('scroll', checkScrollPosition);
+  //   window.addEventListener('resize', checkScrollPosition);
 
-    // componentWillUnmount
-    return () => {
-      window.removeEventListener('scroll', checkScrollPosition);
-      window.removeEventListener('resize', checkScrollPosition);
-    };
-  });
+  //   // componentWillUnmount
+  //   return () => {
+  //     window.removeEventListener('scroll', checkScrollPosition);
+  //     window.removeEventListener('resize', checkScrollPosition);
+  //   };
+  // });
 
   return (
     <div
