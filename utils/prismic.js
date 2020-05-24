@@ -1,5 +1,4 @@
 import PrismicLib from 'prismic-javascript';
-import { PRISMIC_API_URL, PRISMIC_ACCESS_TOKEN } from '../config.json';
 
 let frontClient;
 
@@ -14,9 +13,11 @@ export const Client = (req = null) => {
 
   const options = {
     ...(req ? { req } : {}),
-    ...(PRISMIC_ACCESS_TOKEN ? { accessToken: PRISMIC_ACCESS_TOKEN } : {})
+    ...(process.env.PRISMIC_ACCESS_TOKEN
+      ? { accessToken: process.env.PRISMIC_ACCESS_TOKEN }
+      : {})
   };
-  return PrismicLib.client(PRISMIC_API_URL, options);
+  return PrismicLib.client(process.env.PRISMIC_API_URL, options);
 };
 
 export const Prismic = PrismicLib;

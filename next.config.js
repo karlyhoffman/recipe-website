@@ -1,6 +1,9 @@
 /* eslint-disable global-require */
 /* eslint-disable no-param-reassign */
 const withSass = require('@zeit/next-sass');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: '.env.build' });
 
 module.exports = withSass({
   webpack: (config, { defaultLoaders }) => {
@@ -43,5 +46,9 @@ module.exports = withSass({
     });
 
     return config;
+  },
+  env: {
+    PRISMIC_API_URL: process.env.PRISMIC_API_URL,
+    PRISMIC_ACCESS_TOKEN: process.env.PRISMIC_ACCESS_TOKEN
   }
 });
