@@ -48,6 +48,7 @@ module.exports = withSass({
     return config;
   },
   env: {
+    PRISMIC_REPOSITORY_NAME: process.env.PRISMIC_REPOSITORY_NAME,
     PRISMIC_API_URL: process.env.PRISMIC_API_URL,
     PRISMIC_ACCESS_TOKEN: process.env.PRISMIC_ACCESS_TOKEN
   }

@@ -1,93 +1,53 @@
-import React, { Component, Children } from 'react';
-import getCookies from 'next-cookies';
+/* eslint-disable no-underscore-dangle */
+import React, { useRef } from 'react';
+import { useRouter } from 'next/router';
+import ErrorPage from 'next/error';
 import Link from 'next/link';
-import Error from 'next/error';
 import { RichText } from 'prismic-reactjs';
-import {
-  fetchDocumentByUID,
-  fetchDocumentsByIDs,
-  linkResolver
-} from '../../utils/prismic';
+import { getAllRecipesWithSlug, getRecipe, linkResolver } from '../../lib/api';
 import IngredientMenu from '../../components/IngredientMenu';
+
 import '../../styles/pages/recipe-detail.scss';
 
-class RecipeDetail extends Component {
-  static async getInitialProps(context) {
-    const { req, res, query } = context;
-    const nextCookies = getCookies(context);
-    const ref = nextCookies['io.prismic.preview'] || null;
-
-    const id = query.recipe;
-    const recipe = await fetchDocumentByUID({ type: 'recipe', id, req });
-
-    const relatedRecipes = [];
-    const tags = [];
-    const results = recipe.results[0] || null;
-
-    if (results && results.data) {
-      // Fetch related recipes
-      if (
-        results.data.related_recipes[0] &&
-        results.data.related_recipes[0].related_recipe
-      ) {
-        const ids = results.data.related_recipes.map(
-          el => el.related_recipe.id
-        );
-        const related = await fetchDocumentsByIDs({ ids, req });
-        if (related.results) relatedRecipes.push(...related.results);
-      }
-
-      // Fetch tag data
-      const tagIDs = [];
-      const {
-        main_ingredient_tags: ingredientTags,
-        cuisine_tags: cuisineTags,
-        type_tags: typeTags,
-        season_tags: seasonTags
-      } = results.data;
-
-      const ingredientIDs = ingredientTags
-        .map(el => el.ingredient_tag.id)
-        .filter(tagID => tagID);
-      if (ingredientIDs.length) tagIDs.push(...ingredientIDs);
-
-      const cuisineIDs = cuisineTags
-        .map(el => el.cuisine_tag.id)
-        .filter(tagID => tagID);
-      if (cuisineIDs.length) tagIDs.push(...cuisineIDs);
-
-      const typeIDs = typeTags.map(el => el.type_tag.id).filter(tagID => tagID);
-      if (typeIDs.length) tagIDs.push(...typeIDs);
-
-      const seasonIDs = seasonTags
-        .map(el => el.season_tag.id)
-        .filter(tagID => tagID);
-      if (seasonIDs.length) tagIDs.push(...seasonIDs);
-
-      const tagData = await fetchDocumentsByIDs({ ids: tagIDs, req });
-      if (tagData.results) tags.push(...tagData.results);
-    }
-
-    if (res)
-      res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
-
-    return { recipe: results || {}, relatedRecipes, tags };
+export default function RecipeDetail({ recipe }) {
+  const router = useRouter();
+  if (!router.isFallback && !recipe?._meta?.uid) {
+    return <ErrorPage statusCode={404} />;
   }
 
-  constructor(props) {
-    super(props);
+  const stickyContainer = useRef();
+  const instructionsColumn = useRef();
 
-    this.stickyContainer = React.createRef();
-    this.instructionsColumn = React.createRef();
-  }
+  if (!recipe) return null;
 
-  formatTime = time => {
+  const {
+    body: instructions = [],
+    cost,
+    cuisine_tags: cuisineTags,
+    ingredient_slices: ingredients = [],
+    main_ingredient_tags: ingredientTags,
+    minutes_prep: prepTime,
+    minutes_total: totalTime,
+    recipe_photo: photo,
+    recipe_notes: notes,
+    related_recipes: relatedRecipes,
+    season_tags: seasonTags,
+    servings,
+    source,
+    title,
+    type_tags: typeTags,
+    weekday_tag: weekdayTag = 'No'
+  } = recipe;
+
+  const hasHeroImg = photo && photo.url;
+
+  const formatTime = time => {
     const hours = Math.floor(time / 60);
     const minutes = time % 60 < 10 ? `0${time % 60}` : time % 60;
     return `${hours}:${minutes}`;
   };
 
-  renderTextSlice = ({ slice_type: type, primary }) => {
+  const renderTextSlice = ({ type, primary }) => {
     switch (type) {
       case 'ingredient_heading':
         return RichText.render(primary.ingredient_heading);
@@ -102,206 +62,192 @@ class RecipeDetail extends Component {
     }
   };
 
-  render() {
-    const { recipe, relatedRecipes, tags } = this.props;
+  return (
+    <div id="recipe-detail" className="container-fluid px-0">
+      <div className="hero-img">
+        {hasHeroImg && <img src={photo.url} alt="" />}
+      </div>
 
-    if (!recipe.data) return <Error statusCode={404} />;
-
-    const {
-      title,
-      source,
-      servings,
-      cost,
-      minutes_prep: prepTime,
-      minutes_total: totalTime,
-      recipe_photo: photo,
-      recipe_notes: notes,
-      ingredient_slices: ingredients,
-      body: instructions,
-      main_ingredient_tags: ingredientTags,
-      cuisine_tags: cuisineTags,
-      type_tags: typeTags,
-      season_tags: seasonTags,
-      weekday_tag: weekdayTag
-    } = recipe.data;
-
-    const hasHeroImg = photo && photo.url;
-
-    return (
-      <div id="recipe-detail" className="container-fluid px-0">
-        <div className="hero-img">
-          {hasHeroImg && <img src={photo.url} alt="" />}
+      <div
+        className={`body container-fluid ${hasHeroImg ? 'has-hero-img' : ''}`}
+      >
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <h1>{RichText.asText(title)}</h1>
+            </div>
+          </div>
+          <div className="row about">
+            <div className="col-12 col-md-6 col-lg-3">
+              {prepTime && (
+                <p>
+                  <strong>Prep</strong>: {formatTime(prepTime)}
+                </p>
+              )}
+            </div>
+            <div className="col-12 col-md-6 col-lg-3">
+              {totalTime && (
+                <p>
+                  <strong>Total Time</strong>: {formatTime(totalTime)}
+                </p>
+              )}
+            </div>
+            <div className="col-12 col-md-6 col-lg-3">
+              {servings && (
+                <p>
+                  <strong>Servings</strong>: {servings}
+                </p>
+              )}
+            </div>
+            <div className="col-12 col-md-6 col-lg-3">
+              {cost && (
+                <p>
+                  <strong>Estimated Cost</strong>: ${cost}
+                </p>
+              )}
+            </div>
+            {notes && RichText.asText(notes) && (
+              <div className="col-12 notes">
+                <strong>Notes:</strong>
+                {RichText.render(notes)}
+              </div>
+            )}
+            {source && !!source.length && (
+              <div className="col-12 source">
+                <p className="label">Source:</p>
+                {RichText.render(source)}
+              </div>
+            )}
+            <div className="col-12">
+              <div className="line" />
+            </div>
+          </div>
         </div>
 
-        <div
-          className={`body container-fluid ${hasHeroImg ? 'has-hero-img' : ''}`}
-        >
-          <div className="container">
-            <div className="row">
-              <div className="col-12">
-                <h1>{RichText.asText(title)}</h1>
+        <div className="container">
+          <div className="row steps" ref={stickyContainer}>
+            <div className="col-12 col-md-4 ingredients">
+              <IngredientMenu
+                parentContainer={stickyContainer}
+                sibling={instructionsColumn}
+              >
+                <h2 className="heading">Ingredients</h2>
+                {ingredients.length &&
+                  React.Children.toArray(
+                    ingredients.map(ingredient => renderTextSlice(ingredient))
+                  )}
+              </IngredientMenu>
+            </div>
+            <div className="col-12 col-md-8 instructions">
+              <div ref={instructionsColumn}>
+                <h2 className="heading">Instructions</h2>
+                {instructions.length &&
+                  React.Children.toArray(
+                    instructions.map(instruction =>
+                      renderTextSlice(instruction)
+                    )
+                  )}
               </div>
             </div>
-            <div className="row about">
-              <div className="col-12 col-md-6 col-lg-3">
-                {prepTime && (
-                  <p>
-                    <strong>Prep</strong>: {this.formatTime(prepTime)}
-                  </p>
-                )}
-              </div>
-              <div className="col-12 col-md-6 col-lg-3">
-                {totalTime && (
-                  <p>
-                    <strong>Total Time</strong>: {this.formatTime(totalTime)}
-                  </p>
-                )}
-              </div>
-              <div className="col-12 col-md-6 col-lg-3">
-                {servings && (
-                  <p>
-                    <strong>Servings</strong>: {servings}
-                  </p>
-                )}
-              </div>
-              <div className="col-12 col-md-6 col-lg-3">
-                {cost && (
-                  <p>
-                    <strong>Estimated Cost</strong>: ${cost}
-                  </p>
-                )}
-              </div>
-              {notes && RichText.asText(notes) && (
-                <div className="col-12 notes">
-                  <strong>Notes:</strong>
-                  {RichText.render(notes)}
-                </div>
-              )}
-              {source && !!source.length && (
-                <div className="col-12 source">
-                  <p className="label">Source:</p>
-                  {RichText.render(source)}
-                </div>
-              )}
-              <div className="col-12">
-                <div className="line" />
-              </div>
+            <div className="col-12">
+              <div className="line" />
             </div>
           </div>
 
-          <div className="container">
-            <div className="row steps" ref={this.stickyContainer}>
-              <div className="col-12 col-md-4 ingredients">
-                <IngredientMenu
-                  parentContainer={this.stickyContainer}
-                  sibling={this.instructionsColumn}
-                >
-                  <h2 className="heading">Ingredients</h2>
-                  {ingredients &&
-                    Children.toArray(
-                      ingredients.map(ingredient =>
-                        this.renderTextSlice(ingredient)
-                      )
-                    )}
-                </IngredientMenu>
-              </div>
-              <div className="col-12 col-md-8 instructions">
-                <div ref={this.instructionsColumn}>
-                  <h2 className="heading">Instructions</h2>
-                  {instructions &&
-                    Children.toArray(
-                      instructions.map(instruction =>
-                        this.renderTextSlice(instruction)
-                      )
-                    )}
-                </div>
+          {!!relatedRecipes.length && relatedRecipes[0].related_recipe && (
+            <div className="row related">
+              <div className="col-12">
+                <h2>Related Recipes</h2>
+                <ul>
+                  {relatedRecipes.map(item => {
+                    const { related_recipe: related } = item;
+                    if (!related) return null;
+                    return (
+                      <li key={related._meta.id}>
+                        <Link
+                          href="/recipes/[recipe]"
+                          as={`/recipes/${related._meta.uid}`}
+                        >
+                          <a className="card">
+                            {RichText.asText(related.title)}
+                          </a>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
               <div className="col-12">
                 <div className="line" />
               </div>
             </div>
+          )}
 
-            {relatedRecipes && !!relatedRecipes.length && (
-              <div className="row related">
-                <div className="col-12">
-                  <h2>Related Recipes</h2>
-                  <ul>
-                    {Children.toArray(
-                      relatedRecipes.map(related => (
-                        <li>
-                          <Link {...linkResolver(related)}>
-                            <a>{RichText.asText(related.data.title)}</a>
-                          </Link>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-                <div className="col-12">
-                  <div className="line" />
-                </div>
+          <div className="row tags">
+            <div className="col-12">
+              <h2>Tags</h2>
+            </div>
+            {!!ingredientTags.length && ingredientTags[0].ingredient_tag && (
+              <div className="col-12 col-md-3">
+                <h3>Ingredients</h3>
+                <ul>
+                  {ingredientTags.map(tag => {
+                    const { ingredient_tag: item } = tag;
+                    return (
+                      <li key={item._meta.id}>
+                        <Link
+                          href="/recipes/ingredients/[ingredient-tag]"
+                          as={`/recipes/ingredients/${item._meta.uid}`}
+                        >
+                          <a className="tag ingredient">
+                            {item.ingredient_tag}
+                          </a>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             )}
-
-            <div className="row tags">
-              <div className="col-12">
-                <h2>Tags</h2>
+            {!!cuisineTags.length && cuisineTags[0].cuisine_tag && (
+              <div className="col-12 col-md-3">
+                <h3>Cuisine</h3>
+                <ul>
+                  {cuisineTags.map(tag => {
+                    const { cuisine_tag: item } = tag;
+                    return (
+                      <li key={item._meta.id}>
+                        <Link
+                          href="/recipes/cuisines/[cuisine-tag]"
+                          as={`/recipes/cuisines/${item._meta.uid}`}
+                        >
+                          <a className="tag cuisine">{item.cuisine_tag}</a>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-              {!!ingredientTags.length && (
-                <div className="col-12 col-md-3">
-                  <h3>Ingredients</h3>
-                  <ul>
-                    {Children.toArray(
-                      ingredientTags.map(tag => (
-                        <li>
-                          <Link {...linkResolver(tag.ingredient_tag)}>
-                            <a className="tag ingredient">
-                              {tags.find(t => t.id === tag.ingredient_tag.id)
-                                .data.ingredient_tag || ''}
-                            </a>
-                          </Link>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-              )}
-              {!!cuisineTags.length && (
-                <div className="col-12 col-md-3">
-                  <h3>Cuisine</h3>
-                  <ul>
-                    {Children.toArray(
-                      cuisineTags.map(tag => (
-                        <li>
-                          <Link {...linkResolver(tag.cuisine_tag)}>
-                            <a className="tag cuisine">
-                              {tags.find(t => t.id === tag.cuisine_tag.id).data
-                                .cuisine_tag || ''}
-                            </a>
-                          </Link>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-              )}
-              {!!typeTags.length && (
+            )}
+            {weekdayTag === 'Yes' ||
+              (!!typeTags.length && typeTags[0].type_tag && (
                 <div className="col-12 col-md-3">
                   <h3>Dish Type</h3>
                   <ul>
-                    {Children.toArray(
-                      typeTags.map(tag => (
-                        <li>
-                          <Link {...linkResolver(tag.type_tag)}>
-                            <a className="tag type">
-                              {tags.find(t => t.id === tag.type_tag.id).data
-                                .type_tag || ''}
-                            </a>
+                    {typeTags.map(tag => {
+                      const { type_tag: item } = tag;
+                      return (
+                        <li key={item._meta.id}>
+                          <Link
+                            href="/recipes/dish-types/[dish-type]"
+                            as={`/recipes/dish-types/${item._meta.uid}`}
+                          >
+                            <a className="tag type">{item.type_tag}</a>
                           </Link>
                         </li>
-                      ))
-                    )}
-                    {weekdayTag && weekdayTag === 'Yes' && (
+                      );
+                    })}
+                    {weekdayTag === 'Yes' && (
                       <li>
                         <Link href="/recipes/weekday">
                           <a className="tag weekday">Weekday Meal</a>
@@ -310,32 +256,48 @@ class RecipeDetail extends Component {
                     )}
                   </ul>
                 </div>
-              )}
-              {!!seasonTags.length && (
-                <div className="col-12 col-md-3">
-                  <h3>Season</h3>
-                  <ul>
-                    {Children.toArray(
-                      seasonTags.map(tag => (
-                        <li>
-                          <Link {...linkResolver(tag.season_tag)}>
-                            <a className="tag season">
-                              {tags.find(t => t.id === tag.season_tag.id).data
-                                .season_tag || ''}
-                            </a>
-                          </Link>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-              )}
-            </div>
+              ))}
+            {!!seasonTags.length && seasonTags[0].season_tag && (
+              <div className="col-12 col-md-3">
+                <h3>Season</h3>
+                <ul>
+                  {seasonTags.map(tag => {
+                    const { season_tag: item } = tag;
+                    return (
+                      <li key={item._meta.id}>
+                        <Link
+                          href="/recipes/seasons/[season]"
+                          as={`/recipes/seasons/${item._meta.uid}`}
+                        >
+                          <a className="tag season">{item.season_tag}</a>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-export default RecipeDetail;
+export async function getStaticProps({ params, preview = false, previewData }) {
+  const data = await getRecipe(params.recipe, previewData);
+  return {
+    props: {
+      preview,
+      recipe: data?.recipe ?? null
+    }
+  };
+}
+
+export async function getStaticPaths() {
+  const allRecipes = await getAllRecipesWithSlug();
+  return {
+    paths: allRecipes?.map(({ node }) => `/recipes/${node._meta.uid}`) || [],
+    fallback: true
+  };
+}

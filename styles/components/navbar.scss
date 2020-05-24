@@ -26,6 +26,7 @@ header#navbar {
 
     li {
       position: relative;
+      white-space: nowrap;
 
       &.has-sub {
         display: flex;
@@ -53,7 +54,6 @@ header#navbar {
       }
 
       li {
-        white-space: nowrap;
         padding: 0 7.5px;
       }
     }
