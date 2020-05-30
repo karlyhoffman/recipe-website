@@ -76,9 +76,12 @@ export default function RecipeDetail() {
 
   return (
     <div id="recipe-detail" className="container-fluid px-0">
-      <div className="hero-img">
-        {hasHeroImg && <img src={photo.url} alt="" />}
-      </div>
+      {hasHeroImg && (
+        <div
+          className="hero-img"
+          style={{ backgroundImage: `url(${photo.url})` }}
+        />
+      )}
 
       <div
         className={`body container-fluid ${hasHeroImg ? 'has-hero-img' : ''}`}
