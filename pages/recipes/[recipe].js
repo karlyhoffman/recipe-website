@@ -1,23 +1,35 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useRef } from 'react';
-import { useRouter } from 'next/router';
+import React, { useRef, useState, useEffect } from 'react';
 import ErrorPage from 'next/error';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
-import { getAllRecipesWithSlug, getRecipe, linkResolver } from '../../lib/api';
+import { getRecipe, linkResolver } from '../../lib/api';
 import IngredientMenu from '../../components/IngredientMenu';
 
 import '../../styles/pages/recipe-detail.scss';
 
-export default function RecipeDetail({ recipe }) {
-  const router = useRouter();
-  if (!router.isFallback && !recipe?._meta?.uid) {
-    return <ErrorPage statusCode={404} />;
-  }
+export default function RecipeDetail() {
+  const [recipe, setRecipe] = useState();
+  const [isLoadingData, setIsLoadingData] = useState(true);
 
   const stickyContainer = useRef();
   const instructionsColumn = useRef();
 
+  // fetch data client-side because of paywall
+  const fetchData = async () => {
+    const { pathname } = window.location;
+    const query = pathname.replace('/recipes/', '');
+
+    const data = await getRecipe(query);
+    setRecipe(data.recipe);
+    setIsLoadingData(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (!recipe && !isLoadingData) return <ErrorPage statusCode={404} />;
   if (!recipe) return null;
 
   const {
@@ -282,22 +294,4 @@ export default function RecipeDetail({ recipe }) {
       </div>
     </div>
   );
-}
-
-export async function getStaticProps({ params, preview = false, previewData }) {
-  const data = await getRecipe(params.recipe, previewData);
-  return {
-    props: {
-      preview,
-      recipe: data?.recipe ?? null
-    }
-  };
-}
-
-export async function getStaticPaths() {
-  const allRecipes = await getAllRecipesWithSlug();
-  return {
-    paths: allRecipes?.map(({ node }) => `/recipes/${node._meta.uid}`) || [],
-    fallback: true
-  };
 }
