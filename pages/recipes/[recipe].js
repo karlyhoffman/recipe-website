@@ -4,6 +4,7 @@ import ErrorPage from 'next/error';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import { getRecipe, linkResolver } from '../../lib/api';
+import { htmlSerializer } from '../../lib/htmlSerializer';
 
 import '../../styles/pages/recipe-detail.scss';
 
@@ -60,11 +61,19 @@ export default function RecipeDetail() {
       case 'ingredient_heading':
         return RichText.render(primary.ingredient_heading);
       case 'ingredient':
-        return RichText.render(primary.ingredient, linkResolver);
+        return RichText.render(
+          primary.ingredient,
+          linkResolver,
+          htmlSerializer
+        );
       case 'instruction_heading':
         return RichText.render(primary.instruction_heading);
       case 'recipe_instruction':
-        return RichText.render(primary.instruction, linkResolver);
+        return RichText.render(
+          primary.instruction,
+          linkResolver,
+          htmlSerializer
+        );
       default:
         return null;
     }
@@ -172,14 +181,12 @@ export default function RecipeDetail() {
                     if (!related) return null;
                     return (
                       <li key={related._meta.id}>
-                        <Link
-                          href="/recipes/[recipe]"
-                          as={`/recipes/${related._meta.uid}`}
+                        <a
+                          className="card"
+                          href={`/recipes/${related._meta.uid}`}
                         >
-                          <a className="card">
-                            {RichText.asText(related.title)}
-                          </a>
-                        </Link>
+                          {RichText.asText(related.title)}
+                        </a>
                       </li>
                     );
                   })}
