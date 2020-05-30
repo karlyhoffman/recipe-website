@@ -1,19 +1,15 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ErrorPage from 'next/error';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import { getRecipe, linkResolver } from '../../lib/api';
-import IngredientMenu from '../../components/IngredientMenu';
 
 import '../../styles/pages/recipe-detail.scss';
 
 export default function RecipeDetail() {
   const [recipe, setRecipe] = useState();
   const [isLoadingData, setIsLoadingData] = useState(true);
-
-  const stickyContainer = useRef();
-  const instructionsColumn = useRef();
 
   // fetch data client-side because of paywall
   const fetchData = async () => {
@@ -140,21 +136,18 @@ export default function RecipeDetail() {
         </div>
 
         <div className="container">
-          <div className="row steps" ref={stickyContainer}>
+          <div className="row steps">
             <div className="col-12 col-md-4 ingredients">
-              <IngredientMenu
-                parentContainer={stickyContainer}
-                sibling={instructionsColumn}
-              >
-                <h2 className="heading">Ingredients</h2>
+              <h2 className="heading">Ingredients</h2>
+              <div className="ingredient-menu">
                 {ingredients.length &&
                   React.Children.toArray(
                     ingredients.map(ingredient => renderTextSlice(ingredient))
                   )}
-              </IngredientMenu>
+              </div>
             </div>
             <div className="col-12 col-md-8 instructions">
-              <div ref={instructionsColumn}>
+              <div>
                 <h2 className="heading">Instructions</h2>
                 {instructions.length &&
                   React.Children.toArray(

@@ -85,6 +85,12 @@ $hero-height-lg: 400px;
 
       .ingredients {
 
+        .ingredient-menu {
+          position: sticky;
+          top: 50px;
+          padding-bottom: 2px;
+        }
+
         @include media-breakpoint-up(md) {
           .heading {
             margin-bottom: 1.8rem;
@@ -96,11 +102,6 @@ $hero-height-lg: 400px;
 
           p {
             font-size: 1.075rem;
-          }
-
-          &.fixed {
-            max-height: 100vh;
-            overflow-y: scroll;
           }
         }
       }
