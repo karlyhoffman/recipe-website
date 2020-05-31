@@ -1,5 +1,6 @@
 header#navbar {
-  display: block;
+  display: flex;
+  justify-content: flex-start;
   position: fixed;
   top: 0;
   left: 0;
@@ -9,7 +10,7 @@ header#navbar {
   color: $white;
   font-size: 0.9rem;
   line-height: 1.5;
-  padding: 2px 0 4px;
+  padding: 3px 0 4px;
 
   a {
     color: $white;
@@ -46,16 +47,36 @@ header#navbar {
     }
 
     &.sub-menu {
-      padding-left: 7px;
+      display: none;
 
-      span.label {
-        color: $med-grey;
-        font-size: 0.8rem;
-      }
+      @include media-breakpoint-up(md) {
+        display: flex;
+        padding-left: 7px;
 
-      li {
-        padding: 0 7.5px;
+        span.label {
+          color: $med-grey;
+          font-size: 0.8rem;
+        }
+
+        li {
+          padding: 0 7.5px;
+        }
       }
+    }
+  }
+
+  button {
+    display: block;
+    background: none;
+    border: none;
+    color: $white;
+    outline: none;
+    margin-left: auto;
+    padding: 0 15px;
+
+    &:hover {
+      color: $light-grey;
+      transition: color 350ms $ease 0ms;
     }
   }
 }

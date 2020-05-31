@@ -3,6 +3,8 @@ import Link from 'next/link';
 import '../styles/components/navbar.scss';
 
 export default () => {
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+
   return (
     <header id="navbar">
       <ul className="nav-menu container my-0">
@@ -46,12 +48,17 @@ export default () => {
             </li>
           </ul>
         </li>
-        <li>
+        <li className="groceries">
           <Link href="/groceries" as="/groceries">
             <a>Grocery List</a>
           </Link>
         </li>
       </ul>
+      {isPWA && window.location.pathname !== '/' && (
+        <button onClick={() => window.history.back()} type="button">
+          Back
+        </button>
+      )}
     </header>
   );
 };
