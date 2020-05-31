@@ -8,7 +8,6 @@ A simple website to view recipes by tags.
 ## Technologies Used:
 - Next.js (React Framework)
 - Prismic (headless CMS)
-- GreenSock Animation Platform (headless CMS)
 
 
 ## Getting Started
