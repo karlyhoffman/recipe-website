@@ -2,28 +2,37 @@ import React, { Component } from 'react';
 import getCookies from 'next-cookies';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
+import PaginationCount from '../../components/PaginationCount';
 import { fetchDocumentsByType, linkResolver } from '../../utils/prismic';
+import '../../styles/pages/recipes-overview.scss';
+
+const QUERY_SIZE = 100;
 
 class RecipesOverview extends Component {
   static async getInitialProps(context) {
-    const { req, res } = context;
+    const { req, res, query } = context;
     const nextCookies = getCookies(context);
     const ref = nextCookies['io.prismic.preview'] || null;
+    const page = query.page || 1;
 
     const recipes = await fetchDocumentsByType({
       type: 'recipe',
       req,
-      options: { orderings: '[my.recipe.title]', pageSize: 100 }
+      options: { orderings: '[my.recipe.title]', pageSize: QUERY_SIZE, page }
     });
 
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
-    return { recipes: recipes.results || [] };
+    return {
+      recipes: recipes.results || [],
+      recipesCount: recipes.total_results_size || 0,
+      page
+    };
   }
 
   render() {
-    const { recipes } = this.props;
+    const { recipes, recipesCount, page } = this.props;
 
     return (
       <div id="recipes-overview" className="container">
@@ -63,8 +72,8 @@ class RecipesOverview extends Component {
           </div>
           <div className="col-12">
             <h2>All Recipes</h2>
-            {recipes && (
-              <ul>
+            {recipes.length ? (
+              <ul className="recipe-list">
                 {recipes.map(recipe => (
                   <li key={recipe.id}>
                     <Link {...linkResolver(recipe)}>
@@ -73,6 +82,16 @@ class RecipesOverview extends Component {
                   </li>
                 ))}
               </ul>
+            ) : (
+              <p>No recipes found.</p>
+            )}
+
+            {recipes.length && (
+              <PaginationCount
+                querySize={QUERY_SIZE}
+                total={recipesCount}
+                currentPage={page}
+              />
             )}
           </div>
         </div>
