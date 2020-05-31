@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import App from 'next/app';
-import Navbar from '../components/Navbar';
 import '../styles/main.scss';
+
+const Navbar = dynamic(() => import('../components/Navbar'), { ssr: false });
 
 export default class RecipeApp extends App {
   render() {
