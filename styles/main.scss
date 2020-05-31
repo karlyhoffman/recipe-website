@@ -64,9 +64,12 @@ body {
       text-align: center;
       text-decoration: none;
       box-shadow: $box-shadow;
-      margin-right: 2.5%;
       margin-bottom: 15px;
       padding: 30px;
+
+      @include media-breakpoint-up(md) {
+        margin-right: 2.5%;
+      }
     }
   }
 }
