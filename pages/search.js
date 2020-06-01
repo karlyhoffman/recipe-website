@@ -1,73 +1,72 @@
 import React, { Component } from 'react';
 import getCookies from 'next-cookies';
-import { fetchDocumentsByType, Client, Prismic } from '../utils/prismic';
+import Link from 'next/link';
+import { RichText } from 'prismic-reactjs';
+// import PaginationCount from '../components/PaginationCount';
+import { fetchRecipesBySearchTerm, linkResolver } from '../lib/api';
 
-class RecipeSearch extends Component {
+const QUERY_SIZE = 100;
+
+class Search extends Component {
   static async getInitialProps(context) {
-    const { req, res } = context;
+    const { req, res, query } = context;
     const nextCookies = getCookies(context);
     const ref = nextCookies['io.prismic.preview'] || null;
+    const page = query.page || 1;
 
-    const [
-      cuisineTags,
-      ingredientTags,
-      seasonTags,
-      dishTypeTags,
-      weekdayTags
-    ] = await Promise.all([
-      fetchDocumentsByType({ type: 'cuisine_tag', req }),
-      fetchDocumentsByType({ type: 'ingredient_tag', req }),
-      fetchDocumentsByType({ type: 'season_tag', req }),
-      fetchDocumentsByType({ type: 'type_tag', req }),
-      Client(req).query(Prismic.Predicates.at('my.recipe.weekday_tag', 'Yes'), {
-        orderings: '[my.recipe.title]',
-        pageSize: 100
-      })
-    ]);
+    let searchResults = { results: [] };
+
+    if (query.search && query.search.length) {
+      const term = query.search.replace(/"/g, '');
+      searchResults = await fetchRecipesBySearchTerm({
+        term,
+        req,
+        options: { orderings: '[my.recipe.title]', pageSize: QUERY_SIZE, page }
+      });
+    }
 
     if (res)
       res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
     return {
-      cuisineTags: cuisineTags.results || [],
-      ingredientTags: ingredientTags.results || [],
-      seasonTags: seasonTags.results || [],
-      dishTypeTags: dishTypeTags.results || [],
-      weekdayTags
+      searchResults,
+      query
     };
   }
 
-  fetchRecipeByTagType = () => {
-    // TODO: listen for tag click, update results and query params
-  };
-
   render() {
-    const {
-      cuisineTags,
-      ingredientTags,
-      seasonTags,
-      dishTypeTags,
-      weekdayTags
-    } = this.props;
-
-    console.log({
-      cuisineTags,
-      ingredientTags,
-      seasonTags,
-      dishTypeTags,
-      weekdayTags
-    });
+    const { query, searchResults } = this.props;
 
     return (
-      <div id="tags-overview" className="container">
+      <div id="search-page" className="container">
         <div className="row">
-          <div className="col-12">
-            <h1>Tag Categories</h1>
-          </div>
+          {query.search && query.search.length ? (
+            <div className="col-12">
+              <h1>Search Results for &quot;{query.search}&quot;</h1>
+              {searchResults.results.length ? (
+                <ul className="recipe-list">
+                  {searchResults.results.map(recipe => (
+                    <li key={recipe.id}>
+                      <Link {...linkResolver(recipe)}>
+                        <a>{RichText.asText(recipe.data.title)}</a>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No results found.</p>
+              )}
+            </div>
+          ) : (
+            <div className="col-12">
+              <h1>Search</h1>
+              <p>Use the search bar to find recipes.</p>
+            </div>
+          )}
         </div>
       </div>
     );
   }
 }
 
-export default RecipeSearch;
+export default Search;
