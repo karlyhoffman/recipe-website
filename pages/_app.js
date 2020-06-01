@@ -6,6 +6,7 @@ import App from 'next/app';
 import '../styles/main.scss';
 
 const Navbar = dynamic(() => import('../components/Navbar'), { ssr: false });
+const Footer = dynamic(() => import('../components/Footer'), { ssr: false });
 
 export default class RecipeApp extends App {
   render() {
@@ -25,6 +26,7 @@ export default class RecipeApp extends App {
         </Head>
         <Navbar />
         <Component {...pageProps} />
+        <Footer />
       </>
     );
   }

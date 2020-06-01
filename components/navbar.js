@@ -1,9 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
+import SearchBar from './SearchBar';
+import { MobileDetect } from '../utils/MobileDetect';
 import '../styles/components/navbar.scss';
 
 export default () => {
   const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+  const isMobile = MobileDetect();
 
   return (
     <header id="navbar">
@@ -54,6 +57,11 @@ export default () => {
               <a>Grocery List</a>
             </Link>
           </li>
+          {!isMobile && (
+            <li>
+              <SearchBar />
+            </li>
+          )}
         </ul>
         {isPWA && window.location.pathname !== '/' && (
           <button onClick={() => window.history.back()} type="button">

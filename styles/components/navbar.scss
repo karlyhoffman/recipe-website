@@ -10,7 +10,7 @@ header#navbar {
   color: $white;
   font-size: 0.9rem;
   line-height: 1.5;
-  padding: 3px 0 4px;
+  padding: 4px 0;
 
   a {
     color: $white;
@@ -62,6 +62,18 @@ header#navbar {
           padding: 0 7.5px;
         }
       }
+    }
+  }
+
+  .search-icon {
+    width: 15px;
+    height: auto;
+    fill: $white;
+    transform: translate(5px, 3px);
+
+    &:hover {
+      fill: $light-grey;
+      transition: color 350ms $ease 0ms;
     }
   }
 

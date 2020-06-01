@@ -91,6 +91,7 @@ class RecipesOverview extends Component {
                 querySize={QUERY_SIZE}
                 total={recipesCount}
                 currentPage={page}
+                pathname="/recipes"
               />
             )}
           </div>
