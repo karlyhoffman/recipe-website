@@ -2,7 +2,12 @@ import React from 'react';
 import Link from 'next/link';
 import '../styles/components/pagination-count.scss';
 
-export default ({ querySize = 1, total = 1, currentPage = 1 }) => {
+export default ({
+  querySize = 1,
+  total = 1,
+  currentPage = 1,
+  pathname = '/'
+}) => {
   const numOfPages = Math.ceil(total / querySize);
 
   if (numOfPages === 1) return null;
@@ -14,7 +19,7 @@ export default ({ querySize = 1, total = 1, currentPage = 1 }) => {
           {index + 1 === parseInt(currentPage) ? (
             <span>{currentPage}</span>
           ) : (
-            <Link href={{ pathname: '/recipes', query: { page: index + 1 } }}>
+            <Link href={{ pathname, query: { page: index + 1 } }}>
               <a>{index + 1}</a>
             </Link>
           )}
