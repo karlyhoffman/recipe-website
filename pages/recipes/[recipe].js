@@ -132,7 +132,7 @@ export default function RecipeDetail() {
                 {RichText.render(notes)}
               </div>
             )}
-            {source && !!source.length && (
+            {source && source.length && (
               <div className="col-12 source">
                 <p className="label">Source:</p>
                 {RichText.render(source)}
@@ -149,7 +149,7 @@ export default function RecipeDetail() {
             <div className="col-12 col-md-4 ingredients">
               <h2 className="heading">Ingredients</h2>
               <div className="ingredient-menu">
-                {ingredients.length &&
+                {ingredients &&
                   React.Children.toArray(
                     ingredients.map(ingredient => renderTextSlice(ingredient))
                   )}
@@ -158,7 +158,7 @@ export default function RecipeDetail() {
             <div className="col-12 col-md-8 instructions">
               <div>
                 <h2 className="heading">Instructions</h2>
-                {instructions.length &&
+                {instructions &&
                   React.Children.toArray(
                     instructions.map(instruction =>
                       renderTextSlice(instruction)

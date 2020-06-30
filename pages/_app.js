@@ -5,7 +5,7 @@ import Head from 'next/head';
 import App from 'next/app';
 import '../styles/main.scss';
 
-const Navbar = dynamic(() => import('../components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('../components/navbar'), { ssr: false });
 const Footer = dynamic(() => import('../components/Footer'), { ssr: false });
 
 export default class RecipeApp extends App {

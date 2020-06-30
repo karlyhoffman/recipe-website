@@ -1,6 +1,6 @@
 import React, { Children, useState } from 'react';
 
-export default ({ ingredients, isEditing = false }) => {
+export default ({ ingredients = [], isEditing = false }) => {
   const ingredientList = ingredients.map(ingredient => ingredient[0].text);
   const [groceries, setGroceries] = useState(ingredientList);
 
