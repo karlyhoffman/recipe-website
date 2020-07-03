@@ -86,6 +86,12 @@ export default function Index() {
     fetchData();
   }, []);
 
+  const checkIfCocktail = typeTags => {
+    if (!typeTags.length) return false;
+    const isNotCocktail = typeTags.filter(tag => tag.type_tag.uid !== 'cocktails');
+    return !!isNotCocktail.length;
+  };
+
   return (
     <div id="homepage" className="container">
       {!isLoadingData && (
@@ -144,16 +150,18 @@ export default function Index() {
               <h3>Recently Added Recipes</h3>
               {data.recentlyAdded.length ? (
                 <ul>
-                  {data.recentlyAdded.map(recipe => (
-                    <li key={recipe.id}>
-                      <Link
-                        href="/recipes/[recipe]"
-                        as={`/recipes/${recipe.uid}`}
-                      >
-                        <a>{RichText.asText(recipe.data.title)}</a>
-                      </Link>
-                    </li>
-                  ))}
+                  {data.recentlyAdded
+                    .filter(recipe => checkIfCocktail(recipe.data.type_tags))
+                    .map(recipe => (
+                      <li key={recipe.id}>
+                        <Link
+                          href="/recipes/[recipe]"
+                          as={`/recipes/${recipe.uid}`}
+                        >
+                          <a>{RichText.asText(recipe.data.title)}</a>
+                        </Link>
+                      </li>
+                    ))}
                 </ul>
               ) : (
                 <p>No recipes available.</p>
