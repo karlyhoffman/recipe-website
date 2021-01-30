@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import { linkResolver } from 'api/prismic-configuration';
 import { fetchSingleDocumentByType, fetchMultipleDocumentsByType } from 'api/prismic-queries';
+import stylesCards from 'styles/components/cards.module.scss';
 
 function Homepage({
   nextRecipes = [],
@@ -11,101 +12,107 @@ function Homepage({
 }) {
   return (
     <div className="container">
-      <h1>5047 Cooking</h1>
+      <div className="row">
+        <div className="col-12">
+          <h1>5047 Cooking</h1>
+        </div>
+      </div>
 
-      <h2>Recipes to Cook Next</h2>
-      <ul>
-        {nextRecipes.map(
-          ({
-            next_recipe,
-            next_recipe: {
-              id,
-              data: { title },
-            },
-          }) => (
-            <li key={id}>
-              <Link href={linkResolver(next_recipe)}>
-                <a>
-                  <h3>{RichText.asText(title)}</h3>
-                </a>
-              </Link>
-            </li>
-          )
-        )}
-      </ul>
-
-      <h2>Favorite Recipes</h2>
-      {!!favoriteRecipes.length ? (
-        <ul>
-          {favoriteRecipes.map(
-            ({
-              favorite_recipe,
-              favorite_recipe: {
-                id,
-                data: { title },
-              },
-            }) => (
-              <li key={id}>
-                <Link href={linkResolver(favorite_recipe)}>
-                  <a>
-                    <h3>{RichText.asText(title)}</h3>
-                  </a>
+      <div className="row">
+        <div className="col-12">
+          <h2>Recipes to Cook Next</h2>
+          <div className={stylesCards.card_container}>
+            {nextRecipes.map(
+              ({
+                next_recipe,
+                next_recipe: {
+                  id,
+                  data: { title },
+                },
+              }) => (
+                <Link key={id} href={linkResolver(next_recipe)}>
+                  <a className={stylesCards.card}>{RichText.asText(title)}</a>
                 </Link>
-              </li>
-            )
+              )
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="row mt-md-3">
+        <div className="col-12 col-md-6">
+          <h2>Favorite Recipes</h2>
+          {!!favoriteRecipes.length ? (
+            <ul>
+              {favoriteRecipes.map(
+                ({
+                  favorite_recipe,
+                  favorite_recipe: {
+                    id,
+                    data: { title },
+                  },
+                }) => (
+                  <li key={id}>
+                    <Link href={linkResolver(favorite_recipe)}>
+                      <a>{RichText.asText(title)}</a>
+                    </Link>
+                  </li>
+                )
+              )}
+            </ul>
+          ) : (
+            <p>No recipes available.</p>
           )}
-        </ul>
-      ) : (
-        <p>No recipes available.</p>
-      )}
+        </div>
 
-      <h2>Recently Added</h2>
-      {!!recentlyAddedRecipes.length ? (
-        <ul>
-          {recentlyAddedRecipes.map((recipe) => {
-            const {
-              id,
-              data: { title },
-            } = recipe;
+        <div className="col-12 col-md-6">
+          <h2>Recently Added</h2>
+          {!!recentlyAddedRecipes.length ? (
+            <ul>
+              {recentlyAddedRecipes.map((recipe) => {
+                const {
+                  id,
+                  data: { title },
+                } = recipe;
 
-            return (
-              <li key={id}>
-                <Link href={linkResolver(recipe)}>
-                  <a>
-                    <h3>{RichText.asText(title)}</h3>
-                  </a>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p>No recipes available.</p>
-      )}
+                return (
+                  <li key={id}>
+                    <Link href={linkResolver(recipe)}>
+                      <a>{RichText.asText(title)}</a>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p>No recipes available.</p>
+          )}
+        </div>
 
-      <h2>Ideas for Next Week</h2>
-      {!!randomRecipes.length ? (
-        <ul>
-          {randomRecipes.map((recipe) => {
-            const {
-              id,
-              data: { title },
-            } = recipe;
+        <div className="col-12 col-md-6">
+          <h2>Ideas for Next Week</h2>
+          {!!randomRecipes.length ? (
+            <ul>
+              {randomRecipes.map((recipe) => {
+                const {
+                  id,
+                  data: { title },
+                } = recipe;
 
-            return (
-              <li key={id}>
-                <Link href={linkResolver(recipe)}>
-                  <a>
-                    <h3>{RichText.asText(title)}</h3>
-                  </a>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p>No recipes available.</p>
-      )}
+                return (
+                  <li key={id}>
+                    <Link href={linkResolver(recipe)}>
+                      <a>{RichText.asText(title)}</a>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p>No recipes available.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

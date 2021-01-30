@@ -1,0 +1,26 @@
+.card_container {
+  display: block;
+
+  @include media-breakpoint-up(md) {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 300px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: $box-shadow;
+    margin-bottom: 15px;
+    padding: 30px;
+
+    @include media-breakpoint-up(md) {
+      margin-right: 2.5%;
+    }
+  }
+}
