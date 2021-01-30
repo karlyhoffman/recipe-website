@@ -1,9 +1,9 @@
 import Head from 'next/head';
 // import { SEO } from 'components';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const googleTagID = process.env.GOOGLE_TAG_ID;
-const googleTagManagerID = process.env.GOOGLE_TAG_MANAGER_ID;
+// const isProduction = process.env.NODE_ENV === 'production';
+// const googleTagID = process.env.GOOGLE_TAG_ID;
+// const googleTagManagerID = process.env.GOOGLE_TAG_MANAGER_ID;
 
 function setGoogleTags() {
   return {
