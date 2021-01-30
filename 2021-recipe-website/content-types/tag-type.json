@@ -1,0 +1,18 @@
+{
+  "Main": {
+    "type_tag": {
+      "type": "Text",
+      "config": {
+        "label": "Dish Type",
+        "placeholder": "i.e Side, Main, Dessert"
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Type Slug",
+        "placeholder": "dish-type-slug"
+      }
+    }
+  }
+}

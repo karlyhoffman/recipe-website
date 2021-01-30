@@ -1,0 +1,18 @@
+{
+  "Main": {
+    "ingredient_tag": {
+      "type": "Text",
+      "config": {
+        "label": "Ingredient Name",
+        "placeholder": "Write the ingredient name here."
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Ingredient Slug",
+        "placeholder": "ingredient-slug"
+      }
+    }
+  }
+}
