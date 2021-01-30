@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'Merriweather Sans';
+  src: url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBold.woff2') format('woff2'),
+       url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Merriweather Sans';
+  src: url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBoldItalic.woff2') format('woff2'),
+       url('/fonts/MerriweatherSans/MerriweatherSans-ExtraBoldItalic.woff') format('woff');
+  font-weight: 800;
+  font-style: italic;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-Bold.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-BoldItalic.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-BoldItalic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-Regular.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('/fonts/Alegreya/Alegreya-Italic.woff2') format('woff2'),
+       url('/fonts/Alegreya/Alegreya-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: optional;
+}
+
+$merriweather: 'Merriweather Sans', sans-serif;
+$alegreya: 'Alegreya', serif;

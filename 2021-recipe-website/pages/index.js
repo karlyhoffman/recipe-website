@@ -10,7 +10,7 @@ function Homepage({
   randomRecipes = [],
 }) {
   return (
-    <div>
+    <div className="container">
       <h1>5047 Cooking</h1>
 
       <h2>Recipes to Cook Next</h2>

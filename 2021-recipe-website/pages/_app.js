@@ -1,4 +1,5 @@
 import { Layout } from 'components';
+import 'styles/vendor/bootstrap.scss';
 import 'styles/global.scss';
 
 function RecipeApp({ Component, pageProps }) {

@@ -12,24 +12,23 @@ module.exports = {
           },
         },
       },
-      // {
-      //   test: /\.module\.(sa|sc|c)ss$/,
-      //   use: [
-      //     {
-      //       loader: 'sass-resources-loader',
-      //       options: {
-      //         resources: [
-      //           path.join(__dirname, 'styles/variables/breakpoints.scss'),
-      //           path.join(__dirname, 'styles/variables/colors.scss'),
-      //           path.join(__dirname, 'styles/variables/fonts.scss'),
-      //           path.join(__dirname, 'styles/variables/layout.scss'),
-      //           path.join(__dirname, 'styles/variables/misc.scss'),
-      //           path.join(__dirname, 'styles/variables/mixins.scss'),
-      //         ],
-      //       },
-      //     },
-      //   ],
-      // }
+      {
+        test: /\.module\.(sa|sc|c)ss$/,
+        use: [
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: [
+                path.join(__dirname, 'styles/variables/breakpoints.scss'),
+                path.join(__dirname, 'styles/variables/colors.scss'),
+                path.join(__dirname, 'styles/variables/fonts.scss'),
+                path.join(__dirname, 'styles/variables/layout.scss'),
+                path.join(__dirname, 'styles/variables/misc.scss'),
+              ],
+            },
+          },
+        ],
+      }
     );
 
     return config;
