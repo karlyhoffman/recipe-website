@@ -1,0 +1,93 @@
+#navbar {
+  display: flex;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: $black;
+  color: $white;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 4px 0;
+
+  a {
+    color: $white;
+    text-decoration: none;
+
+    &:hover {
+      color: $light-grey;
+      transition: color 350ms $ease 0ms;
+    }
+  }
+
+  ul {
+    display: flex;
+
+    li {
+      position: relative;
+      white-space: nowrap;
+
+      &.has_sub {
+        display: flex;
+        transition: max-width 500ms $ease 0s;
+        max-width: 50px;
+        overflow: hidden;
+
+        &:hover {
+          max-width: 100%;
+          transition: max-width 1.5s $ease 0s;
+        }
+      }
+    }
+
+    &.nav_menu > li {
+      margin-right: 15px;
+    }
+
+    &.sub_menu {
+      display: none;
+
+      @include media-breakpoint-up(md) {
+        display: flex;
+        padding-left: 7px;
+
+        span.label {
+          color: $med-grey;
+          font-size: 0.8rem;
+        }
+
+        li {
+          padding: 0 7.5px;
+        }
+      }
+    }
+  }
+
+  .search_icon {
+    width: 15px;
+    height: auto;
+    fill: $white;
+    transform: translate(5px, 3px);
+
+    &:hover {
+      fill: $light-grey;
+      transition: color 350ms $ease 0ms;
+    }
+  }
+
+  button {
+    display: block;
+    background: none;
+    border: none;
+    color: $white;
+    outline: none;
+    margin-left: auto;
+
+    &:hover {
+      color: $light-grey;
+      transition: color 350ms $ease 0ms;
+    }
+  }
+}

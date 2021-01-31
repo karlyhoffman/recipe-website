@@ -16,6 +16,7 @@ function Layout({ children }) {
       <Meta />
       {/* {isProduction && <span dangerouslySetInnerHTML={setGoogleTagPixel()} />} */}
       {/* <Navbar /> */}
+      <Navbar />
       <main>{children}</main>
     </>
   );

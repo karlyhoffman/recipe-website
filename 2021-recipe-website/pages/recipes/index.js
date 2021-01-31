@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import { linkResolver } from 'api/prismic-configuration';
 import { fetchMultipleDocumentsByType } from 'api/prismic-queries';
-import styles from 'styles/pages/recipes.module.scss';
+import styles from 'styles/pages/recipe-overview.module.scss';
 
 const QUERY_SIZE = 100;
 
@@ -15,7 +15,7 @@ function RecipesOverview({ recipes, recipesCount, page }) {
         <div className="col-12">
           <h1>Recipes</h1>
         </div>
-        {/* <div className="col-12">
+        <div className="col-12">
           <h2>Tag Categories</h2>
           <ul>
             <li>
@@ -44,7 +44,8 @@ function RecipesOverview({ recipes, recipesCount, page }) {
               </Link>
             </li>
           </ul>
-        </div> */}
+        </div>
+
         <div className="col-12">
           <h2>All Recipes</h2>
           {!!recipes.length ? (
@@ -76,7 +77,6 @@ function RecipesOverview({ recipes, recipesCount, page }) {
               </li>
             ))}
           </ul>
-
         </div>
       </div>
     </div>
