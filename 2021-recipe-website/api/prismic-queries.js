@@ -15,6 +15,9 @@ export const fetchMultipleDocumentsByType = async ({ type, req, options, predica
     options
   );
 
+export const fetchMultipleDocumentsByID = async ({ ids, req, options }) =>
+  Client(req).getByIDs(ids, options);
+
 export const fetchUIDsForType = async ({ type, page = 1, results = [] }) => {
   let allPages = [...results];
 

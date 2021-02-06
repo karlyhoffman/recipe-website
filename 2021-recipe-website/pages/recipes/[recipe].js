@@ -3,58 +3,57 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import { RichText } from 'prismic-reactjs';
 import { linkResolver } from 'api/prismic-configuration';
-import { fetchSingleDocumentByTypeAndUID, fetchUIDsForType } from 'api/prismic-queries';
+import {
+  fetchSingleDocumentByTypeAndUID,
+  fetchMultipleDocumentsByID,
+  fetchUIDsForType,
+} from 'api/prismic-queries';
 import styles from 'styles/pages/recipe-detail.module.scss';
 
-function RecipeDetail({ recipe }) {
+function formatTime (time) {
+  const hours = Math.floor(time / 60);
+  const minutes = time % 60 < 10 ? `0${time % 60}` : time % 60;
+  return `${hours}:${minutes}`;
+};
 
-  if (!recipe) return null;
+function renderTextSlice ({ slice_type, primary }) {
+  switch (slice_type) {
+    case 'ingredient_heading':
+      return RichText.render(primary.ingredient_heading);
+    case 'ingredient':
+      return RichText.render(primary.ingredient, linkResolver);
+    case 'instruction_heading':
+      return RichText.render(primary.instruction_heading);
+    case 'recipe_instruction':
+      return RichText.render(primary.instruction, linkResolver);
+    default:
+      return null;
+  }
+};
 
-  const {
+function RecipeDetail({
+  recipe: {
     body: instructions = [],
     cost,
-    cuisine_tags: cuisineTags,
     ingredient_slices: ingredients = [],
-    main_ingredient_tags: ingredientTags,
     minutes_prep: prepTime,
     minutes_total: totalTime,
     recipe_photo: photo,
     recipe_notes: notes,
-    related_recipes: relatedRecipes,
-    season_tags: seasonTags,
     servings,
     source,
     title,
-    type_tags: typeTags,
-    weekday_tag: weekdayTag = 'No'
-  } = recipe;
-
-  const hasHeroImg = photo && photo.url;
-
-  const formatTime = time => {
-    const hours = Math.floor(time / 60);
-    const minutes = time % 60 < 10 ? `0${time % 60}` : time % 60;
-    return `${hours}:${minutes}`;
-  };
-
-  const renderTextSlice = ({ slice_type, primary }) => {
-    switch (slice_type) {
-      case 'ingredient_heading':
-        return RichText.render(primary.ingredient_heading);
-      case 'ingredient':
-        return RichText.render(primary.ingredient, linkResolver);
-      case 'instruction_heading':
-        return RichText.render(primary.instruction_heading);
-      case 'recipe_instruction':
-        return RichText.render(primary.instruction, linkResolver);
-      default:
-        return null;
-    }
-  };
+    weekday_tag: weekdayTag = 'No',
+  },
+  tags,
+}) {
+  function filterTagsByType(type) {
+    return tags.filter((tag) => tag.type === type);
+  }
 
   return (
     <div id={styles.recipe_detail} className="container-fluid px-0">
-      {hasHeroImg && (
+      {photo?.url && (
         <div
           className={styles.hero_img}
           style={{ backgroundImage: `url(${photo.url})` }}
@@ -63,7 +62,7 @@ function RecipeDetail({ recipe }) {
 
       <div
         className={classNames(styles.body, 'container-fluid', {
-          [styles.has_hero_img]: hasHeroImg,
+          [styles.has_hero_img]: photo?.url,
         })}
       >
         <div className="container">
@@ -149,107 +148,126 @@ function RecipeDetail({ recipe }) {
             </div>
           </div>
 
-          {/* TODO: Fetch Related Recipes */}
-          {/* {!!relatedRecipes.length && (
+          {!!filterTagsByType('recipe').length && (
             <div className={classNames(styles.related, 'row')}>
               <div className="col-12">
                 <h2>Related Recipes</h2>
                 <ul>
-                  {relatedRecipes.map(({ related_recipe: related }) => (
-                    <li key={related.id}>
-                      <a
-                        className={styles.card}
-                        href={`/recipes/${related.uid}`}
-                      >
-                        {RichText.asText(related.title)}
-                      </a>
-                    </li>
-                  ))}
+                  {filterTagsByType('recipe').map(
+                    ({ id, uid, type, data: { title } }) => (
+                      <li key={id}>
+                        <Link href={linkResolver({ type, uid })}>
+                          <a className={styles.card}>
+                            {RichText.asText(title)}
+                          </a>
+                        </Link>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
               <div className="col-12">
                 <div className={styles.line} />
               </div>
             </div>
-          )} */}
+          )}
 
-          {/* TODO: Fetch Tag Data */}
           <div className={classNames(styles.tags, 'row')}>
-            {/* <div className="col-12">
+            <div className="col-12">
               <h2>Tags</h2>
-            </div> */}
+            </div>
 
-            {/* {!!ingredientTags.length && (
+            {!!filterTagsByType('ingredient_tag').length && (
               <div className="col-12 col-md-3">
                 <h3>Ingredients</h3>
                 <ul>
-                  {ingredientTags.map(({ ingredient_tag: item }) => (
-                    <li key={item.id}>
-                      <Link href={`/recipes/ingredients/${item._meta.uid}`}>
-                        <a className="tag ingredient">{item.ingredient_tag}</a>
-                      </Link>
-                    </li>
-                  ))}
+                  {filterTagsByType('ingredient_tag').map(
+                    ({ id, uid, type, data: { ingredient_tag } }) => (
+                      <li key={id}>
+                        <Link href={linkResolver({ type, uid })}>
+                          <a
+                            className={classNames(
+                              styles.tag,
+                              styles.ingredient
+                            )}
+                          >
+                            {ingredient_tag}
+                          </a>
+                        </Link>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
-            )} */}
+            )}
 
-            {/* {!!cuisineTags.length && (
+            {!!filterTagsByType('cuisine_tag').length && (
               <div className="col-12 col-md-3">
                 <h3>Cuisine</h3>
                 <ul>
-                  {cuisineTags.map(({ cuisine_tag: item }) => (
-                    <li key={item._meta.id}>
-                      <Link
-                        href="/recipes/cuisines/[cuisine-tag]"
-                        as={`/recipes/cuisines/${item._meta.uid}`}
-                      >
-                        <a className="tag cuisine">{item.cuisine_tag}</a>
-                      </Link>
-                    </li>
-                  ))}
+                  {filterTagsByType('cuisine_tag').map(
+                    ({ id, uid, type, data: { cuisine_tag } }) => (
+                      <li key={id}>
+                        <Link href={linkResolver({ type, uid })}>
+                          <a className={classNames(styles.tag, styles.cuisine)}>
+                            {cuisine_tag}
+                          </a>
+                        </Link>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
-            )} */}
+            )}
 
-            {/* {weekdayTag === 'Yes' ||
-              (!!typeTags.length && (
+            {weekdayTag === 'Yes' ||
+              (!!filterTagsByType('type_tag').length && (
                 <div className="col-12 col-md-3">
                   <h3>Dish Type</h3>
                   <ul>
-                    {typeTags.map(({ type_tag: item }) => (
-                      <li key={item._meta.id}>
-                        <Link href={`/recipes/dish-types/${item._meta.uid}`}>
-                          <a className="tag type">{item.type_tag}</a>
-                        </Link>
-                      </li>
-                    ))}
+                    {filterTagsByType('type_tag').map(
+                      ({ id, uid, type, data: { type_tag } }) => (
+                        <li key={id}>
+                          <Link href={linkResolver({ type, uid })}>
+                            <a className={classNames(styles.tag, styles.type)}>
+                              {type_tag}
+                            </a>
+                          </Link>
+                        </li>
+                      )
+                    )}
 
                     {weekdayTag === 'Yes' && (
                       <li>
                         <Link href="/recipes/weekday">
-                          <a className="tag weekday">Weekday Meal</a>
+                          <a className={classNames(styles.tag, styles.weekday)}>
+                            Weekday Meal
+                          </a>
                         </Link>
                       </li>
                     )}
                   </ul>
                 </div>
-              ))} */}
+              ))}
 
-            {/* {!!seasonTags.length && (
+            {!!filterTagsByType('season_tag').length && (
               <div className="col-12 col-md-3">
                 <h3>Season</h3>
                 <ul>
-                  {seasonTags.map(({ season_tag: item }) => (
-                    <li key={item._meta.id}>
-                      <Link href={`/recipes/seasons/${item._meta.uid}`}>
-                        <a className="tag season">{item.season_tag}</a>
-                      </Link>
-                    </li>
-                  ))}
+                  {filterTagsByType('season_tag').map(
+                    ({ id, uid, type, data: { season_tag } }) => (
+                      <li key={id}>
+                        <Link href={linkResolver({ type, uid })}>
+                          <a className={classNames(styles.tag, styles.season)}>
+                            {season_tag}
+                          </a>
+                        </Link>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
-            )} */}
+            )}
           </div>
         </div>
       </div>
@@ -270,9 +288,59 @@ export const getStaticProps = async ({ params, preview = false, previewData = {}
 
   if (!recipe?.data) return { notFound: true };
 
+  const {
+    related_recipes,
+    cuisine_tags,
+    main_ingredient_tags,
+    type_tags,
+    season_tags,
+  } = recipe.data;
+
+  let relatedRecipeIDs = [];
+  let cuisineTagIDs = [];
+  let ingredientTagIDs = [];
+  let typeTagIDs = [];
+  let seasonTagIDs = [];
+
+  if (!!related_recipes.length) {
+    relatedRecipeIDs = related_recipes.map((x) => x?.related_recipe?.id || null).filter((x) => x);
+  }
+
+  if (!!cuisine_tags.length) {
+    cuisineTagIDs = cuisine_tags.map((x) => x?.cuisine_tag?.id || null).filter((x) => x);
+  }
+
+  if (!!main_ingredient_tags.length) {
+    ingredientTagIDs = main_ingredient_tags.map((x) => x?.ingredient_tag?.id || null).filter((x) => x);
+  }
+
+  if (!!type_tags.length) {
+    typeTagIDs = type_tags.map((x) => x?.type_tag?.id || null).filter((x) => x);
+  }
+
+  if (!!season_tags.length) {
+    seasonTagIDs = season_tags.map((x) => x?.season_tag?.id || null).filter((x) => x);
+  }
+
+  const tagIDs = [
+    ...relatedRecipeIDs,
+    ...cuisineTagIDs,
+    ...ingredientTagIDs,
+    ...typeTagIDs,
+    ...seasonTagIDs,
+  ];
+
+  let tags = [];
+
+  if (!!tagIDs.length) {
+    const tagsData = await fetchMultipleDocumentsByID({ ids: tagIDs, options: { ref } });
+    tags = tagsData?.results || [];
+  }
+
   return {
     props: {
       recipe: recipe.data,
+      tags,
       preview,
     },
     revalidate: 1,
