@@ -61,6 +61,11 @@ function Navbar() {
               </li>
             </ul>
           </li>
+          <li className={styles.groceries}>
+            <Link href="/groceries">
+              <a>Grocery List</a>
+            </Link>
+          </li>
           {!isMobile && (
             <li>
               <SearchBar />

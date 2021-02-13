@@ -1,4 +1,5 @@
 export { default as Footer } from 'components/Footer';
+export { default as GroceryList } from 'components/GroceryList';
 export { default as Layout } from 'components/Layout';
 export { default as Meta } from 'components/Meta';
 export { default as Navbar } from 'components/Navbar';
