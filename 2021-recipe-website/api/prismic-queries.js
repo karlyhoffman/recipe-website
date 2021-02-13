@@ -48,3 +48,12 @@ export const fetchRecipesByWeekendTag = async ({ req }) =>
     orderings: '[my.recipe.title]',
     pageSize: 100,
   });
+
+export const fetchRecipesBySearchTerm = async ({ term, req = null, options }) =>
+  Client(req).query(
+    [
+      Prismic.Predicates.at('document.type', 'recipe'),
+      Prismic.Predicates.fulltext('document', term),
+    ],
+    options
+  );
