@@ -17,12 +17,7 @@ function Navbar() {
               <a>Home</a>
             </Link>
           </li>
-          <li>
-            <Link href="/recipes">
-              <a>Recipes</a>
-            </Link>
-          </li>
-          {/* <li className={styles.has_sub}>
+          <li className={styles.has_sub}>
             <Link href="/recipes">
               <a>Recipes</a>
             </Link>
@@ -57,7 +52,7 @@ function Navbar() {
               </li>
             </ul>
           </li>
-          <li className={styles.groceries}>
+          {/* <li className={styles.groceries}>
             <Link href="/groceries">
               <a>Grocery List</a>
             </Link>
