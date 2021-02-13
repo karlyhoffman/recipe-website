@@ -17,10 +17,6 @@ function Navbar() {
     );
   }, []);
 
-  useEffect(() => {
-    console.log({ isMobile, isPWA });
-  }, [isMobile, isPWA]);
-
   return (
     <header id={styles.navbar}>
       <div className={classNames(styles.container, 'container')}>
