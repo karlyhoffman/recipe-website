@@ -33,3 +33,18 @@ export const fetchUIDsForType = async ({ type, page = 1, results = [] }) => {
 
   return fetchUIDsForType({ type, page: page + 1, results: allPages });
 };
+
+export const fetchRecipesByTag = async ({ tagID, type, tagTypeName, req }) =>
+  Client(req).query(
+    [
+      Prismic.Predicates.at('document.type', 'recipe'),
+      Prismic.Predicates.at(`my.recipe.${tagTypeName || type}s.${type}`, tagID),
+    ],
+    { orderings: '[my.recipe.title]', pageSize: 100 }
+  );
+
+export const fetchRecipesByWeekendTag = async ({ req }) =>
+  Client(req).query(Prismic.Predicates.at('my.recipe.weekday_tag', 'Yes'), {
+    orderings: '[my.recipe.title]',
+    pageSize: 100,
+  });
