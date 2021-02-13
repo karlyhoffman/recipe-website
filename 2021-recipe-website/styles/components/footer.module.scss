@@ -1,0 +1,26 @@
+#footer {
+  display: flex;
+  justify-content: flex-end;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: $black;
+  color: $white;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 4px 25px;
+
+  svg {
+    width: 15px;
+    height: auto;
+    fill: $white;
+    transform: translate(5px, 3px);
+
+    &:hover {
+      fill: $light-grey;
+      transition: color 350ms $ease 0ms;
+    }
+  }
+}

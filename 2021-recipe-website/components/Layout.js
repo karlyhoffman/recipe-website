@@ -1,4 +1,4 @@
-import { Meta, Navbar } from 'components';
+import { Meta, Navbar, Footer } from 'components';
 
 // const isProduction = process.env.NODE_ENV === 'production';
 
@@ -15,9 +15,9 @@ function Layout({ children }) {
     <>
       <Meta />
       {/* {isProduction && <span dangerouslySetInnerHTML={setGoogleTagPixel()} />} */}
-      {/* <Navbar /> */}
       <Navbar />
       <main>{children}</main>
+      <Footer />
     </>
   );
 }
