@@ -1,12 +1,25 @@
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
-// import SearchBar from './SearchBar';
-// import { MobileDetect } from '../utils/MobileDetect';
+import { SearchBar } from 'components';
 import styles from 'styles/components/navbar.module.scss';
 
 function Navbar() {
-  // const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-  // const isMobile = MobileDetect();
+  const [isPWA, setIsPWA] = useState();
+  const [isMobile, setIsMobile] = useState();
+
+  useEffect(() => {
+    setIsPWA(window.matchMedia('(display-mode: standalone)').matches);
+    setIsMobile(
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    );
+  }, []);
+
+  useEffect(() => {
+    console.log({ isMobile, isPWA });
+  }, [isMobile, isPWA]);
 
   return (
     <header id={styles.navbar}>
@@ -52,22 +65,17 @@ function Navbar() {
               </li>
             </ul>
           </li>
-          {/* <li className={styles.groceries}>
-            <Link href="/groceries">
-              <a>Grocery List</a>
-            </Link>
-          </li> */}
-          {/* {!isMobile && (
+          {!isMobile && (
             <li>
               <SearchBar />
             </li>
-          )} */}
+          )}
         </ul>
-        {/* {isPWA && window.location.pathname !== '/' && (
+        {isPWA && window.location.pathname !== '/' && (
           <button onClick={() => window.history.back()} type="button">
             Back
           </button>
-        )} */}
+        )}
       </div>
     </header>
   );

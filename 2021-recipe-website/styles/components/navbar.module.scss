@@ -65,18 +65,6 @@
     }
   }
 
-  .search_icon {
-    width: 15px;
-    height: auto;
-    fill: $white;
-    transform: translate(5px, 3px);
-
-    &:hover {
-      fill: $light-grey;
-      transition: color 350ms $ease 0ms;
-    }
-  }
-
   button {
     display: block;
     background: none;
