@@ -2,13 +2,12 @@ import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import { linkResolver } from 'api/prismic-configuration';
 import { fetchMultipleDocumentsByType } from 'api/prismic-queries';
+import { PaginationMenu } from 'components';
 import styles from 'styles/pages/recipe-overview.module.scss';
 
 const QUERY_SIZE = 100;
 
-function RecipesOverview({ recipes, recipesCount, page }) {
-  const numOfPages = Math.ceil(recipesCount / QUERY_SIZE);
-
+function RecipesOverview({ recipes, totalCount, page, pageSize }) {
   return (
     <div id={styles.recipes_overview} className="container">
       <div className="row">
@@ -62,21 +61,7 @@ function RecipesOverview({ recipes, recipesCount, page }) {
             <p>No recipes found.</p>
           )}
 
-          <ul className={styles.page_count}>
-            {[...Array(numOfPages).keys()].map((index) => (
-              <li key={`page-${index}`}>
-                {index + 1 === parseInt(page) ? (
-                  <span>{page}</span>
-                ) : (
-                  <Link
-                    href={{ pathname: '/recipes', query: { page: index + 1 } }}
-                  >
-                    <a>{index + 1}</a>
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
+          <PaginationMenu {...{ totalCount, pageSize, page }} />
         </div>
       </div>
     </div>
@@ -103,7 +88,8 @@ RecipesOverview.getInitialProps = async (context) => {
 
   return {
     recipes: recipes.results || [],
-    recipesCount: recipes.total_results_size || 0,
+    totalCount: recipes.total_results_size || 0,
+    pageSize: QUERY_SIZE,
     page,
   };
 };

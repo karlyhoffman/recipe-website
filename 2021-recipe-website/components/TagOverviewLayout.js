@@ -1,8 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { linkResolver } from 'api/prismic-configuration';
+import { PaginationMenu } from 'components';
 
-function TagOverviewLayout({ tags = [], type, children = 'Tags' }) {
+function TagOverviewLayout({
+  tags = [],
+  type,
+  children = 'Tags',
+  totalCount,
+  pageSize,
+  page
+}) {
   return (
     <div id="tags_overview" className="container">
       <div className="row">
@@ -11,11 +19,14 @@ function TagOverviewLayout({ tags = [], type, children = 'Tags' }) {
             <>
               <h1>{children}</h1>
               {type !== 'season_tag' ? (
-                <ul>
-                  {tags.map((tag) => (
-                    <TagListItem key={tag.id} tag={tag} type={type} />
-                  ))}
-                </ul>
+                <>
+                  <ul>
+                    {tags.map((tag) => (
+                      <TagListItem key={tag.id} tag={tag} type={type} />
+                    ))}
+                  </ul>
+                  <PaginationMenu {...{ totalCount, pageSize, page }} />
+                </>
               ) : (
                 <SeasonTags tags={tags} />
               )}

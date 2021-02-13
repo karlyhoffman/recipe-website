@@ -4,26 +4,4 @@
     line-height: 1.25;
     padding-bottom: 10px;
   }
-
-  .page_count {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-
-    li {
-      padding: 0 5px;
-
-      span {
-        text-decoration: underline;
-      }
-
-      a {
-        text-decoration: none;
-      }
-    }
-
-    &:empty {
-      display: none;
-    }
-  }
 }
