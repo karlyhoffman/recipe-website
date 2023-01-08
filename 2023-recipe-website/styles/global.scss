@@ -1,6 +1,7 @@
 @use 'variables/breakpoints.scss' as breakpoints;
 @use 'variables/colors.scss' as colors;
 @use 'variables/fonts.scss' as fonts;
+@use 'variables/layout' as layout;
 
 html {
   box-sizing: border-box;
@@ -61,5 +62,15 @@ main {
   ul {
     padding: 0;
     list-style: none;
+  }
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 layout.$gutter;
+
+  @include breakpoints.media-breakpoint-up(md) {
+    width: min(90vw, 1440px);
   }
 }

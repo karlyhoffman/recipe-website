@@ -45,7 +45,7 @@
 
 .row,
 .column {
-  .no_gutter {
+  &.no_gutter {
     padding: 0;
   }
 }

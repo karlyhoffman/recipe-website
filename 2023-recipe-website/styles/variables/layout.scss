@@ -1,7 +1,7 @@
-$gutter: 15px;
+// https://clamp.font-size.app/?config=eyJyb290IjoiMTYiLCJtaW5XaWR0aCI6IjMyMHB4IiwibWF4V2lkdGgiOiIxNDQwcHgiLCJtaW5Gb250U2l6ZSI6IjEycHgiLCJtYXhGb250U2l6ZSI6IjE1cHgifQ%3D%3D
+$fluid-12px-15px: clamp(0.75rem, 0.6964rem + 0.2679vw, 0.9375rem);
+$gutter: $fluid-12px-15px;
 
 $spacing-sm: 30px;
 $spacing: 65px;
 $spacing-lg: 100px;
-
-// $navbar-height: 27px;
