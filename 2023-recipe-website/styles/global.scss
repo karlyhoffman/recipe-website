@@ -4,16 +4,6 @@
 @use 'variables/fonts.scss' as fonts;
 @use 'variables/layout' as layout;
 
-html {
-  box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
 main {
   color: colors.$black;
   font-family: fonts.$font-text;
@@ -21,7 +11,6 @@ main {
   line-height: 1.5;
   letter-spacing: 0.75px;
   margin: 0;
-  // padding: 45px 0;
 
   h1, h2, h3, h4, h5, h6,
   .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -70,4 +59,15 @@ main {
   @include breakpoints.media-breakpoint-up(md) {
     width: min(90vw, 1440px);
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
