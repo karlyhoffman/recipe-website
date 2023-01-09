@@ -1,2 +1,12 @@
 $font-heading: var(--font-merriweather);
 $font-text: var(--font-alegreya);
+
+@mixin h1 {
+  font-size: clamp(1.5625rem, 0.5682rem + 4.2424vw, 3.75rem); // 25px to 60px (screens: 375px to 1200px)
+  margin-bottom: gutterPow(2);
+}
+
+@mixin h2 {
+  font-size: clamp(1.25rem, 0.9659rem + 1.2121vw, 1.875rem); // 20px to 30px (screens: 375px to 1200px)
+  margin-bottom: gutterPow(1.25);
+}

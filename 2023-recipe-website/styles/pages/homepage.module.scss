@@ -1,0 +1,24 @@
+#homepage {
+
+  h2 {
+    @include h2;
+  }
+
+  .featured {
+
+    ul li {
+      @include h1;
+    }
+  }
+
+  .subgroup {
+
+    ul li {
+      @include h1;
+  
+      @include media-breakpoint-up(md) {
+        @include h2;
+      }
+    }
+  }
+}

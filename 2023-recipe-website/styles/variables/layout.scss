@@ -1,6 +1,14 @@
-// https://clamp.font-size.app/?config=eyJyb290IjoiMTYiLCJtaW5XaWR0aCI6IjMyMHB4IiwibWF4V2lkdGgiOiIxNDQwcHgiLCJtaW5Gb250U2l6ZSI6IjEycHgiLCJtYXhGb250U2l6ZSI6IjE1cHgifQ%3D%3D
-$fluid-12px-15px: clamp(0.75rem, 0.6964rem + 0.2679vw, 0.9375rem);
-$gutter: $fluid-12px-15px;
+@function gutterPow($exponent: 1) {
+  $gutter: clamp(0.75rem, 0.6648rem + 0.3636vw, 0.9375rem); // 12px to 15px (screens: 375px to 1200px)
+
+  @if $exponent != 1 {
+    $gutter: calc(#{$gutter} * #{$exponent});
+  }
+
+  @return $gutter;
+}
+
+$gutter: gutterPow();
 
 $spacing-sm: 30px;
 $spacing: 65px;

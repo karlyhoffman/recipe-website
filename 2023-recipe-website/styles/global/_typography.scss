@@ -1,0 +1,48 @@
+@use '../variables/colors.scss' as colors;
+@use '../variables/fonts.scss' as fonts;
+
+main {
+
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: fonts.$font-heading;
+    font-weight: bold;
+    line-height: 1.25;
+    letter-spacing: -0.25px;
+  }
+
+  h1, .h1 {
+    letter-spacing: -0.5px;
+  }
+
+  strong, b {
+    font-weight: 700;
+  }
+}
+
+$color-list: colors.$highlight-colors;
+
+:root {
+  --color-list-length: #{length($list: $color-list)};
+}
+
+.highlight {
+  display: block;
+  background-color: colors.$black;
+  color: colors.$white;
+  text-align: center;
+  line-height: 1.1;
+  letter-spacing: -0.25px;
+  text-decoration: none;
+  border-radius: 0.15em;
+  padding: 0.4em 0.6em;
+  transition: background-color 300ms ease-in-out;
+
+  @each $color in $color-list {
+    $index: index($color-list, $color);
+
+    &.color-#{$index}:hover {
+      background-color: $color;
+    }
+  }
+}

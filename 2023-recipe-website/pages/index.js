@@ -1,73 +1,111 @@
-import { Row, Column } from "components";
+import { Row, Column } from 'components';
+import styles from 'styles/pages/homepage.module.scss';
 
 export default function Homepage() {
   return (
-    <Row>
-      <Column>
-        <h1>[HOMEPAGE]</h1>
-        <p className="h6">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+    <Row id={styles.homepage}>
+      <h1 className="sr-only">Recipe Website</h1>
+
+      <Column className={styles.featured}>
+        <h2>Recipes to Cook Next</h2>
+        <ul className="h2">
+          <li>
+            <a className="highlight" href="/recipes/pulled-mushroom-tacos-with-salsa-guille">
+              Pulled Mushroom Tacos With Salsa Guille
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/salsa-guille-serrano-pepper-salsa-peanut-butter">
+              Salsa Guille
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/creamy-mushroom-and-green-bean-masala">
+              Creamy Mushroom and Green Bean Masala
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/couscous-with-dates">
+              Couscous with Dates
+            </a>
+          </li>
+        </ul>
       </Column>
-      <Column md={6}>
-        <p>
-          Risus commodo viverra maecenas accumsan lacus vel facilisis volutpat.
-          Tellus cras adipiscing enim eu turpis egestas pretium. Ut sem viverra
-          aliquet eget. Id cursus metus aliquam eleifend mi in nulla. In est
-          ante in nibh mauris cursus. Cras tincidunt lobortis feugiat vivamus at
-          augue eget. Id velit ut tortor pretium viverra suspendisse potenti
-          nullam. Sed risus pretium quam vulputate dignissim. Consequat interdum
-          varius sit amet mattis vulputate.
-        </p>
 
-        <p>
-          Eget felis eget nunc lobortis mattis. Mauris pellentesque pulvinar
-          pellentesque habitant morbi tristique senectus et netus. Gravida quis
-          blandit turpis cursus in hac habitasse. Pellentesque sit amet
-          porttitor eget dolor morbi non arcu risus. Condimentum mattis
-          pellentesque id nibh tortor id aliquet. Sed velit dignissim sodales ut
-          eu sem. Eget dolor morbi non arcu risus quis varius quam. Elementum
-          integer enim neque volutpat. Eget aliquet nibh praesent tristique
-          magna sit amet purus. Massa tincidunt dui ut ornare lectus.
-        </p>
-
-        <p>
-          Massa ultricies mi quis hendrerit dolor. Commodo elit at imperdiet dui
-          accumsan sit amet nulla facilisi. Molestie at elementum eu facilisis
-          sed odio. Auctor augue mauris augue neque gravida in fermentum. Quis
-          imperdiet massa tincidunt nunc pulvinar sapien. Lectus magna fringilla
-          urna porttitor. Curabitur vitae nunc sed velit dignissim sodales ut eu
-          sem. Nec feugiat in fermentum posuere urna. Quam elementum pulvinar
-          etiam non quam. Non consectetur a erat nam at lectus urna duis
-          convallis.
-        </p>
+      <Column md={6} className={styles.subgroup}>
+        <h2>Favorites</h2>
+        <ul className="h3">
+          <li>
+            <a className="highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
+              Spicy Adobo Shrimp Cocktail
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
+              Lemon Gnocchi with Spinach and Peas
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
+              Whole Roasted Cauliflower With Pistachio Pesto
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/spaghetti-bolognese">
+              Spaghetti Bolognese
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/double-tomato-bruschetta">
+              Double Tomato Bruschetta
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/pasta-alla-norma">
+              Pasta alla Norma
+            </a>
+          </li>
+        </ul>
       </Column>
-      <Column md={6}>
-        <p>
-          Magna sit amet purus gravida quis blandit turpis. Egestas integer eget
-          aliquet nibh praesent tristique. Amet nisl suscipit adipiscing
-          bibendum est ultricies integer quis auctor. Sit amet massa vitae
-          tortor. Sem fringilla ut morbi tincidunt augue. Diam ut venenatis
-          tellus in metus. Id venenatis a condimentum vitae sapien. Risus
-          commodo viverra maecenas accumsan. Integer vitae justo eget magna
-          fermentum iaculis eu non diam. Id donec ultrices tincidunt arcu non
-          sodales neque sodales ut.
-        </p>
 
-        <p>
-          Interdum posuere lorem ipsum dolor. Ipsum suspendisse ultrices gravida
-          dictum fusce ut placerat. Eget gravida cum sociis natoque penatibus et
-          magnis dis parturient. Magna sit amet purus gravida quis blandit
-          turpis cursus in. Vestibulum rhoncus est pellentesque elit. Odio
-          tempor orci dapibus ultrices in iaculis nunc sed. Id donec ultrices
-          tincidunt arcu non sodales. At quis risus sed vulputate odio ut enim
-          blandit. Commodo odio aenean sed adipiscing diam donec adipiscing.
-          Cursus vitae congue mauris rhoncus aenean vel elit. Aenean vel elit
-          scelerisque mauris pellentesque pulvinar pellentesque. Congue mauris
-          rhoncus aenean vel elit scelerisque. Tristique senectus et netus et
-          malesuada fames ac turpis.
-        </p>
+      <Column md={6} className={styles.subgroup}>
+        <h2>Recently Added</h2>
+        <ul className="h3">
+          <li>
+            <a className="highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
+              Spicy Adobo Shrimp Cocktail
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
+              Lemon Gnocchi with Spinach and Peas
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
+              Whole Roasted Cauliflower With Pistachio Pesto
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/spaghetti-bolognese">
+              Spaghetti Bolognese
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/double-tomato-bruschetta">
+              Double Tomato Bruschetta
+            </a>
+          </li>
+          <li>
+            <a className="highlight" href="/recipes/pasta-alla-norma">
+              Pasta alla Norma
+            </a>
+          </li>
+        </ul>
+      </Column>
+
+      <Column className={styles.subgroup}>
+        <h2>Ideas for Next Week</h2>
       </Column>
     </Row>
   );

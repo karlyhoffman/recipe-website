@@ -1,6 +1,6 @@
 import { Alegreya, Merriweather_Sans } from "@next/font/google";
 import { Layout } from "components";
-import "styles/global.scss";
+import "styles/main.scss";
 
 const alegreya = Alegreya({
   // https://fonts.google.com/specimen/Alegreya
