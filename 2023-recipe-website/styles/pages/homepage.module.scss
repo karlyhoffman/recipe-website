@@ -1,23 +1,24 @@
 #homepage {
+  text-align: center;
 
-  h2 {
-    @include h2;
-  }
+  .group {
+    position: relative;
+    margin-bottom: gutterPow(2.5);
 
-  .featured {
-
-    ul li {
-      @include h1;
+    @include media-breakpoint-up(md) {
+      margin-bottom: gutterPow(4);
     }
-  }
 
-  .subgroup {
-
-    ul li {
-      @include h1;
-  
+    &__wrapper {
       @include media-breakpoint-up(md) {
-        @include h2;
+        position: sticky;
+        top: $gutter;
+      }
+    }
+
+    &__subgroup ul li a {  
+      @include media-breakpoint-down(sm) {
+        @include h1;
       }
     }
   }

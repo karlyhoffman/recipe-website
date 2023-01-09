@@ -1,18 +1,35 @@
 @use '../variables/colors.scss' as colors;
 @use '../variables/fonts.scss' as fonts;
 
-main {
+$headings: h1, h2, h3, h4, h5, h6;
 
-  h1, h2, h3, h4, h5, h6,
-  .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: fonts.$font-heading;
-    font-weight: bold;
-    line-height: 1.25;
-    letter-spacing: -0.25px;
+main {
+  @each $size in $headings {
+    #{$size}, .#{$size} {
+      font-family: fonts.$font-heading;
+      font-weight: bold;
+      line-height: 1.25;
+      letter-spacing: -0.25px;
+
+      // @include fonts.#{$size}; // refactor below values (https://itnext.io/advanced-use-of-sass-maps-bd5a47ca0d1a)
+    }
   }
 
   h1, .h1 {
+    @include fonts.h1;
     letter-spacing: -0.5px;
+  }
+
+  h2, .h2 {
+    @include fonts.h2;
+  }
+
+  h3, .h3 {
+    @include fonts.h3;
+  }
+
+  h4, .h4 {
+    @include fonts.h4;
   }
 
   strong, b {
@@ -26,6 +43,8 @@ $color-list: colors.$highlight-colors;
   --color-list-length: #{length($list: $color-list)};
 }
 
+$border-radius: 0.15em;
+
 .highlight {
   display: block;
   background-color: colors.$black;
@@ -34,7 +53,7 @@ $color-list: colors.$highlight-colors;
   line-height: 1.1;
   letter-spacing: -0.25px;
   text-decoration: none;
-  border-radius: 0.15em;
+  border-radius: $border-radius;
   padding: 0.4em 0.6em;
   transition: background-color 300ms ease-in-out;
 
@@ -44,5 +63,23 @@ $color-list: colors.$highlight-colors;
     &.color-#{$index}:hover {
       background-color: $color;
     }
+  }
+}
+
+.underline {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  margin-bottom: 0;
+
+  &::after {
+    content: "";
+    display: block;
+    position: relative;
+    width: calc(100% - 20px);
+    height: 3px;
+    border-radius: $border-radius;
+    background-color: colors.$black;
+    margin: 1.1em auto 1em;
   }
 }
