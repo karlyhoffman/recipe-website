@@ -2,6 +2,7 @@
 // variables
 @use 'variables/colors.scss' as colors;
 @use 'variables/fonts.scss' as fonts;
+@use 'variables/layout.scss' as *;
 // partials
 @use 'global/layout';
 @use 'global/typography';
@@ -12,7 +13,7 @@ main {
   font-size: 1.25rem;
   line-height: 1.5;
   margin: 0;
-  padding: 50px 0;
+  padding: gutterPow(2.5) 0;
 
   p {
     letter-spacing: 0.75px;

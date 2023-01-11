@@ -19,6 +19,6 @@ $font-text: var(--font-alegreya);
 }
 
 @mixin h4 {
-  font-size: clamp(1.25rem, 1.0299rem + 0.939vw, 1.875rem); // 20px to 30px (screens: 375px to 1200px)
+  font-size: clamp(1.125rem, 0.9049rem + 0.939vw, 1.75rem); // 18px to 28px (screens: 375px to 1200px)
   margin-bottom: gutterPow(1.15);
 }
