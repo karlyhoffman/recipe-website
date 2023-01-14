@@ -10,3 +10,15 @@
     width: min(90vw, 1200px);
   }
 }
+
+.d-mobile {
+  @include breakpoints.media-breakpoint-up(md) {
+    display: none;
+  }
+}
+
+.d-desktop {
+  @include breakpoints.media-breakpoint-down(md) {
+    display: none;
+  }
+}

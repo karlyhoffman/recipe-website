@@ -9,20 +9,24 @@
       margin-bottom: gutterPow(4);
     }
 
+    h2 {
+      margin-bottom: gutterPow(2);
+    }
+
     &__wrapper {
+
       @include media-breakpoint-up(md) {
         position: sticky;
         top: $gutter;
       }
     }
 
-    &__subgroup ul li a {  
-      @include media-breakpoint-down(sm) {
-        @include h1;
-      }
-    }
-
     &__subgroup {
+
+      h2 {
+        margin-bottom: gutterPow(1.5);
+      }
+
       ul li a {  
         @include media-breakpoint-down(sm) {
           @include h1;
@@ -31,7 +35,11 @@
 
       &:last-of-type {
         margin-top: gutterPow(2);
-        margin-bottom: gutterPow(15);
+        margin-bottom: gutterPow(10);
+
+        h2 {
+          margin-bottom: gutterPow(1.15);
+        }
 
         @include media-breakpoint-up(md) {
           ul {

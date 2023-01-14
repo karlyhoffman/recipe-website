@@ -7,13 +7,11 @@
 @use 'global/layout';
 @use 'global/typography';
 
-main {
+body {
+  background-color: colors.$black;
   color: colors.$black;
   font-family: fonts.$font-text;
   font-size: 1.25rem;
-  line-height: 1.5;
-  margin: 0;
-  padding: gutterPow(2.5) 0;
 
   p {
     letter-spacing: 0.75px;
@@ -21,7 +19,7 @@ main {
   }
 
   a {
-    color: colors.$black;
+    color: inherit;
   }
 
   ul {

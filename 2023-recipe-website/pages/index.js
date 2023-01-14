@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Row, Column, Marquee } from 'components';
+import { Row, Column } from 'components';
 import styles from 'styles/pages/homepage.module.scss';
 
 export default function Homepage() {
@@ -8,7 +8,7 @@ export default function Homepage() {
       <h1 className="sr-only">Recipe Website</h1>
 
       <Column className={classNames(styles.group, styles.group__featured)}>
-        <h2 className="h4 underline">Recipes to Cook Next</h2>
+        <h2 className="h4 outline">Recipes to Cook Next</h2>
         <ul>
           <li>
             <a className="h1 highlight" href="/recipes/pulled-mushroom-tacos-with-salsa-guille">
@@ -35,7 +35,7 @@ export default function Homepage() {
 
       <Column md={6} className={classNames(styles.group, styles.group__subgroup)}>
         <div className={styles.group__wrapper}>
-          <h2 className="h4 underline">Favorites</h2>
+          <h2 className="h4 outline">Favorites</h2>
           <ul>
             <li>
               <a className="h2 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
@@ -73,7 +73,7 @@ export default function Homepage() {
 
       <Column md={6} className={classNames(styles.group, styles.group__subgroup)}>
         <div className={styles.group__wrapper}>
-          <h2 className="h4 underline">Recently Added</h2>
+          <h2 className="h4 outline">Recently Added</h2>
           <ul>
             <li>
               <a className="h2 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
@@ -110,7 +110,7 @@ export default function Homepage() {
       </Column>
 
       <Column className={classNames(styles.group, styles.group__subgroup)}>
-        <h2 className="h4 underline">Ideas for Next Week</h2>
+        <h2 className="h5 outline">Ideas for Next Week</h2>
         <ul>
           <li>
             <a className="h4 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">

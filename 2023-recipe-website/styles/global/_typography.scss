@@ -1,46 +1,48 @@
 @use '../variables/colors.scss' as colors;
 @use '../variables/fonts.scss' as fonts;
 
-$headings: h1, h2, h3, h4, h5, h6;
-
-main {
-  @each $size in $headings {
-    #{$size}, .#{$size} {
-      font-family: fonts.$font-heading;
-      font-weight: bold;
-      line-height: 1.25;
-      letter-spacing: -0.25px;
-
-      // @include fonts.#{$size}; // refactor below values (https://itnext.io/advanced-use-of-sass-maps-bd5a47ca0d1a)
-    }
-  }
-
-  h1, .h1 {
-    @include fonts.h1;
-    letter-spacing: -0.5px;
-  }
-
-  h2, .h2 {
-    @include fonts.h2;
-  }
-
-  h3, .h3 {
-    @include fonts.h3;
-  }
-
-  h4, .h4 {
-    @include fonts.h4;
-  }
-
-  strong, b {
-    font-weight: 700;
-  }
-}
-
 $color-list: colors.$highlight-colors;
 
 :root {
   --color-list-length: #{length($list: $color-list)};
+}
+
+$headings: h1, h2, h3, h4, h5, h6;
+
+@each $size in $headings {
+  #{$size}, .#{$size} {
+    font-family: fonts.$font-heading;
+    font-weight: bold;
+    line-height: 1.25;
+    letter-spacing: -0.25px;
+
+    // TODO: @include fonts.#{$size}; // refactor below values (https://itnext.io/advanced-use-of-sass-maps-bd5a47ca0d1a)
+  }
+}
+
+h1, .h1 {
+  @include fonts.h1;
+  letter-spacing: -0.5px;
+}
+
+h2, .h2 {
+  @include fonts.h2;
+}
+
+h3, .h3 {
+  @include fonts.h3;
+}
+
+h4, .h4 {
+  @include fonts.h4;
+}
+
+h5, .h5 {
+  @include fonts.h5;
+}
+
+strong, b {
+  font-weight: 700;
 }
 
 $border-radius: 0.15em;
@@ -66,20 +68,11 @@ $border-radius: 0.15em;
   }
 }
 
-.underline {
+.outline {
   display: inline-block;
   position: relative;
+  border: 3px solid colors.$black;
+  border-radius: $border-radius;
   line-height: 1;
-  margin-bottom: 0;
-
-  &::after {
-    content: "";
-    display: block;
-    position: relative;
-    width: calc(100% - 20px);
-    height: 3px;
-    border-radius: $border-radius;
-    background-color: colors.$black;
-    margin: 1.1em auto 1em;
-  }
+  padding: 0.5em 1em;
 }
