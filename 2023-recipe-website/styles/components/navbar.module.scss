@@ -1,0 +1,34 @@
+.navbar {
+  display: block;
+  background-color: $black;
+  color: $white;
+  font-family: $font-heading;
+  font-size: 1rem;
+  padding: 10px 0;
+
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $gutter;
+    padding-bottom: 5px;
+
+    @include media-breakpoint-up(md) {
+      justify-content: flex-start;
+      padding-bottom: 0;
+
+      li:last-child {
+        margin-left: auto;
+      }
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

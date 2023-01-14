@@ -1,0 +1,26 @@
+.search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  line-height: 1;
+
+  input {
+    width: 75vw;
+    max-width: 300px;
+  }
+
+  &__icon {
+    flex: 0 0 15px;
+    display: block;
+    width: 15px;
+    height: auto;
+    fill: $white;
+    transform-origin: center center;
+    transition: transform 350ms $ease;
+
+    &:hover {
+      fill: $light-grey;
+      transform: scale(1.15);
+    }
+  }
+}

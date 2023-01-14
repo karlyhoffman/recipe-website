@@ -1,22 +1,26 @@
-// import { Meta, Navbar, Footer } from 'components';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import classNames from 'classnames';
+import { Row, Column, Footer, Navbar } from 'components';
 import { applyHighlightColor } from 'utils/highlight-text';
-import { Row, Column } from 'components';
+import styles from 'styles/components/layout.module.scss';
 
 function Layout({ children, fontClasses }) {
-  useEffect(applyHighlightColor, []);
+  const { asPath } = useRouter();
+
+  useEffect(applyHighlightColor, [asPath]);
 
   return (
-    <>
+    <div className={classNames(fontClasses, styles.layout)}>
       {/* <Meta /> */}
-      {/* <Navbar /> */}
-      <main className={fontClasses}>
+      <Navbar />
+      <main>
         <Row noGutter>
           <Column noGutter>{children}</Column>
         </Row>
       </main>
-      {/* <Footer /> */}
-    </>
+      <Footer />
+    </div>
   );
 }
 

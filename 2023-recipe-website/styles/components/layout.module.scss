@@ -1,0 +1,10 @@
+.layout {
+  background-color: #FFFFFF;
+  font-family: $font-text;
+  
+  main {
+    min-height: calc(100vh - 46px - 49px); // minus nav and footer height
+    margin: 0;
+    padding: gutterPow(2.5) 0;
+  }
+}
