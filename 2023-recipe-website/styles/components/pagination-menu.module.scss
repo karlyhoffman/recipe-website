@@ -1,0 +1,20 @@
+.pagination_menu {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding-top: $gutter;
+
+  li {
+    span {
+      text-decoration: underline;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  &:empty {
+    display: none;
+  }
+}

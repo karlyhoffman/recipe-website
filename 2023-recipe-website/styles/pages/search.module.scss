@@ -1,0 +1,11 @@
+#search {
+  text-align: center;
+
+  @include media-breakpoint-up(sm) {
+    text-align: left;
+
+    ul.results li a {
+      display: inline-block;
+    }
+  }
+}
