@@ -11,22 +11,22 @@ export default function Homepage() {
         <h2 className="h4 outline">Recipes to Cook Next</h2>
         <ul>
           <li>
-            <a className="h1 highlight" href="/recipes/pulled-mushroom-tacos-with-salsa-guille">
+            <a className="h4 highlight" href="/recipes/pulled-mushroom-tacos-with-salsa-guille">
               Pulled Mushroom Tacos With Salsa Guille
             </a>
           </li>
           <li>
-            <a className="h1 highlight" href="/recipes/salsa-guille-serrano-pepper-salsa-peanut-butter">
+            <a className="h4 highlight" href="/recipes/salsa-guille-serrano-pepper-salsa-peanut-butter">
               Salsa Guille
             </a>
           </li>
           <li>
-            <a className="h1 highlight" href="/recipes/creamy-mushroom-and-green-bean-masala">
+            <a className="h4 highlight" href="/recipes/creamy-mushroom-and-green-bean-masala">
               Creamy Mushroom and Green Bean Masala
             </a>
           </li>
           <li>
-            <a className="h1 highlight" href="/recipes/couscous-with-dates">
+            <a className="h4 highlight" href="/recipes/couscous-with-dates">
               Couscous with Dates
             </a>
           </li>
@@ -38,32 +38,32 @@ export default function Homepage() {
           <h2 className="h4 outline">Favorites</h2>
           <ul>
             <li>
-              <a className="h2 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
+              <a className="h5 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
                 Spicy Adobo Shrimp Cocktail
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
+              <a className="h5 highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
                 Lemon Gnocchi with Spinach and Peas
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
+              <a className="h5 highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
                 Whole Roasted Cauliflower With Pistachio Pesto
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/spaghetti-bolognese">
+              <a className="h5 highlight" href="/recipes/spaghetti-bolognese">
                 Spaghetti Bolognese
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/double-tomato-bruschetta">
+              <a className="h5 highlight" href="/recipes/double-tomato-bruschetta">
                 Double Tomato Bruschetta
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/pasta-alla-norma">
+              <a className="h5 highlight" href="/recipes/pasta-alla-norma">
                 Pasta alla Norma
               </a>
             </li>
@@ -76,32 +76,32 @@ export default function Homepage() {
           <h2 className="h4 outline">Recently Added</h2>
           <ul>
             <li>
-              <a className="h2 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
+              <a className="h5 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
                 Spicy Adobo Shrimp Cocktail
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
+              <a className="h5 highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
                 Lemon Gnocchi with Spinach and Peas
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
+              <a className="h5 highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
                 Whole Roasted Cauliflower With Pistachio Pesto
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/spaghetti-bolognese">
+              <a className="h5 highlight" href="/recipes/spaghetti-bolognese">
                 Spaghetti Bolognese
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/double-tomato-bruschetta">
+              <a className="h5 highlight" href="/recipes/double-tomato-bruschetta">
                 Double Tomato Bruschetta
               </a>
             </li>
             <li>
-              <a className="h2 highlight" href="/recipes/pasta-alla-norma">
+              <a className="h5 highlight" href="/recipes/pasta-alla-norma">
                 Pasta alla Norma
               </a>
             </li>
@@ -109,36 +109,36 @@ export default function Homepage() {
         </div>
       </Column>
 
-      <Column className={classNames(styles.group, styles.group__subgroup)}>
-        <h2 className="h5 outline">Ideas for Next Week</h2>
+      <Column md={9} className={classNames(styles.group, styles.group__subgroup)}>
+        <h2 className="h4 outline">Ideas for Next Week</h2>
         <ul>
           <li>
-            <a className="h4 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
+            <a className="h6 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
               Spicy Adobo Shrimp Cocktail
             </a>
           </li>
           <li>
-            <a className="h4 highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
+            <a className="h6 highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
               Lemon Gnocchi with Spinach and Peas
             </a>
           </li>
           <li>
-            <a className="h4 highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
+            <a className="h6 highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
               Whole Roasted Cauliflower With Pistachio Pesto
             </a>
           </li>
           <li>
-            <a className="h4 highlight" href="/recipes/spaghetti-bolognese">
+            <a className="h6 highlight" href="/recipes/spaghetti-bolognese">
               Spaghetti Bolognese
             </a>
           </li>
           <li>
-            <a className="h4 highlight" href="/recipes/double-tomato-bruschetta">
+            <a className="h6 highlight" href="/recipes/double-tomato-bruschetta">
               Double Tomato Bruschetta
             </a>
           </li>
           <li>
-            <a className="h4 highlight" href="/recipes/pasta-alla-norma">
+            <a className="h6 highlight" href="/recipes/pasta-alla-norma">
               Pasta alla Norma
             </a>
           </li>

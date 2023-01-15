@@ -1,5 +1,4 @@
 #homepage {
-  text-align: center;
 
   .group {
     position: relative;
@@ -10,7 +9,13 @@
     }
 
     h2 {
-      margin-bottom: gutterPow(2);
+      margin-bottom: gutterPow(1.5);
+    }
+
+    ul li a {  
+      @include media-breakpoint-down(sm) {
+        @include h3;
+      }
     }
 
     &__wrapper {
@@ -21,42 +26,27 @@
       }
     }
 
+    &__featured ul li {
+      margin-bottom: gutterPow(1.5);
+    }
+
     &__subgroup {
 
-      h2 {
-        margin-bottom: gutterPow(1.5);
-      }
-
-      ul li a {  
-        @include media-breakpoint-down(sm) {
-          @include h1;
-        }
+      ul li {
+        margin-bottom: gutterPow(1.25);
       }
 
       &:last-of-type {
-        margin-top: gutterPow(2);
-        margin-bottom: gutterPow(10);
-
-        h2 {
-          margin-bottom: gutterPow(1.15);
-        }
-
         @include media-breakpoint-up(md) {
+          $gap: gutterPow(0.6);
+
           ul {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: $gutter;
+            gap: $gap;
 
             li {
-              display: block;
-              position: relative;
-              white-space: nowrap;
-              
-              a {
-                margin-bottom: 0;
-              }
+              margin-bottom: $gap;
             }
           }
         }

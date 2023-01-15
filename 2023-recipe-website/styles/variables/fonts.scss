@@ -27,3 +27,8 @@ $font-text: var(--font-alegreya);
   font-size: clamp(1rem, 0.868rem + 0.5634vw, 1.375rem); // 16px to 22px (screens: 375px to 1200px)
   margin-bottom: $gutter;
 }
+
+@mixin h6 {
+  font-size: clamp(1rem, 0.912rem + 0.3756vw, 1.25rem); // 16px to 20px (screens: 375px to 1200px)
+  margin-bottom: $gutter;
+}
