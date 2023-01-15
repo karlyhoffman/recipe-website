@@ -6,19 +6,25 @@
   font-size: 1rem;
   padding: 10px 0;
 
-  ul {
+  &__menu {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: $gutter;
     padding-bottom: 5px;
+
+    li:last-child {
+      flex: 0 0 100%;
+    }
 
     @include media-breakpoint-up(md) {
       justify-content: flex-start;
       padding-bottom: 0;
 
       li:last-child {
+        flex: 0 0 50%;
+        max-width: 350px;
         margin-left: auto;
       }
     }
