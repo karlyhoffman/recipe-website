@@ -1,0 +1,288 @@
+{
+  "Main" : {
+    "title" : {
+      "type" : "StructuredText",
+      "config" : {
+        "single" : "heading1",
+        "label" : "Recipe Title",
+        "placeholder" : "Recipe Title"
+      }
+    },
+    "uid" : {
+      "type" : "UID",
+      "config" : {
+        "label" : "Slug",
+        "placeholder" : "recipe-slug"
+      }
+    },
+    "minutes_prep" : {
+      "type" : "Number",
+      "config" : {
+        "label" : "Prep Time",
+        "placeholder" : "Minutes"
+      }
+    },
+    "minutes_total" : {
+      "type" : "Number",
+      "config" : {
+        "label" : "Total Time",
+        "placeholder" : "Minutes"
+      }
+    },
+    "source" : {
+      "type" : "StructuredText",
+      "config" : {
+        "single" : "paragraph,hyperlink",
+        "allowTargetBlank" : true,
+        "label" : "Source/Inspiration",
+        "placeholder" : "Where did you find the recipe?"
+      }
+    },
+    "servings" : {
+      "type" : "Number",
+      "config" : {
+        "label" : "Servings",
+        "placeholder" : "Number of meals"
+      }
+    },
+    "last_cooked_date" : {
+      "type" : "Date",
+      "config" : {
+        "label" : "Last Cooked",
+        "placeholder" : "When did you last make this recipe?"
+      }
+    },
+    "recipe_photo" : {
+      "type" : "Image",
+      "config" : {
+        "constraint" : { },
+        "thumbnails" : [ ],
+        "label" : "Recipe Photo"
+      }
+    }
+  },
+  "Notes" : {
+    "recipe_notes" : {
+      "type" : "StructuredText",
+      "config" : {
+        "multi" : "paragraph,preformatted,strong,em,hyperlink,image,embed,list-item,o-list-item",
+        "allowTargetBlank" : true,
+        "label" : "Recipe Notes",
+        "placeholder" : "Any special to note about this recipe?"
+      }
+    }
+  },
+  "Ingredients" : {
+    "ingredient_slices" : {
+      "type" : "Slices",
+      "fieldset" : "Slice zone",
+      "config" : {
+        "labels" : {
+          "ingredient" : [ ],
+          "ingredient_heading" : [ ],
+          "test_slice" : [ {
+            "name" : "example_1",
+            "display" : "Example 1"
+          }, {
+            "name" : "example_2",
+            "display" : "Example 2"
+          } ]
+        },
+        "choices" : {
+          "ingredient" : {
+            "type" : "Slice",
+            "fieldset" : "Ingredient",
+            "description" : "Quantity and Name",
+            "icon" : "restaurant",
+            "display" : "list",
+            "non-repeat" : {
+              "ingredient" : {
+                "type" : "StructuredText",
+                "config" : {
+                  "single" : "paragraph,strong,em,hyperlink",
+                  "allowTargetBlank" : true,
+                  "label" : "Ingredient",
+                  "placeholder" : "Ingredient name and quantity"
+                }
+              },
+              "aisle" : {
+                "type" : "Select",
+                "config" : {
+                  "options" : [ "Baking", "Beer and Wine", "Bread", "Cereal", "Cheese", "Chips", "Dairy", "Deli", "Frozen", "Meats", "Pasta", "Produce", "Seafood", "Soda", "Soup", "Spices", "World Aisle" ],
+                  "label" : "Grocery Aisle"
+                }
+              }
+            },
+            "repeat" : { }
+          },
+          "ingredient_heading" : {
+            "type" : "Slice",
+            "fieldset" : "Ingredient Heading",
+            "description" : "Heading for New Section",
+            "icon" : "text_format",
+            "display" : "list",
+            "non-repeat" : {
+              "ingredient_heading" : {
+                "type" : "StructuredText",
+                "config" : {
+                  "single" : "heading4",
+                  "label" : "Ingredient Heading",
+                  "placeholder" : "Write a new heading here."
+                }
+              }
+            },
+            "repeat" : { }
+          }
+        }
+      }
+    }
+  },
+  "Instructions" : {
+    "body" : {
+      "type" : "Slices",
+      "fieldset" : "Slice zone",
+      "config" : {
+        "labels" : {
+          "recipe_instruction" : [ ],
+          "instruction_heading" : [ ]
+        },
+        "choices" : {
+          "recipe_instruction" : {
+            "type" : "Slice",
+            "fieldset" : "Recipe Instruction",
+            "description" : "Describe a Step",
+            "icon" : "assignment",
+            "display" : "list",
+            "non-repeat" : {
+              "instruction" : {
+                "type" : "StructuredText",
+                "config" : {
+                  "multi" : "paragraph,preformatted,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item",
+                  "allowTargetBlank" : true,
+                  "label" : "Instruction",
+                  "placeholder" : "Write a recipe step here."
+                }
+              }
+            },
+            "repeat" : { }
+          },
+          "instruction_heading" : {
+            "type" : "Slice",
+            "fieldset" : "Instruction Heading",
+            "description" : "Heading for New Section",
+            "icon" : "text_format",
+            "display" : "list",
+            "non-repeat" : {
+              "instruction_heading" : {
+                "type" : "StructuredText",
+                "config" : {
+                  "single" : "heading4",
+                  "label" : "Instruction Heading",
+                  "placeholder" : "Write a new heading here."
+                }
+              }
+            },
+            "repeat" : { }
+          }
+        }
+      }
+    }
+  },
+  "Related Recipes" : {
+    "related_recipes" : {
+      "type" : "Group",
+      "config" : {
+        "fields" : {
+          "related_recipe" : {
+            "type" : "Link",
+            "config" : {
+              "select" : "document",
+              "customtypes" : [ "recipe" ],
+              "label" : "Recipe",
+              "placeholder" : "Select a related recipe"
+            }
+          }
+        },
+        "label" : "Related Recipes"
+      }
+    }
+  },
+  "Tags" : {
+    "main_ingredient_tags" : {
+      "type" : "Group",
+      "config" : {
+        "fields" : {
+          "ingredient_tag" : {
+            "type" : "Link",
+            "config" : {
+              "select" : "document",
+              "customtypes" : [ "ingredient_tag" ],
+              "label" : "Ingredient Tag",
+              "placeholder" : "Select an Ingredient Tag"
+            }
+          }
+        },
+        "label" : "Main Ingredient Tags"
+      }
+    },
+    "cuisine_tags" : {
+      "type" : "Group",
+      "config" : {
+        "fields" : {
+          "cuisine_tag" : {
+            "type" : "Link",
+            "config" : {
+              "select" : "document",
+              "customtypes" : [ "cuisine_tag" ],
+              "label" : "Cuisine Tag",
+              "placeholder" : "Select a Cuisine Tag"
+            }
+          }
+        },
+        "label" : "Cuisine Tags"
+      }
+    },
+    "type_tags" : {
+      "type" : "Group",
+      "config" : {
+        "fields" : {
+          "type_tag" : {
+            "type" : "Link",
+            "config" : {
+              "select" : "document",
+              "customtypes" : [ "type_tag" ],
+              "label" : "Type Tag",
+              "placeholder" : "Select a Type Tag (ie Main, Side)"
+            }
+          }
+        },
+        "label" : "Dish Type Tags"
+      }
+    },
+    "season_tags" : {
+      "type" : "Group",
+      "config" : {
+        "fields" : {
+          "season_tag" : {
+            "type" : "Link",
+            "config" : {
+              "select" : "document",
+              "customtypes" : [ "season_tag" ],
+              "label" : "Season Tag",
+              "placeholder" : "Select a Season Tag (ie Winter, Thanksgiving)"
+            }
+          }
+        },
+        "label" : "Season Tags"
+      }
+    },
+    "weekday_tag" : {
+      "type" : "Select",
+      "config" : {
+        "options" : [ "No", "Yes" ],
+        "default_value" : "No",
+        "label" : "Weekday Meal"
+      }
+    }
+  }
+}
