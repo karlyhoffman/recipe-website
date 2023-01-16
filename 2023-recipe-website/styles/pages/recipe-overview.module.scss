@@ -4,6 +4,10 @@
     margin-top: gutterPow(4);
   }
 
+  li {
+    margin-bottom: gutterPow(1.5);
+  }
+
   &__categories {
     @include media-breakpoint-up(md) {
       display: flex;
@@ -14,9 +18,5 @@
         margin-bottom: gutterPow(0.5);
       }
     }
-  }
-
-  &__recipes li {
-    margin-bottom: gutterPow(1.5);
   }
 }

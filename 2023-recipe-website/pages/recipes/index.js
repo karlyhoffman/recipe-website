@@ -1,11 +1,10 @@
 import Link from 'next/link';
-// import { RichText } from 'prismic-reactjs';
-// import { linkResolver } from 'api/prismic-configuration';
-// import { fetchMultipleDocumentsByType } from 'api/prismic-queries';
+import { createClient } from 'prismicio';
+import { PrismicText, PrismicLink } from '@prismicio/react';
 import { Row, Column, PaginationMenu } from 'components';
 import styles from 'styles/pages/recipe-overview.module.scss';
 
-const QUERY_SIZE = 100;
+const QUERY_SIZE = 60;
 
 function RecipesOverview({ recipes = [], totalCount, page, pageSize }) {
   return (
@@ -41,52 +40,21 @@ function RecipesOverview({ recipes = [], totalCount, page, pageSize }) {
         </ul>
 
         <h2 className="h4 outline">All Recipes</h2>
-        <ul className={styles.recipes__recipes}>
-          <li>
-            <a className="h5 highlight" href="/recipes/spicy-adobo-shrimp-cocktail">
-              Spicy Adobo Shrimp Cocktail
-            </a>
-          </li>
-          <li>
-            <a className="h5 highlight" href="/recipes/lemon-gnocchi-with-spinach-and-peas">
-              Lemon Gnocchi with Spinach and Peas
-            </a>
-          </li>
-          <li>
-            <a className="h5 highlight" href="/recipes/whole-roasted-cauliflower-with-pistachio-pesto">
-              Whole Roasted Cauliflower With Pistachio Pesto
-            </a>
-          </li>
-          <li>
-            <a className="h5 highlight" href="/recipes/spaghetti-bolognese">
-              Spaghetti Bolognese
-            </a>
-          </li>
-          <li>
-            <a className="h5 highlight" href="/recipes/double-tomato-bruschetta">
-              Double Tomato Bruschetta
-            </a>
-          </li>
-          <li>
-            <a className="h5 highlight" href="/recipes/pasta-alla-norma">
-              Pasta alla Norma
-            </a>
-          </li>
-        </ul>
 
-        {/* {!!recipes.length ? (
-          <ul className={styles.recipe_list}>
+        {!!recipes.length ? (
+          <ul className={styles.recipes__recipes}>
             {recipes.map((recipe, index) => (
               <li key={recipe?.id || index}>
-                <Link href={linkResolver(recipe)} className="h5 highlight">
-                  {RichText.asText(recipe?.data?.title)}
-                </Link>
+                <PrismicLink document={recipe} className="h5 highlight">
+                  <PrismicText field={recipe?.data?.title} />
+                </PrismicLink>
               </li>
             ))}
           </ul>
         ) : (
           <p>No recipes found.</p>
-        )} */}
+        )}
+
         <PaginationMenu {...{ totalCount, pageSize, page }} />
       </Column>
     </Row>
@@ -95,26 +63,21 @@ function RecipesOverview({ recipes = [], totalCount, page, pageSize }) {
 
 export default RecipesOverview;
 
-// RecipesOverview.getInitialProps = async (context) => {
-//   const { req, res, query } = context;
-//   const page = query?.page || 1;
+export async function getServerSideProps({ query }) {
+  const page = query?.page || 1;
 
-//   const recipes = await fetchMultipleDocumentsByType({
-//     type: 'recipe',
-//     req,
-//     options: {
-//       orderings: '[my.recipe.title]',
-//       pageSize: QUERY_SIZE,
-//       page,
-//     },
-//   });
+  const recipes = await createClient().getByType('recipe', {
+    orderings: { field: 'my.recipe.title' },
+    pageSize: QUERY_SIZE,
+    page,
+  });
 
-//   if (res) res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
-
-//   return {
-//     recipes: recipes.results || [],
-//     totalCount: recipes.total_results_size || 0,
-//     pageSize: QUERY_SIZE,
-//     page,
-//   };
-// };
+  return {
+    props: {
+      recipes: recipes.results || [],
+      totalCount: recipes.total_results_size || 0,
+      pageSize: QUERY_SIZE,
+      page,
+    },
+  };
+}
