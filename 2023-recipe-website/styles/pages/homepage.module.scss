@@ -18,14 +18,6 @@
       }
     }
 
-    &__wrapper {
-
-      @include media-breakpoint-up(md) {
-        position: sticky;
-        top: $gutter;
-      }
-    }
-
     &__featured ul li {
       margin-bottom: gutterPow(1.5);
     }
