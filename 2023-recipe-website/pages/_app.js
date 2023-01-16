@@ -1,3 +1,7 @@
+import Link from 'next/link';
+import { PrismicProvider } from '@prismicio/react';
+import { PrismicPreview } from '@prismicio/next';
+import { repositoryName } from 'prismicio';
 import { Alegreya, Merriweather_Sans } from '@next/font/google';
 import { Layout } from 'components';
 import 'styles/main.scss';
@@ -18,8 +22,12 @@ const fonts = `${alegreya.variable} ${merriweather.variable}`;
 
 export default function App({ Component, pageProps }) {
   return (
-    <Layout fontClasses={fonts}>
-      <Component {...pageProps} />
-    </Layout>
+    <PrismicProvider internalLinkComponent={(props) => <Link {...props} />}>
+      <PrismicPreview repositoryName={repositoryName}>
+        <Layout fontClasses={fonts}>
+          <Component {...pageProps} />
+        </Layout>
+      </PrismicPreview>
+    </PrismicProvider>
   );
 }
