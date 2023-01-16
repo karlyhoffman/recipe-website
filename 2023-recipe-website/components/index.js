@@ -4,3 +4,5 @@ export { default as Layout } from './Layout';
 export { default as Navbar } from './Navbar';
 export { default as PaginationMenu } from 'components/PaginationMenu';
 export { default as SearchBar } from './SearchBar';
+export { default as TagOverviewLayout } from './TagOverviewLayout';
+export { default as TagsDetailLayout } from './TagsDetailLayout';

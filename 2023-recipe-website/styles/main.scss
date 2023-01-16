@@ -28,6 +28,10 @@ body {
   }
 }
 
+.recipe-list li {
+  margin-bottom: gutterPow(1.25);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

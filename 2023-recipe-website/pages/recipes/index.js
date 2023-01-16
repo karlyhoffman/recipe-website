@@ -42,7 +42,7 @@ function RecipesOverview({ recipes = [], totalCount, page, pageSize }) {
         <h2 className="h4 outline">All Recipes</h2>
 
         {!!recipes.length ? (
-          <ul className={styles.recipes__recipes}>
+          <ul className="recipe-list">
             {recipes.map((recipe, index) => (
               <li key={recipe?.id || index}>
                 <PrismicLink document={recipe} className="h5 highlight">
@@ -63,7 +63,7 @@ function RecipesOverview({ recipes = [], totalCount, page, pageSize }) {
 
 export default RecipesOverview;
 
-export async function getServerSideProps({ query }) {
+RecipesOverview.getInitialProps = async ({ res, query }) => {
   const page = query?.page || 1;
 
   const recipes = await createClient().getByType('recipe', {
@@ -72,12 +72,12 @@ export async function getServerSideProps({ query }) {
     page,
   });
 
+  if (res) res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
+
   return {
-    props: {
-      recipes: recipes.results || [],
-      totalCount: recipes.total_results_size || 0,
-      pageSize: QUERY_SIZE,
-      page,
-    },
+    recipes: recipes.results || [],
+    totalCount: recipes.total_results_size || 0,
+    pageSize: QUERY_SIZE,
+    page,
   };
-}
+};
