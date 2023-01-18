@@ -1,5 +1,6 @@
 @use '../variables/colors.scss' as colors;
 @use '../variables/fonts.scss' as fonts;
+@use '../variables/layout.scss' as layout;
 
 $color-list: colors.$highlight-colors;
 
@@ -13,8 +14,8 @@ $headings: h1, h2, h3, h4, h5, h6;
   #{$size}, .#{$size} {
     font-family: fonts.$font-heading;
     font-weight: bold;
-    line-height: 2;
     letter-spacing: -0.25px;
+    margin-bottom: layout.$gutter;
 
     // TODO: @include fonts.#{$size}; // refactor below values (https://itnext.io/advanced-use-of-sass-maps-bd5a47ca0d1a)
   }
@@ -55,7 +56,7 @@ $border-radius: 0.15em;
   display: inline;
   background-color: colors.$black;
   color: colors.$white;
-  line-height: 1.7;
+  line-height: 1.75;
   letter-spacing: -0.25px;
   text-decoration: none;
   border-radius: $border-radius;

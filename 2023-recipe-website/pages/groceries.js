@@ -31,14 +31,14 @@ export default function Groceries({ ingredients }) {
         <h1 className="h2 outline">Grocery List</h1>
       </Column>
 
-      {Object.entries(ingredients).map(([aisle, list]) => {
+      {Object.entries(ingredients).map(([aisle, list], i) => {
         if (!list.length) return null;
         return (
-          <Column lg={6} className={styles.groceries__section} key={aisle}>
+          <Column lg={6} className={styles.groceries__section} key={`${aisle}-${i}`}>
             <h2 className="h4 outline">{aisle}</h2>
             <ul>
-              {list.map(({ ingredient }) => (
-                <li key={ingredient} dangerouslySetInnerHTML={{ __html: ingredient }} />
+              {list.map(({ ingredient }, j) => (
+                <li key={`${ingredient}-${i}-${j}`} dangerouslySetInnerHTML={{ __html: ingredient }} />
               ))}
             </ul>
           </Column>

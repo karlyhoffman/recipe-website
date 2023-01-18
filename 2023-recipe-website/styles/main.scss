@@ -21,16 +21,17 @@ html, body {
   overflow: auto;
 }
 
+html {
+  font-size: 100%;
+}
+
 body {
   background-color: colors.$black;
   color: colors.$black;
   font-family: fonts.$font-text;
-  font-size: 1.25rem;
-
-  p {
-    letter-spacing: 0.75px;
-    margin: 15px 0;
-  }
+  font-size: 1.2rem;
+  line-height: 1.5;
+  letter-spacing: 0.75px;
 
   a {
     color: inherit;

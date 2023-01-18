@@ -1,10 +1,12 @@
 .navbar {
   display: block;
+  position: relative;
   background-color: $black;
   color: $white;
   font-family: $font-heading;
   font-size: 1rem;
   padding: 10px 0;
+  z-index: 2;
 
   &__menu {
     display: flex;
