@@ -2,14 +2,14 @@
 
   .group {
     position: relative;
-    margin-bottom: gutterPow(2.5);
+    margin-bottom: $gutter-lg;
 
     @include media-breakpoint-up(md) {
-      margin-bottom: gutterPow(4);
+      margin-bottom: $gutter-xl;
     }
 
     h2 {
-      margin-bottom: gutterPow(1.25);
+      margin-bottom: $gutter;
     }
 
     ul li a {  

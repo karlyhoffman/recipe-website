@@ -10,7 +10,7 @@ function RecipesOverview({ recipes = [], totalCount, page, pageSize }) {
   return (
     <Row className={styles.recipes}>
       <Column>
-        <h1 className="h4 outline">Recipes by Category</h1>
+        <h1 className="h3 outline">Recipes by Category</h1>
         <ul className={styles.recipes__categories}>
           <li>
             <Link className="h4 highlight" href="/recipes/ingredients">

@@ -1,7 +1,7 @@
 .recipes {
 
   h2 {
-    margin-top: gutterPow(4);
+    margin-top: $gutter-xl;
   }
 
   &__categories {

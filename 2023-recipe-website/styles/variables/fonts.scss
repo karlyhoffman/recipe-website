@@ -5,12 +5,12 @@ $font-text: var(--font-alegreya);
 
 @mixin h1 {
   font-size: clamp(1.875rem, 1.3248rem + 2.3474vw, 3.4375rem); // 30px to 55px (screens: 375px to 1200px)
-  margin-bottom: gutterPow(2);
+  margin-bottom: $gutter-lg;
 }
 
 @mixin h2 {
   font-size: clamp(1.5625rem, 1.2764rem + 1.2207vw, 2.375rem); // 25px to 38px (screens: 375px to 1200px)
-  margin-bottom: gutterPow(1.5);
+  margin-bottom: $gutter-md;
 }
 
 @mixin h3 {

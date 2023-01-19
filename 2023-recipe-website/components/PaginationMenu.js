@@ -11,9 +11,9 @@ function PaginationMenu({ totalCount, pageSize, page }) {
   return (
     <ul className={styles.pagination_menu}>
       {[...Array(numOfPages).keys()].map((index) => (
-        <li key={`page-${index}`}>
+        <li className="h6" key={`page-${index}`}>
           {index + 1 === parseInt(page) ? (
-            <span>{page}</span>
+            <span className="outline">{page}</span>
           ) : (
             <Link
               href={{

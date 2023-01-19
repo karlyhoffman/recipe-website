@@ -45,29 +45,29 @@ export default function RecipeDetail(props) {
           </h1>
         </Column>
 
-        <Column md={6} lg={4}>
-          {prepTime && (
+        {prepTime && (
+          <Column md={6} lg={4}>
             <p>
               <strong>Prep</strong>: {formatTime(prepTime)}
             </p>
-          )}
-        </Column>
+          </Column>
+        )}
 
-        <Column md={6} lg={4}>
-          {totalTime && (
+        {totalTime && (
+          <Column md={6} lg={4}>
             <p>
               <strong>Total Time</strong>: {formatTime(totalTime)}
             </p>
-          )}
-        </Column>
+          </Column>
+        )}
 
-        <Column md={6} lg={4}>
-          {servings && (
+        {servings && (
+          <Column md={6} lg={4}>
             <p>
               <strong>Servings</strong>: {servings}
             </p>
-          )}
-        </Column>
+          </Column>
+        )}
 
         {!!notes?.length && (
           <Column className={styles.notes}>

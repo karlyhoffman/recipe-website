@@ -5,6 +5,6 @@
   main {
     min-height: calc(100vh - #{$nav-height} - #{$footer-height}); // minus nav and footer height
     margin: 0;
-    padding: gutterPow(2) 0;
+    padding: $gutter-lg 0;
   }
 }

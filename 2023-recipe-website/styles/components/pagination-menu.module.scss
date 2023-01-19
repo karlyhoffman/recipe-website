@@ -1,16 +1,22 @@
 .pagination_menu {
   display: flex;
   justify-content: center;
-  gap: 5px;
+  align-items: center;
+  gap: 6px;
   padding-top: $gutter;
 
   li {
+
     span {
-      text-decoration: underline;
+      padding: 6px;
     }
 
     a {
       text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

@@ -8,7 +8,10 @@
   @return $gutter;
 }
 
-$gutter: gutterPow();
+$gutter: gutterPow(1);
+$gutter-md: gutterPow(1.5);
+$gutter-lg: gutterPow(2);
+$gutter-xl: gutterPow(4);
 
 $spacing-sm: 30px;
 $spacing: 65px;

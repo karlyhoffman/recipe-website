@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { createClient } from 'prismicio';
 import * as prismicH from '@prismicio/helpers';
 import { Row, Column } from 'components';
@@ -34,13 +35,15 @@ export default function Groceries({ ingredients }) {
       {Object.entries(ingredients).map(([aisle, list], i) => {
         if (!list.length) return null;
         return (
-          <Column lg={6} className={styles.groceries__section} key={`${aisle}-${i}`}>
-            <h2 className="h4 outline">{aisle}</h2>
-            <ul>
-              {list.map(({ ingredient }, j) => (
-                <li key={`${ingredient}-${i}-${j}`} dangerouslySetInnerHTML={{ __html: ingredient }} />
-              ))}
-            </ul>
+          <Column lg={aisle === 'Other' ? 12 : 6} className={styles.groceries__section} key={`${aisle}-${i}`}>
+            <div className={classNames(styles.wrapper, 'outline')}>
+              <h2 className="h4 highlight">{aisle}</h2>
+              <ul>
+                {list.map(({ ingredient }, j) => (
+                  <li key={`${ingredient}-${aisle}-${j}`} dangerouslySetInnerHTML={{ __html: ingredient }} />
+                ))}
+              </ul>
+            </div>
           </Column>
         );
       })}

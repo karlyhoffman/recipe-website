@@ -2,24 +2,23 @@
 
   &__section {
     display: block;
-    margin-top: gutterPow(2);
-    margin-bottom: gutterPow(4);
+    margin: $gutter 0;
 
-    h2 {
-      margin-bottom: 0;
-    }
+    .wrapper {
+      display: block;
+      height: 100%;
+      padding-top: $gutter-md;
 
-    ul {
-      strong {
-        display: inline;
-        background-color: $black;
-        color: $white;
-        letter-spacing: -0.25px;
-        text-decoration: none;
-        border-radius:  0.15em;
-        padding: 0.1em 0.4em;
-        box-decoration-break: clone;
-        -webkit-box-decoration-break: clone;
+      ul {
+        padding-top: $gutter-md;
+
+        li {
+          margin-bottom: $gutter;
+
+          a {
+            font-weight: 700;
+          }
+        }
       }
     }
   }
