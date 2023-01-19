@@ -127,7 +127,7 @@ export default function RecipeDetail(props) {
         </Column>
 
         {!!main_ingredient_tags?.length && (
-          <Column md={3}>
+          <Column md={3} className={styles.tag_column}>
             <h3 className="h5 highlight">Ingredients</h3>
 
             <ul className="recipe-list">
@@ -146,7 +146,7 @@ export default function RecipeDetail(props) {
         )}
 
         {!!cuisine_tags?.length && (
-          <Column md={3}>
+          <Column md={3} className={styles.tag_column}>
             <h3 className="h5 highlight">Cuisine</h3>
 
             <ul className="recipe-list">
@@ -165,7 +165,7 @@ export default function RecipeDetail(props) {
         )}
 
         {(!!type_tags?.length || weekdayTag === 'Yes') && (
-          <Column md={3}>
+          <Column md={3} className={styles.tag_column}>
             <h3 className="h5 highlight">Dish Type</h3>
 
             <ul className="recipe-list">
@@ -191,7 +191,7 @@ export default function RecipeDetail(props) {
         )}
 
         {!!season_tags?.length && (
-          <Column md={3}>
+          <Column md={3} className={styles.tag_column}>
             <h3 className="h5 highlight">Season</h3>
             <ul className="recipe-list">
               {season_tags.map((tag) => {

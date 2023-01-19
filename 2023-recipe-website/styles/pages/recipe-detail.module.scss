@@ -86,27 +86,70 @@ $hero-height: 500px;
 
     .heading_block {
       margin-bottom: gutterPow(1);
-
-      &:not(:nth-child(2)) {
-        margin-top: gutterPow(3);
-      }
     }
 
-    .ingredients p {
-      margin-bottom: gutterPow(0.5);
+    p + .heading_block {
+      margin-top: gutterPow(3);
+    }
+
+    .ingredients {
+      
+      p {
+        margin-bottom: gutterPow(0.5);
+      }
+
+      @include media-breakpoint-down(md) {
+        margin-bottom: gutterPow(3);
+      }
     }
 
     .sticky_wrapper {
       position: sticky;
       top: $gutter;
-      margin-top: gutterPow(-2);
     }
   }
 
   &__tags {
 
-    ul li a {
-      background-color: aqua;
+    .tag_column {
+
+      ul {
+        padding: gutterPow(1) 0;
+
+        li {
+          display: block;
+          line-height: 1;
+          margin-top: 0;
+          margin-bottom: gutterPow(1);
+
+          a {
+            color: $white;
+            margin-bottom: 0;
+            transition: all 300ms ease-in-out;
+
+            &:hover {
+              background-color: $white;
+              color: $black;
+            }
+          }
+        }
+      }
+
+      &:nth-child(2) a {
+        background-color: $lime;
+      }
+
+      &:nth-child(3) a {
+        background-color: $green;
+      }
+
+      &:nth-child(4) a {
+        background-color: $emerald;
+      }
+
+      &:nth-child(5) a {
+        background-color: $blue-green;
+      }
     }
   }
 }
