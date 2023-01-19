@@ -1,13 +1,12 @@
-import Link from 'next/link';
-// import { RichText } from 'prismic-reactjs';
-// import { linkResolver } from 'api/prismic-configuration';
-// import { fetchRecipesBySearchTerm } from 'api/prismic-queries';
+import { createClient } from 'prismicio';
+import * as prismic from '@prismicio/client';
+import { PrismicText, PrismicLink } from '@prismicio/react';
 import { Row, Column, PaginationMenu } from 'components';
 import styles from 'styles/pages/search.module.scss';
 
 const QUERY_SIZE = 100;
 
-function Search({ term = '', recipes = [], totalCount, pageSize, page }) {
+function Search({ term = '', recipes = [], totalCount, pageSize, page, test }) {
   const hasResults = term && !!recipes.length;
   const noResults = term && !!!recipes.length;
 
@@ -18,12 +17,12 @@ function Search({ term = '', recipes = [], totalCount, pageSize, page }) {
 
         {hasResults && (
           <>
-            <ul className={styles.results}>
-              {recipes.map((recipe) => (
-                <li key={recipe.id}>
-                  <Link href={linkResolver(recipe)} className="h5 highlight">
-                    {RichText.asText(recipe.data.title)}
-                  </Link>
+            <ul className="recipe-list">
+              {recipes.map((recipe, index) => (
+                <li key={recipe?.id || index}>
+                  <PrismicLink document={recipe} className="h5 highlight">
+                    <PrismicText field={recipe?.data?.title} />
+                  </PrismicLink>
                 </li>
               ))}
             </ul>
@@ -42,27 +41,25 @@ function Search({ term = '', recipes = [], totalCount, pageSize, page }) {
 export default Search;
 
 Search.getInitialProps = async (context) => {
-  const { req, res, query } = context;
+  const { res, query } = context;
   const page = query?.page || 1;
 
   if (res) res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
-  // if (!!query?.search?.length) {
-  //   const term = query.search.replace(/"/g, '');
-  //   const { results, total_results_size } = await fetchRecipesBySearchTerm({
-  //     term,
-  //     req,
-  //     options: { orderings: '[my.recipe.title]', pageSize: QUERY_SIZE, page },
-  //   });
+  if (!!query?.search?.length) {
+    const term = query.search.replace(/"/g, '');
+    const { results, total_results_size } = await createClient().get({
+      predicates: [prismic.predicate.at('document.type', 'recipe'), prismic.predicate.fulltext('document', term)],
+    });
 
-  //   return {
-  //     term: query.search,
-  //     recipes: results || [],
-  //     totalCount: total_results_size || 0,
-  //     pageSize: QUERY_SIZE,
-  //     page,
-  //   };
-  // }
+    return {
+      term: query.search,
+      recipes: results || [],
+      totalCount: total_results_size || 0,
+      pageSize: QUERY_SIZE,
+      page,
+    };
+  }
 
   return {
     recipes: 0,
