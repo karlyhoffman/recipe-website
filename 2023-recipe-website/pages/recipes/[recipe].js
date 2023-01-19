@@ -25,7 +25,7 @@ export default function RecipeDetail(props) {
     season_tags = [],
     servings,
     source,
-    title,
+    title = "",
     type_tags = [],
     weekday_tag: weekdayTag = 'No',
   } = props;
@@ -40,9 +40,7 @@ export default function RecipeDetail(props) {
 
       <Row className={styles.recipe__meta}>
         <Column>
-          <h1 className="highlight">
-            <PrismicText field={title} />
-          </h1>
+          <h1 className="highlight">{title ? <PrismicText field={title} /> : 'Recipe Page'}</h1>
         </Column>
 
         {prepTime && (
@@ -106,12 +104,12 @@ export default function RecipeDetail(props) {
           <Column>
             <h2 className="h4 outline">Related</h2>
             <ul className="recipe-list">
-              {related_recipes.map((recipe) => {
-                const { related_recipe, related_recipe: { id, data: { title } } = {} } = recipe;
+              {related_recipes.map(recipe => {
+                const { related_recipe: { id, data: { title } = {} } = { } } = recipe;
                 return (
                   <li key={id}>
-                    <PrismicLink document={related_recipe} className="h5 highlight">
-                      <PrismicText field={title} />
+                    <PrismicLink field={recipe} className="h5 highlight">
+                      {title ? <PrismicText field={title} /> : 'Recipe Page'}
                     </PrismicLink>
                   </li>
                 );
