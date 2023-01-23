@@ -11,30 +11,28 @@ function formatTime(time) {
   return `${hours}:${minutes}`;
 }
 
-export default function RecipeDetail(props) {
-  const {
-    body: instructions = [],
-    cuisine_tags = [],
-    ingredient_slices: ingredients = [],
-    main_ingredient_tags = [],
-    minutes_prep: prepTime,
-    minutes_total: totalTime,
-    recipe_photo: photo,
-    recipe_notes: notes,
-    related_recipes = [],
-    season_tags = [],
-    servings,
-    source,
-    title = "",
-    type_tags = [],
-    weekday_tag: weekdayTag = 'No',
-  } = props;
-
+export default function RecipeDetail({
+  body: instructions = [],
+  cuisine_tags = [],
+  ingredient_slices: ingredients = [],
+  main_ingredient_tags = [],
+  minutes_prep: prepTime,
+  minutes_total: totalTime,
+  recipe_photo: photo,
+  recipe_notes: notes,
+  related_recipes = [],
+  season_tags = [],
+  servings,
+  source,
+  title = '',
+  type_tags = [],
+  weekday_tag: weekdayTag = 'No',
+}) {
   return (
     <Row className={styles.recipe}>
       {photo?.url && (
         <Row fullWidth className={styles.recipe__hero}>
-          <Image className={styles.recipe__hero__img} src={photo.url} alt={photo.alt || ''} fill />{' '}
+          <Image priority className={styles.recipe__hero__img} src={photo.url} alt={photo.alt || ''} fill />{' '}
         </Row>
       )}
 
@@ -104,11 +102,11 @@ export default function RecipeDetail(props) {
           <Column>
             <h2 className="h4 outline">Related</h2>
             <ul className="recipe-list">
-              {related_recipes.map(recipe => {
-                const { related_recipe: { id, data: { title } = {} } = { } } = recipe;
+              {related_recipes.map((recipe) => {
+                const { related_recipe, related_recipe: { id, data: { title } = {} } = {} } = recipe;
                 return (
                   <li key={id}>
-                    <PrismicLink field={recipe} className="h5 highlight">
+                    <PrismicLink document={related_recipe} className="h5 highlight">
                       {title ? <PrismicText field={title} /> : 'Recipe Page'}
                     </PrismicLink>
                   </li>

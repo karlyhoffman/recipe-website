@@ -2,7 +2,6 @@ import { createClient } from 'prismicio';
 import * as prismic from '@prismicio/client';
 import { PrismicText, PrismicLink } from '@prismicio/react';
 import { Row, Column, PaginationMenu } from 'components';
-import styles from 'styles/pages/search.module.scss';
 
 const QUERY_SIZE = 100;
 
@@ -11,7 +10,7 @@ function Search({ term = '', recipes = [], totalCount, pageSize, page, test }) {
   const noResults = term && !!!recipes.length;
 
   return (
-    <Row id={styles.search}>
+    <Row>
       <Column>
         <h1 className="h4 outline">Search {term && `results for "${term}"`}</h1>
 

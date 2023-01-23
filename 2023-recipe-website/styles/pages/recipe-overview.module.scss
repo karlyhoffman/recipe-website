@@ -5,6 +5,10 @@
   }
 
   &__categories {
+    li {
+      margin-bottom: gutterPow(1.25);
+    }
+
     @include media-breakpoint-up(md) {
       display: flex;
       flex-wrap: wrap;

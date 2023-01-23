@@ -10,7 +10,7 @@ $hero-height: 500px;
     left: 50%;
     transform: translateX(-50%);
     width: 100vw;
-    height: calc(#{$hero-height} + #{gutterPow(10)});
+    height: $hero-height;
     min-height: 500px;
     border-bottom: 3px solid $black;
     overflow: hidden;
@@ -19,10 +19,6 @@ $hero-height: 500px;
     &__img {
       object-fit: cover;
       object-position: center center;
-    }
-
-    & + .recipe__meta {
-      margin-top: $hero-height;
     }
   }
 
@@ -48,8 +44,12 @@ $hero-height: 500px;
 
   &__meta {
     font-size: 1rem;
-    margin-top: gutterPow(-2);
+    margin-top: 350px;
     padding-top: $gutter-xl;
+
+    @include media-breakpoint-up(md) {
+      margin-top: $hero-height - 80px;
+    }
 
     &::before {
       border-top: 3px solid $black;

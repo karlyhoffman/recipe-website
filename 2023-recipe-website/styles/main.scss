@@ -12,6 +12,7 @@ html {
 }
 
 body {
+  overscroll-behavior: none;
   background-color: colors.$black;
   color: colors.$black;
   font-family: fonts.$font-text;
