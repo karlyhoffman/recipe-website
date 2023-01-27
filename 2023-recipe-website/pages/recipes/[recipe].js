@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { createClient } from 'prismicio';
 import * as prismicH from '@prismicio/helpers';
 import { PrismicRichText, PrismicText, PrismicLink } from '@prismicio/react';
+import classNames from 'classnames';
 import { Row, Column } from 'components';
 import styles from 'styles/pages/recipe-detail.module.scss';
 
@@ -29,7 +30,7 @@ export default function RecipeDetail({
   weekday_tag: weekdayTag = 'No',
 }) {
   return (
-    <Row className={styles.recipe}>
+    <Row className={classNames(styles.recipe, { [styles['recipe--no_hero']]: !photo?.url })}>
       {photo?.url && (
         <Row fullWidth className={styles.recipe__hero}>
           <Image priority className={styles.recipe__hero__img} src={photo.url} alt={photo.alt || ''} fill />{' '}

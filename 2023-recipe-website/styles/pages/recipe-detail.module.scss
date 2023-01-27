@@ -82,6 +82,14 @@ $hero-height: 500px;
     }
   }
 
+  &--no_hero .recipe__meta {
+    margin-top: 0;
+
+    &::before {
+      border-top: none;
+    }
+  }
+
   &__body {
 
     .heading_block {
