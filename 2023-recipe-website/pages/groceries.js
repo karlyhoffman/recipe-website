@@ -32,15 +32,15 @@ export default function Groceries({ ingredients }) {
         <h1 className="h2 outline">Grocery List</h1>
       </Column>
 
-      {Object.entries(ingredients).map(([aisle, list], i) => {
+      {Object.entries(ingredients).map(([aisle, list]) => {
         if (!list.length) return null;
         return (
-          <Column lg={aisle === 'Other' ? 12 : 6} className={styles.groceries__section} key={`${aisle}-${i}`}>
+          <Column lg={aisle === 'Other' ? 12 : 6} className={styles.groceries__section} key={aisle}>
             <div className={classNames(styles.wrapper, 'outline')}>
               <h2 className="h4 highlight">{aisle}</h2>
               <ul>
-                {list.map(({ ingredient }, j) => (
-                  <li key={`${ingredient}-${aisle}-${j}`} dangerouslySetInnerHTML={{ __html: ingredient }} />
+                {list.map(({ ingredient, recipeID }) => (
+                  <li key={ingredient + recipeID} dangerouslySetInnerHTML={{ __html: ingredient }} />
                 ))}
               </ul>
             </div>
@@ -51,16 +51,16 @@ export default function Groceries({ ingredients }) {
   );
 }
 
-export const getStaticProps = async ({ previewData }) => {
+export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData });
   const { results = [] } =
     (await client.getByType('cook_next_list', { fetchLinks: ['recipe.ingredient_slices'] })) || {};
 
   const sortedIngredients =
-    results[0]?.data?.next_recipes?.reduce((acc, { next_recipe: recipe }) => {
+    results[0]?.data?.next_recipes?.reduce((acc, { next_recipe: recipe, next_recipe: { id: recipeID } }) => {
       const ingredients = recipe.data.ingredient_slices
         .filter(({ slice_type }) => slice_type === 'ingredient')
-        .map(({ primary }) => ({ ...primary, ingredient: prismicH.asHTML(primary.ingredient) }));
+        .map(({ primary }) => ({ ...primary, ingredient: prismicH.asHTML(primary.ingredient), recipeID }));
 
       ingredients.forEach((ingredient) => {
         const aisleName = acc[ingredient.aisle] || acc['Other'];
@@ -77,7 +77,7 @@ export const getStaticProps = async ({ previewData }) => {
     },
     revalidate: 10,
   };
-};
+}
 
 function sortByBoldText(a, b) {
   const aIngredient = a.ingredient
