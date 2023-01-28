@@ -51,3 +51,5 @@ config.json
 
 .now
 pages/moms-list.js
+.vercel/project.json
+.vercel/README.txt
