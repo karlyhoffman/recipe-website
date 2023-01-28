@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from 'styles/components/search-bar.module.scss';
 
 function SearchBar() {
   const router = useRouter();
+  const { asPath } = router;
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleEnter = (e) => {
@@ -15,6 +16,12 @@ function SearchBar() {
       });
     }
   };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+  };
+
+  useEffect(clearSearch, [asPath]);
 
   return (
     <div className={styles.search}>
