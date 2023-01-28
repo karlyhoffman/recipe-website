@@ -111,6 +111,10 @@ $hero-height: 500px;
       }
     }
 
+    .instructions p {
+      margin-bottom: $gutter;
+    }
+
     .sticky_wrapper {
       position: sticky;
       top: $gutter;
