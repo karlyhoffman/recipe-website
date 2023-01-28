@@ -108,7 +108,7 @@
               "aisle" : {
                 "type" : "Select",
                 "config" : {
-                  "options" : [ "Baking", "Beer and Wine", "Bread", "Cereal", "Cheese", "Chips", "Dairy", "Deli", "Frozen", "Meats", "Pasta", "Produce", "Seafood", "Soda", "Soup", "Spices", "World Aisle" ],
+                  "options" : [ "Baking", "Beer and Wine", "Bread", "Cereal", "Cheese", "Chips", "Dairy", "Deli", "Frozen", "Meat", "Pasta", "Produce", "Seafood", "Soda", "Soup", "Spices", "World Aisle" ],
                   "label" : "Grocery Aisle"
                 }
               }

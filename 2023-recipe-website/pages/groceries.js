@@ -10,7 +10,7 @@ const GROCERY_AISLES = {
   Deli: [],
   Bread: [],
   Seafood: [],
-  Meats: [],
+  Meat: [],
   Cheese: [],
   'World Aisle': [],
   Pasta: [],
