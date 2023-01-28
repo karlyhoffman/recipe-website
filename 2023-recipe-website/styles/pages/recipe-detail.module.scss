@@ -44,7 +44,7 @@ $hero-height: 500px;
 
   &__meta {
     font-size: 1rem;
-    margin-top: $hero-height - 115px;
+    margin-top: $hero-height - 120px;
     padding-top: $gutter-xl;
 
     @include media-breakpoint-up(md) {
@@ -101,7 +101,6 @@ $hero-height: 500px;
     }
 
     .ingredients {
-      
       p {
         margin-bottom: gutterPow(0.5);
       }
