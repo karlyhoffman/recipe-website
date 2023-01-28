@@ -1,46 +1,39 @@
 import classNames from 'classnames';
 import { createClient } from 'prismicio';
+import { PrismicRichText, PrismicText, PrismicLink } from '@prismicio/react';
 import * as prismicH from '@prismicio/helpers';
 import { Row, Column } from 'components';
 import styles from 'styles/pages/groceries.module.scss';
 
-const GROCERY_AISLES = {
-  'Beer and Wine': [],
-  Produce: [],
-  Deli: [],
-  Bread: [],
-  Seafood: [],
-  Meat: [],
-  Cheese: [],
-  'World Aisle': [],
-  Pasta: [],
-  Soup: [],
-  Spices: [],
-  Baking: [],
-  Cereal: [],
-  Chips: [],
-  Soda: [],
-  Frozen: [],
-  Dairy: [],
-  Other: [],
-};
+export default function Groceries({ recipes }) {
+  const ingredients = sortIngredientsByAisle(recipes);
 
-export default function Groceries({ ingredients }) {
   return (
     <Row className={styles.groceries}>
       <Column>
         <h1 className="h2 outline">Grocery List</h1>
+        <ul className="recipe-list">
+          {recipes.map(({ next_recipe: recipe }, i) => (
+            <li key={recipe?.id || i}>
+              <PrismicLink document={recipe} className="h6 highlight">
+                <PrismicText field={recipe?.data?.title} />
+              </PrismicLink>
+            </li>
+          ))}
+        </ul>
       </Column>
 
-      {Object.entries(ingredients).map(([aisle, list]) => {
+      {ingredients.map(([aisle, list]) => {
         if (!list.length) return null;
         return (
           <Column lg={aisle === 'Other' ? 12 : 6} className={styles.groceries__section} key={aisle}>
             <div className={classNames(styles.wrapper, 'outline')}>
               <h2 className="h4 highlight">{aisle}</h2>
               <ul>
-                {list.map(({ ingredient, recipeID }) => (
-                  <li key={ingredient + recipeID} dangerouslySetInnerHTML={{ __html: ingredient }} />
+                {list.map(({ ingredient, key }) => (
+                  <li key={key}>
+                    <PrismicRichText field={ingredient} />
+                  </li>
                 ))}
               </ul>
             </div>
@@ -53,39 +46,75 @@ export default function Groceries({ ingredients }) {
 
 export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData });
-  const { results = [] } =
-    (await client.getByType('cook_next_list', { fetchLinks: ['recipe.ingredient_slices'] })) || {};
-
-  const sortedIngredients =
-    results[0]?.data?.next_recipes?.reduce((acc, { next_recipe: recipe, next_recipe: { id: recipeID } }) => {
-      const ingredients = recipe.data.ingredient_slices
-        .filter(({ slice_type }) => slice_type === 'ingredient')
-        .map(({ primary }) => ({ ...primary, ingredient: prismicH.asHTML(primary.ingredient), recipeID }));
-
-      ingredients.forEach((ingredient) => {
-        const aisleName = acc[ingredient.aisle] || acc['Other'];
-        aisleName.push(ingredient);
-        aisleName.sort(sortByBoldText);
-      });
-
-      return acc;
-    }, GROCERY_AISLES) || GROCERY_AISLES;
+  const pageData = await client.getByType('cook_next_list', {
+    fetchLinks: ['recipe.title', 'recipe.ingredient_slices'],
+  });
 
   return {
     props: {
-      ingredients: sortedIngredients || [],
+      recipes: pageData?.results[0]?.data?.next_recipes || [],
     },
     revalidate: 10,
   };
 }
 
+function sortIngredientsByAisle(recipes = []) {
+  const ingredientsObj = recipes?.reduce(
+    (acc, { next_recipe, next_recipe: { id, data } }) => {
+      const ingredients = data.ingredient_slices
+        .filter(({ slice_type }) => slice_type === 'ingredient')
+        .map(({ primary }) => {
+          return {
+            ...primary,
+            recipe: next_recipe,
+            ingredientText: prismicH.asHTML(primary.ingredient),
+            key: (id + prismicH.asHTML(primary.ingredient)).replace(/[^A-Z0-9]+/gi, '_'),
+          };
+        });
+
+      ingredients.forEach((ingredient) => {
+        const aisleName = ingredient.aisle || 'Other';
+        const aisleData = acc[aisleName];
+        aisleData.push(ingredient);
+        aisleData.sort(sortByBoldText);
+
+        acc[aisleName] = aisleData;
+      });
+
+      return acc;
+    },
+    {
+      'Beer and Wine': [],
+      Produce: [],
+      Deli: [],
+      Bread: [],
+      Seafood: [],
+      Meat: [],
+      Cheese: [],
+      'World Aisle': [],
+      Pasta: [],
+      Soup: [],
+      Spices: [],
+      Baking: [],
+      Cereal: [],
+      Chips: [],
+      Soda: [],
+      Frozen: [],
+      Dairy: [],
+      Other: [],
+    }
+  );
+
+  return Object.entries(ingredientsObj);
+}
+
 function sortByBoldText(a, b) {
-  const aIngredient = a.ingredient
-    .substring(a.ingredient.indexOf('<strong>') + '<strong>'.length, a.ingredient.lastIndexOf('</strong>'))
+  const aIngredient = a.ingredientText
+    .substring(a.ingredientText.indexOf('<strong>') + '<strong>'.length, a.ingredientText.lastIndexOf('</strong>'))
     .toLowerCase();
 
-  const bIngredient = b.ingredient
-    .substring(b.ingredient.indexOf('<strong>') + '<strong>'.length, b.ingredient.lastIndexOf('</strong>'))
+  const bIngredient = b.ingredientText
+    .substring(b.ingredientText.indexOf('<strong>') + '<strong>'.length, b.ingredientText.lastIndexOf('</strong>'))
     .toLowerCase();
 
   if (aIngredient < bIngredient) {
