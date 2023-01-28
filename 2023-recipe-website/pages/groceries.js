@@ -30,9 +30,18 @@ export default function Groceries({ recipes }) {
             <div className={classNames(styles.wrapper, 'outline')}>
               <h2 className="h4 highlight">{aisle}</h2>
               <ul>
-                {list.map(({ ingredient, key }) => (
-                  <li key={key}>
+                {list.map(({ ingredient, recipe, isDuplicate, id }) => (
+                  <li className={styles.ingredient} key={id}>
                     <PrismicRichText field={ingredient} />
+                    {isDuplicate && (
+                      <span className={styles.recipe}>
+                        (
+                        <PrismicLink document={recipe}>
+                          <PrismicText field={recipe?.data?.title} />
+                        </PrismicLink>
+                        )
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -59,53 +68,65 @@ export async function getStaticProps({ previewData }) {
 }
 
 function sortIngredientsByAisle(recipes = []) {
-  const ingredientsObj = recipes?.reduce(
-    (acc, { next_recipe, next_recipe: { id, data } }) => {
-      const ingredients = data.ingredient_slices
-        .filter(({ slice_type }) => slice_type === 'ingredient')
-        .map(({ primary }) => {
-          return {
-            ...primary,
-            recipe: next_recipe,
-            ingredientText: prismicH.asHTML(primary.ingredient),
-            key: (id + prismicH.asHTML(primary.ingredient)).replace(/[^A-Z0-9]+/gi, '_'),
-          };
+  return Object.entries(
+    recipes?.reduce(
+      (acc, { next_recipe, next_recipe: { id, data } }) => {
+        const ingredients = data.ingredient_slices
+          .filter(({ slice_type }) => slice_type === 'ingredient')
+          .map(({ primary }) => {
+            return {
+              ...primary,
+              recipe: next_recipe,
+              ingredientText: prismicH.asHTML(primary.ingredient),
+              id: (id + prismicH.asHTML(primary.ingredient)).replace(/[^A-Z0-9]+/gi, ''),
+            };
+          });
+
+        ingredients.forEach((ingredient) => {
+          const aisleName = ingredient.aisle || 'Other';
+          const aisleData = acc[aisleName];
+          aisleData.push(ingredient);
+          aisleData.sort(sortByBoldText);
+
+          // Check for duplicate ingredients (if not in "Other" group):
+          let duplicates = [];
+          if (ingredient.aisle) {
+            const lookup = aisleData.reduce((a, e) => {
+              a[e.ingredientText] = ++a[e.ingredientText] || 0;
+              return a;
+            }, {});
+            duplicates = aisleData.filter((e) => lookup[e.ingredientText]).map(({ id }) => id);
+          }
+
+          acc[aisleName] = !duplicates.length
+            ? aisleData
+            : aisleData.map((el) => (duplicates.includes(el.id) ? { ...el, isDuplicate: true } : el));
         });
 
-      ingredients.forEach((ingredient) => {
-        const aisleName = ingredient.aisle || 'Other';
-        const aisleData = acc[aisleName];
-        aisleData.push(ingredient);
-        aisleData.sort(sortByBoldText);
-
-        acc[aisleName] = aisleData;
-      });
-
-      return acc;
-    },
-    {
-      'Beer and Wine': [],
-      Produce: [],
-      Deli: [],
-      Bread: [],
-      Seafood: [],
-      Meat: [],
-      Cheese: [],
-      'World Aisle': [],
-      Pasta: [],
-      Soup: [],
-      Spices: [],
-      Baking: [],
-      Cereal: [],
-      Chips: [],
-      Soda: [],
-      Frozen: [],
-      Dairy: [],
-      Other: [],
-    }
+        return acc;
+      },
+      {
+        'Beer and Wine': [],
+        Produce: [],
+        Deli: [],
+        Bread: [],
+        Seafood: [],
+        Meat: [],
+        Cheese: [],
+        'World Aisle': [],
+        Pasta: [],
+        Soup: [],
+        Spices: [],
+        Baking: [],
+        Cereal: [],
+        Chips: [],
+        Soda: [],
+        Frozen: [],
+        Dairy: [],
+        Other: [],
+      }
+    )
   );
-
-  return Object.entries(ingredientsObj);
 }
 
 function sortByBoldText(a, b) {
