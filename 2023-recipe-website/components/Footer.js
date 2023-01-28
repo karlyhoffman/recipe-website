@@ -16,8 +16,7 @@ function Footer() {
         <a href="https://karlyhoffman.com/" target="_blank" rel="noreferrer">
           <strong>Karly Hoffman</strong>
         </a>
-        . <br className="d-mobile" />
-        View the code{' '}
+        .{' '}View the code{' '}
         <a
           href="https://github.com/karlyhoffman/recipe-website/tree/master/2023-recipe-website"
           target="_blank"
