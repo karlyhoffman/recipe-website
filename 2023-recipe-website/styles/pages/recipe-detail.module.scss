@@ -44,7 +44,7 @@ $hero-height: 500px;
 
   &__meta {
     font-size: 1rem;
-    margin-top: 350px;
+    margin-top: $hero-height - 115px;
     padding-top: $gutter-xl;
 
     @include media-breakpoint-up(md) {
