@@ -26,7 +26,11 @@ export default function Groceries({ recipes }) {
       {ingredients.map(([aisle, list]) => {
         if (!list.length) return null;
         return (
-          <Column lg={aisle === 'Other' ? 12 : 6} className={styles.groceries__section} key={aisle}>
+          <Column
+            lg={aisle === 'Other' ? 12 : 6}
+            className={classNames(styles.groceries__section, { [styles.groceries__section__last]: aisle === 'Other' })}
+            key={aisle}
+          >
             <div className={classNames(styles.wrapper, 'outline')}>
               <h2 className="h4 highlight">{aisle}</h2>
               <ul>
@@ -84,7 +88,7 @@ function sortIngredientsByAisle(recipes = []) {
 
         ingredients.forEach((ingredient) => {
           const aisleName = ingredient.aisle || 'Other';
-          const aisleData = acc[aisleName];
+          const aisleData = acc[aisleName] || [];
           aisleData.push(ingredient);
           aisleData.sort(sortByBoldText);
 
