@@ -29,7 +29,7 @@ export default function Homepage({
 
       <Column md={6} className={classNames(styles.group, styles.group__subgroup)}>
         <div className={styles.group__wrapper}>
-          <h2 className="h4 outline">Favorites</h2>
+          <h2 className="h4 outline">Current Favorites</h2>
           <ul>
             {favoriteRecipes.map(({ favorite_recipe }) => (
               <li key={favorite_recipe.id}>
