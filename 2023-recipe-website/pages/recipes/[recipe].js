@@ -30,182 +30,184 @@ export default function RecipeDetail({
   weekday_tag: weekdayTag = 'No',
 }) {
   return (
-    <Row className={classNames(styles.recipe, { [styles['recipe--no_hero']]: !photo?.url })}>
+    <>
       {photo?.url && (
-        <Row fullWidth className={styles.recipe__hero}>
+        <div className={styles.recipe__hero}>
           <Image priority className={styles.recipe__hero__img} src={photo.url} alt={photo.alt || ''} fill />{' '}
-        </Row>
+        </div>
       )}
 
-      <Row className={styles.recipe__meta}>
-        <Column>
-          <h1 className="highlight">{title ? <PrismicText field={title} /> : 'Recipe Page'}</h1>
-        </Column>
-
-        {prepTime && (
-          <Column md={6} lg={4}>
-            <p>
-              <strong>Prep</strong>: {formatTime(prepTime)}
-            </p>
-          </Column>
-        )}
-
-        {totalTime && (
-          <Column md={6} lg={4}>
-            <p>
-              <strong>Total Time</strong>: {formatTime(totalTime)}
-            </p>
-          </Column>
-        )}
-
-        {servings && (
-          <Column md={6} lg={4}>
-            <p>
-              <strong>Servings</strong>: {servings}
-            </p>
-          </Column>
-        )}
-
-        {!!notes?.length && (
-          <Column className={styles.notes}>
-            <strong>Notes:</strong>
-            <PrismicRichText field={notes} />
-          </Column>
-        )}
-
-        {!!source?.length && (
-          <Column className={styles.source}>
-            <p className={styles.label}>Source:</p>
-            <PrismicRichText field={source} />
-          </Column>
-        )}
-      </Row>
-
-      <Row className={styles.recipe__body}>
-        <Column md={4} className={styles.ingredients}>
-          <h2 className="h4 outline">Ingredients</h2>
-          <div className={styles.sticky_wrapper}>
-            {ingredients && ingredients.map((ingredient, i) => <DynamicTextZone key={`ing-${i}`} {...ingredient} />)}
-          </div>
-        </Column>
-
-        <Column md={8} className={styles.instructions}>
-          <h2 className="h4 outline">Instructions</h2>
-          <div className={styles.sticky_wrapper}>
-            {instructions &&
-              instructions.map((instruction, i) => <DynamicTextZone key={`ins-${i}`} {...instruction} />)}
-          </div>
-        </Column>
-      </Row>
-
-      {!!related_recipes.length && (
-        <Row className={styles.recipe__related}>
+      <div className={classNames(styles.recipe__wrapper)}>
+        <Row className={styles.recipe__meta}>
           <Column>
-            <h2 className="h4 outline">Related</h2>
-            <ul className="recipe-list">
-              {related_recipes.map((recipe) => {
-                const { related_recipe, related_recipe: { id, data: { title } = {} } = {} } = recipe;
-                return (
-                  <li key={id}>
-                    <PrismicLink document={related_recipe} className="h5 highlight">
-                      {title ? <PrismicText field={title} /> : 'Recipe Page'}
-                    </PrismicLink>
-                  </li>
-                );
-              })}
-            </ul>
+            <h1 className="highlight">{title ? <PrismicText field={title} /> : 'Recipe Page'}</h1>
+          </Column>
+
+          {prepTime && (
+            <Column md={6} lg={4}>
+              <p>
+                <strong>Prep</strong>: {formatTime(prepTime)}
+              </p>
+            </Column>
+          )}
+
+          {totalTime && (
+            <Column md={6} lg={4}>
+              <p>
+                <strong>Total Time</strong>: {formatTime(totalTime)}
+              </p>
+            </Column>
+          )}
+
+          {servings && (
+            <Column md={6} lg={4}>
+              <p>
+                <strong>Servings</strong>: {servings}
+              </p>
+            </Column>
+          )}
+
+          {!!notes?.length && (
+            <Column className={styles.notes}>
+              <strong>Notes:</strong>
+              <PrismicRichText field={notes} />
+            </Column>
+          )}
+
+          {!!source?.length && (
+            <Column className={styles.source}>
+              <p className={styles.label}>Source:</p>
+              <PrismicRichText field={source} />
+            </Column>
+          )}
+        </Row>
+
+        <Row className={styles.recipe__body}>
+          <Column md={4} className={styles.ingredients}>
+            <h2 className="h4 outline">Ingredients</h2>
+            <div className={styles.sticky_wrapper}>
+              {ingredients && ingredients.map((ingredient, i) => <DynamicTextZone key={`ing-${i}`} {...ingredient} />)}
+            </div>
+          </Column>
+
+          <Column md={8} className={styles.instructions}>
+            <h2 className="h4 outline">Instructions</h2>
+            <div className={styles.sticky_wrapper}>
+              {instructions &&
+                instructions.map((instruction, i) => <DynamicTextZone key={`ins-${i}`} {...instruction} />)}
+            </div>
           </Column>
         </Row>
-      )}
 
-      <Row className={styles.recipe__tags}>
-        <Column>
-          <h2 className="h4 outline">Tags</h2>
-        </Column>
-
-        {!!main_ingredient_tags?.length && (
-          <Column md={3} className={styles.tag_column}>
-            <h3 className="h5 highlight">Ingredients</h3>
-
-            <ul className="recipe-list">
-              {main_ingredient_tags.map((tag) => {
-                const { ingredient_tag: doc, ingredient_tag: { id, data: { ingredient_tag } = {} } = {} } = tag;
-                return (
-                  <li key={id}>
-                    <PrismicLink document={doc} className="h6 outline">
-                      {ingredient_tag}
-                    </PrismicLink>
-                  </li>
-                );
-              })}
-            </ul>
-          </Column>
+        {!!related_recipes.length && (
+          <Row className={styles.recipe__related}>
+            <Column>
+              <h2 className="h4 outline">Related</h2>
+              <ul className="recipe-list">
+                {related_recipes.map((recipe) => {
+                  const { related_recipe, related_recipe: { id, data: { title } = {} } = {} } = recipe;
+                  return (
+                    <li key={id}>
+                      <PrismicLink document={related_recipe} className="h5 highlight">
+                        {title ? <PrismicText field={title} /> : 'Recipe Page'}
+                      </PrismicLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Column>
+          </Row>
         )}
 
-        {!!cuisine_tags?.length && (
-          <Column md={3} className={styles.tag_column}>
-            <h3 className="h5 highlight">Cuisine</h3>
+        <Row className={styles.recipe__tags}>
+          <Column>
+            <h2 className="h4 outline">Tags</h2>
+          </Column>
 
-            <ul className="recipe-list">
-              {cuisine_tags.map((tag) => {
-                const { cuisine_tag: doc, cuisine_tag: { data: { cuisine_tag } = {} } = {} } = tag;
-                return (
-                  <li key={cuisine_tag}>
-                    <PrismicLink document={doc} className="h6 outline">
-                      {cuisine_tag}
+          {!!main_ingredient_tags?.length && (
+            <Column md={3} className={styles.tag_column}>
+              <h3 className="h5 highlight">Ingredients</h3>
+
+              <ul className="recipe-list">
+                {main_ingredient_tags.map((tag) => {
+                  const { ingredient_tag: doc, ingredient_tag: { id, data: { ingredient_tag } = {} } = {} } = tag;
+                  return (
+                    <li key={id}>
+                      <PrismicLink document={doc} className="h6 outline">
+                        {ingredient_tag}
+                      </PrismicLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Column>
+          )}
+
+          {!!cuisine_tags?.length && (
+            <Column md={3} className={styles.tag_column}>
+              <h3 className="h5 highlight">Cuisine</h3>
+
+              <ul className="recipe-list">
+                {cuisine_tags.map((tag) => {
+                  const { cuisine_tag: doc, cuisine_tag: { data: { cuisine_tag } = {} } = {} } = tag;
+                  return (
+                    <li key={cuisine_tag}>
+                      <PrismicLink document={doc} className="h6 outline">
+                        {cuisine_tag}
+                      </PrismicLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Column>
+          )}
+
+          {(!!type_tags?.length || weekdayTag === 'Yes') && (
+            <Column md={3} className={styles.tag_column}>
+              <h3 className="h5 highlight">Dish Type</h3>
+
+              <ul className="recipe-list">
+                {type_tags.map((tag) => {
+                  const { type_tag: doc, type_tag: { data: { type_tag } = {} } = {} } = tag;
+                  return (
+                    <li key={type_tag}>
+                      <PrismicLink document={doc} className="h6 outline">
+                        {type_tag}
+                      </PrismicLink>
+                    </li>
+                  );
+                })}
+                {weekdayTag === 'Yes' && (
+                  <li>
+                    <PrismicLink href="/recipes/weekday" className="h6 outline">
+                      Weekday Meal
                     </PrismicLink>
                   </li>
-                );
-              })}
-            </ul>
-          </Column>
-        )}
+                )}
+              </ul>
+            </Column>
+          )}
 
-        {(!!type_tags?.length || weekdayTag === 'Yes') && (
-          <Column md={3} className={styles.tag_column}>
-            <h3 className="h5 highlight">Dish Type</h3>
-
-            <ul className="recipe-list">
-              {type_tags.map((tag) => {
-                const { type_tag: doc, type_tag: { data: { type_tag } = {} } = {} } = tag;
-                return (
-                  <li key={type_tag}>
-                    <PrismicLink document={doc} className="h6 outline">
-                      {type_tag}
-                    </PrismicLink>
-                  </li>
-                );
-              })}
-              {weekdayTag === 'Yes' && (
-                <li>
-                  <PrismicLink href="/recipes/weekday" className="h6 outline">
-                    Weekday Meal
-                  </PrismicLink>
-                </li>
-              )}
-            </ul>
-          </Column>
-        )}
-
-        {!!season_tags?.length && (
-          <Column md={3} className={styles.tag_column}>
-            <h3 className="h5 highlight">Season</h3>
-            <ul className="recipe-list">
-              {season_tags.map((tag) => {
-                const { season_tag: doc, season_tag: { data: { season_tag } = {} } = {} } = tag;
-                return (
-                  <li key={season_tag}>
-                    <PrismicLink document={doc} className="h6 outline">
-                      {season_tag}
-                    </PrismicLink>
-                  </li>
-                );
-              })}
-            </ul>
-          </Column>
-        )}
-      </Row>
-    </Row>
+          {!!season_tags?.length && (
+            <Column md={3} className={styles.tag_column}>
+              <h3 className="h5 highlight">Season</h3>
+              <ul className="recipe-list">
+                {season_tags.map((tag) => {
+                  const { season_tag: doc, season_tag: { data: { season_tag } = {} } = {} } = tag;
+                  return (
+                    <li key={season_tag}>
+                      <PrismicLink document={doc} className="h6 outline">
+                        {season_tag}
+                      </PrismicLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Column>
+          )}
+        </Row>
+      </div>
+    </>
   );
 }
 

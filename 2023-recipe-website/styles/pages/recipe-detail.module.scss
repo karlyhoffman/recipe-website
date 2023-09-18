@@ -1,20 +1,14 @@
-$hero-height: 500px;
-
 .recipe {
 
   &__hero {
     pointer-events: none;
     display: block;
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    height: $hero-height;
-    min-height: 500px;
-    border-bottom: 3px solid $black;
+    width: 100%;
+    height: 500px;
     overflow: hidden;
-    z-index: 1;
+    z-index: -1;
 
     &__img {
       object-fit: cover;
@@ -22,34 +16,22 @@ $hero-height: 500px;
     }
   }
 
+  &__wrapper {
+    position: relative;
+    background-color: $white;
+    border-top: 3px solid $black;
+  }
+
   &__meta,
   &__body,
   &__related,
   &__tags {
     padding: $gutter-lg 0;
-    z-index: 2;
-
-    &::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translate(-50%);
-      width: 100%;
-      height: 100%;
-      background-color: $white;
-    }
   }
 
   &__meta {
     font-size: 1rem;
-    margin-top: $hero-height - 120px;
     padding-top: $gutter-xl;
-
-    @include media-breakpoint-up(md) {
-      margin-top: $hero-height - 85px;
-    }
 
     &::before {
       border-top: 3px solid $black;
@@ -82,16 +64,7 @@ $hero-height: 500px;
     }
   }
 
-  &--no_hero .recipe__meta {
-    margin-top: 0;
-
-    &::before {
-      border-top: none;
-    }
-  }
-
   &__body {
-
     .heading_block {
       margin-bottom: $gutter;
     }
