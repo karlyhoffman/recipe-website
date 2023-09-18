@@ -1,4 +1,5 @@
 export { Row, Column } from './Grid';
+export { default as ConditionalWrapper } from './ConditionalWrapper';
 export { default as Footer } from './Footer';
 export { default as Layout } from './Layout';
 export { default as Meta } from './Meta';
