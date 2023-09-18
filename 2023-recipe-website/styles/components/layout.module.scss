@@ -1,10 +1,15 @@
 .layout {
-  background-color: #FFFFFF;
   font-family: $font-text;
   
   main {
+    background-color: #FFFFFF;
     min-height: calc(100vh - #{$nav-height} - #{$footer-height}); // minus nav and footer height
     margin: 0;
     padding: $gutter-lg 0;
+  }
+
+  &--recipe-detail main {
+    background: none;
+    padding: 0;
   }
 }

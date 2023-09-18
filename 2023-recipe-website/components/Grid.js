@@ -1,13 +1,12 @@
 import classNames from 'classnames';
 import styles from 'styles/components/grid.module.scss';
 
-const Row = ({ id, children, noGutter = false, className, fullWidth = false }) => {
+const Row = ({ id, children, noGutter = false, className }) => {
   return (
     <div
       id={id || null}
       className={classNames(styles.row, className, 'container', {
         [styles.no_gutter]: noGutter,
-        [styles.full]: fullWidth,
       })}
     >
       {children}
