@@ -1,5 +1,4 @@
 .recipes {
-
   h2 {
     margin-top: $gutter-xl;
   }
@@ -12,7 +11,7 @@
     @include media-breakpoint-up(md) {
       display: flex;
       flex-wrap: wrap;
-      gap: $gutter;
+      gap: 30px;
 
       li {
         margin-bottom: gutterPow(0.5);
