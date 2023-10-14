@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import { Analytics } from '@vercel/analytics/react';
 import { Row, Column, ConditionalWrapper, Footer, Meta, Navbar } from 'components';
 import { applyHighlightColor } from 'utils/highlight-text';
 import styles from 'styles/components/layout.module.scss';
@@ -17,6 +18,7 @@ function Layout({ children: content, fontClasses }) {
         [styles['layout--recipe-detail']]: pathname === '/recipes/[recipe]',
       })}
     >
+      <Analytics />
       <Meta />
       <Navbar />
       <main>

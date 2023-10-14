@@ -15,6 +15,7 @@
     "@prismicio/helpers": "^2.3.8",
     "@prismicio/next": "^1.0.2",
     "@prismicio/react": "^2.5.1",
+    "@vercel/analytics": "^1.1.1",
     "classnames": "^2.3.2",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
