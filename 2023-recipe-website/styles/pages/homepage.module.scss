@@ -1,5 +1,4 @@
 #homepage {
-
   .group {
     position: relative;
     margin-bottom: $gutter-lg;
@@ -12,7 +11,7 @@
       margin-bottom: $gutter;
     }
 
-    ul li a {  
+    ul li a {
       @include media-breakpoint-down(sm) {
         @include h3;
       }
@@ -23,22 +22,19 @@
     }
 
     &__subgroup {
-
       ul li {
         margin-bottom: gutterPow(1.25);
       }
 
       &:last-of-type {
         @include media-breakpoint-up(md) {
-          $gap: gutterPow(0.6);
-
           ul {
             display: flex;
             flex-wrap: wrap;
-            gap: $gap;
+            gap: 17px 22px;
 
             li {
-              margin-bottom: $gap;
+              margin-bottom: 0;
             }
           }
         }

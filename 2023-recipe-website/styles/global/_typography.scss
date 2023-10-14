@@ -11,7 +11,8 @@ $color-list: colors.$highlight-colors;
 $headings: h1, h2, h3, h4, h5, h6;
 
 @each $size in $headings {
-  #{$size}, .#{$size} {
+  #{$size},
+  .#{$size} {
     font-family: fonts.$font-heading;
     font-weight: bold;
     letter-spacing: -0.25px;
@@ -21,32 +22,39 @@ $headings: h1, h2, h3, h4, h5, h6;
   }
 }
 
-h1, .h1 {
+h1,
+.h1 {
   @include fonts.h1;
   letter-spacing: -0.5px;
 }
 
-h2, .h2 {
+h2,
+.h2 {
   @include fonts.h2;
 }
 
-h3, .h3 {
+h3,
+.h3 {
   @include fonts.h3;
 }
 
-h4, .h4 {
+h4,
+.h4 {
   @include fonts.h4;
 }
 
-h5, .h5 {
+h5,
+.h5 {
   @include fonts.h5;
 }
 
-h6, .h6 {
+h6,
+.h6 {
   @include fonts.h6;
 }
 
-strong, b {
+strong,
+b {
   font-weight: 700;
 }
 
@@ -60,16 +68,19 @@ $border-radius: 0.15em;
   letter-spacing: -0.25px;
   text-decoration: none;
   border-radius: $border-radius;
-  padding: 0.4em 0.6em;
-  transition: background-color 300ms ease-in-out;
+  transition: 300ms ease-in-out;
+  transition-property: background-color, box-shadow;
   box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  padding: 0.4em 0;
+  box-shadow: 0.6em 0 0 colors.$black, -0.6em 0 0 colors.$black;
+  margin-left: 0.6em;
 
   @each $color in $color-list {
     $index: index($color-list, $color);
 
     &.color-#{$index}:hover {
       background-color: $color;
+      box-shadow: 0.6em 0 0 $color, -0.6em 0 0 $color;
     }
   }
 }

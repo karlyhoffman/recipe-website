@@ -18,7 +18,7 @@ function Layout({ children: content, fontClasses }) {
         [styles['layout--recipe-detail']]: pathname === '/recipes/[recipe]',
       })}
     >
-      <Analytics />
+      {process.env.NODE_ENV !== 'development' && <Analytics />}
       <Meta />
       <Navbar />
       <main>
