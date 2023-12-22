@@ -67,14 +67,14 @@ export default function RecipeDetail({
             </Column>
           )}
 
-          {!!notes?.length && (
+          {!!prismicH.asText(notes)?.length && (
             <Column className={styles.notes}>
               <strong>Notes:</strong>
               <PrismicRichText field={notes} />
             </Column>
           )}
 
-          {!!source?.length && (
+          {!!prismicH.asText(source)?.length && (
             <Column className={styles.source}>
               <p className={styles.label}>Source:</p>
               <PrismicRichText field={source} />
