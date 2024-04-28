@@ -15,23 +15,41 @@ A simple website to view recipes by tags.
 
 
 ## Getting Started
-`cd [project-name]` into the Next.js project you want to work on and run: 
-
+Move into the project folder you want to work on (`yarn or npm i` will do nothing here):
 ``` bash
-# install dependencies
+cd [project-name]
+```
+
+Install dependencies:
+``` bash
+#
 yarn
 # or
 npm i
+```
 
-# serve with hot reload at localhost:3000
+Serve with hot reload at [http://localhost:3000](http://localhost:3000):
+``` bash
 yarn dev
 # or
 npm run dev
+```
 
-# build for production with minification
+Build for production with minification:
+``` bash
 yarn build
 # or
 npm run build
+```
+
+Deploy to staging link via [Vercel CLI](https://vercel.com/docs/cli) (will need to install separately):
+``` bash
+vercel
+```
+
+Deploy to production:
+``` bash
+vercel --prod
 ```
 
 For a detailed explanation on how things work, check out [Next.js](https://nextjs.org/docs) and [Prismic.io](https://prismic.io/).
