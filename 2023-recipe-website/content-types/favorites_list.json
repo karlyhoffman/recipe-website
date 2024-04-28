@@ -1,0 +1,28 @@
+{
+  "Main": {
+    "list_name": {
+      "type": "StructuredText",
+      "config": {
+        "single": "heading1",
+        "label": "List Name"
+      }
+    },
+    "favorite_recipes": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "favorite_recipe": {
+            "type": "Link",
+            "config": {
+              "select": "document",
+              "customtypes": ["recipe"],
+              "label": "Favorite Recipe",
+              "placeholder": "Select a Recipe"
+            }
+          }
+        },
+        "label": "Favorite Recipes"
+      }
+    }
+  }
+}

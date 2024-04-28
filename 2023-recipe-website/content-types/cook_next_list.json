@@ -1,0 +1,28 @@
+{
+  "Main": {
+    "list_name": {
+      "type": "StructuredText",
+      "config": {
+        "single": "heading1",
+        "label": "List Name"
+      }
+    },
+    "next_recipes": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "next_recipe": {
+            "type": "Link",
+            "config": {
+              "select": "document",
+              "customtypes": ["recipe"],
+              "label": "Next Recipe to Cook",
+              "placeholder": "Select a Recipe"
+            }
+          }
+        },
+        "label": "Recipes to Cook Next"
+      }
+    }
+  }
+}
