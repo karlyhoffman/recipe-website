@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
 import PaginationMenu from '@/components/PaginationMenu';
 import { recipes } from '@/lib/placeholder-data';
+import { highlightStyle, randomColorStart } from '@/utils/highlight';
 
 const PAGE_SIZE = 100;
 
@@ -19,6 +20,7 @@ export default async function Search({
 
   const hasResults = !!term && results.length > 0;
   const noResults = !!term && results.length === 0;
+  const start = randomColorStart();
 
   return (
     <Row>
@@ -28,9 +30,9 @@ export default async function Search({
         {hasResults && (
           <>
             <ul className="recipe-list">
-              {results.map((recipe) => (
+              {results.map((recipe, i) => (
                 <li key={recipe.id}>
-                  <Link href={`/recipes/${recipe.uid}`} className="h5 highlight">
+                  <Link href={`/recipes/${recipe.uid}`} className="h5 highlight" style={highlightStyle(i, start)}>
                     {recipe.title}
                   </Link>
                 </li>

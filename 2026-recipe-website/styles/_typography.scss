@@ -1,7 +1,6 @@
 // Global typography: heading scale, .highlight color system, .outline badge.
 
 $border-radius: 0.15em;
-$highlight-count: 10; // must match --color-list-length in _tokens.scss
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -47,7 +46,7 @@ b {
   font-weight: 700;
 }
 
-// Highlighted link style — JS applies .color-N class to cycle through the palette.
+// Highlighted link style — --highlight-color is set inline server-side per element.
 .highlight {
   display: inline;
   background-color: var(--color-black);
@@ -64,11 +63,9 @@ b {
   box-shadow: 0.6em 0 0 var(--color-black), -0.6em 0 0 var(--color-black);
   margin-left: 0.6em;
 
-  @for $i from 1 through $highlight-count {
-    &.color-#{$i}:hover {
-      background-color: var(--color-#{$i});
-      box-shadow: 0.6em 0 0 var(--color-#{$i}), -0.6em 0 0 var(--color-#{$i});
-    }
+  &:hover {
+    background-color: var(--highlight-color, var(--color-black));
+    box-shadow: 0.6em 0 0 var(--highlight-color, var(--color-black)), -0.6em 0 0 var(--highlight-color, var(--color-black));
   }
 }
 

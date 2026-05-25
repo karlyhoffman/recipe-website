@@ -4,6 +4,7 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import { Row, Column } from '@/components/Grid';
 import { recipes } from '@/lib/placeholder-data';
+import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import type { IngredientSlice, InstructionSlice } from '@/types';
 import styles from '@/styles/pages/recipe-detail.module.scss';
 
@@ -22,6 +23,8 @@ export default async function RecipeDetail({
   const recipe = recipes.find((r) => r.uid === uid);
 
   if (!recipe) notFound();
+
+  const start = randomColorStart();
 
   const {
     title,
@@ -127,9 +130,9 @@ export default async function RecipeDetail({
             <Column>
               <h2 className="h4 outline">Related</h2>
               <ul className="recipe-list">
-                {related_recipes.map((r) => (
+                {related_recipes.map((r, i) => (
                   <li key={r.id}>
-                    <Link href={`/recipes/${r.uid}`} className="h5 highlight">
+                    <Link href={`/recipes/${r.uid}`} className="h5 highlight" style={highlightStyle(i, start)}>
                       {r.title}
                     </Link>
                   </li>

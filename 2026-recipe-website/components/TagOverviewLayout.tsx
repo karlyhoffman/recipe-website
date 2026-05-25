@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
 import PaginationMenu from '@/components/PaginationMenu';
+import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import type { Tag } from '@/types';
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export default function TagOverviewLayout({ tags, tagType, basePath, title, totalCount, pageSize, page }: Props) {
+  const start = randomColorStart();
+
   if (!tags.length) {
     return (
       <Row>
@@ -29,13 +32,13 @@ export default function TagOverviewLayout({ tags, tagType, basePath, title, tota
       <Column>
         <h1 className="h4 outline">{title}</h1>
         {tagType === 'season' ? (
-          <SeasonTags tags={tags} basePath={basePath} />
+          <SeasonTags tags={tags} basePath={basePath} start={start} />
         ) : (
           <>
             <ul className="recipe-list">
-              {tags.map((tag) => (
+              {tags.map((tag, i) => (
                 <li key={tag.id}>
-                  <Link href={`${basePath}/${tag.uid}`} className="h5 highlight">
+                  <Link href={`${basePath}/${tag.uid}`} className="h5 highlight" style={highlightStyle(i, start)}>
                     {tag.name}
                   </Link>
                 </li>
@@ -49,7 +52,7 @@ export default function TagOverviewLayout({ tags, tagType, basePath, title, tota
   );
 }
 
-function SeasonTags({ tags, basePath }: { tags: Tag[]; basePath: string }) {
+function SeasonTags({ tags, basePath, start }: { tags: Tag[]; basePath: string; start: number }) {
   const mainSeasonUids = ['fall', 'winter', 'spring', 'summer'];
   const { mainSeasons, other } = tags.reduce(
     (acc, tag) => {
@@ -62,9 +65,9 @@ function SeasonTags({ tags, basePath }: { tags: Tag[]; basePath: string }) {
   return (
     <>
       <ul className="recipe-list">
-        {mainSeasons.map((tag) => (
+        {mainSeasons.map((tag, i) => (
           <li key={tag.id}>
-            <Link href={`${basePath}/${tag.uid}`} className="h5 highlight">
+            <Link href={`${basePath}/${tag.uid}`} className="h5 highlight" style={highlightStyle(i, start)}>
               {tag.name}
             </Link>
           </li>
@@ -74,9 +77,9 @@ function SeasonTags({ tags, basePath }: { tags: Tag[]; basePath: string }) {
         <>
           <h2 className="h5 outline">Other</h2>
           <ul className="recipe-list">
-            {other.map((tag) => (
+            {other.map((tag, i) => (
               <li key={tag.id}>
-                <Link href={`${basePath}/${tag.uid}`} className="h5 highlight">
+                <Link href={`${basePath}/${tag.uid}`} className="h5 highlight" style={highlightStyle(i, start)}>
                   {tag.name}
                 </Link>
               </li>

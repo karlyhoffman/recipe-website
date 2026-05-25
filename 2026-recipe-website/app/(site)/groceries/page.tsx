@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
 import { cookNextRecipes } from '@/lib/placeholder-data';
+import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import styles from '@/styles/pages/groceries.module.scss';
 
 const AISLE_ORDER = [
@@ -49,15 +50,16 @@ function sortIngredientsByAisle(recipes: typeof cookNextRecipes) {
 
 export default function Groceries() {
   const aisles = sortIngredientsByAisle(cookNextRecipes);
+  const start = randomColorStart();
 
   return (
     <Row className={styles.groceries}>
       <Column>
         <h1 className="h2 outline">Grocery List</h1>
         <ul className="recipe-list">
-          {cookNextRecipes.map((recipe) => (
+          {cookNextRecipes.map((recipe, i) => (
             <li key={recipe.id}>
-              <Link href={`/recipes/${recipe.uid}`} className="h6 highlight">
+              <Link href={`/recipes/${recipe.uid}`} className="h6 highlight" style={highlightStyle(i, start)}>
                 {recipe.title}
               </Link>
             </li>

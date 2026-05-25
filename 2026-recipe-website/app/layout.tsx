@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Alegreya, Merriweather_Sans } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import HighlightColorApplier from '@/components/HighlightColorApplier';
 import '../styles/main.scss';
 
 const alegreya = Alegreya({
@@ -27,7 +26,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${alegreya.variable} ${merriweather.variable}`}>
       <body>
-        <HighlightColorApplier />
         <Navbar />
         <main>{children}</main>
         <Footer />
