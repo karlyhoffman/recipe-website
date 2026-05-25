@@ -12,7 +12,9 @@ export interface Tag {
 
 export interface IngredientSlice {
   type: 'heading' | 'ingredient';
-  text: string;
+  amount?: string;
+  name: string;
+  preparation?: string;
   aisle?: string;
 }
 

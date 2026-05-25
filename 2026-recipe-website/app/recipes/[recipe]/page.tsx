@@ -225,11 +225,21 @@ function IngredientSliceRenderer({ slice }: { slice: IngredientSlice }) {
   if (slice.type === 'heading') {
     return (
       <div className={styles.heading_block}>
-        <h3 className="h5 highlight">{slice.text}</h3>
+        <h3 className="h5 highlight">{slice.name}</h3>
       </div>
     );
   }
-  return <p>{slice.text}</p>;
+  return (
+    <p>
+      {slice.amount && `${slice.amount} `}<strong>{slice.name}</strong>{slice.preparation && `, ${slice.preparation}`}
+    </p>
+  );
+}
+
+function withBold(text: string) {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) => (i % 2 === 1 ? <strong key={i}>{part}</strong> : part));
 }
 
 function InstructionSliceRenderer({ slice }: { slice: InstructionSlice }) {
@@ -240,7 +250,7 @@ function InstructionSliceRenderer({ slice }: { slice: InstructionSlice }) {
       </div>
     );
   }
-  return <p>{slice.text}</p>;
+  return <p>{withBold(slice.text)}</p>;
 }
 
 export async function generateStaticParams() {
