@@ -1,0 +1,23 @@
+@use '../breakpoints' as bp;
+
+.recipes {
+  h2 {
+    margin-top: var(--gutter-xl);
+  }
+
+  &__categories {
+    li {
+      margin-bottom: calc(var(--gutter) * 1.25);
+    }
+
+    @include bp.media-breakpoint-up(md) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+
+      li {
+        margin-bottom: calc(var(--gutter) * 0.5);
+      }
+    }
+  }
+}

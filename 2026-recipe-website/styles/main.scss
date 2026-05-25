@@ -1,0 +1,31 @@
+@use 'reset';
+@use 'tokens';
+@use 'layout';
+@use 'typography';
+
+html {
+  font-size: 100%;
+}
+
+body {
+  overscroll-behavior: none;
+  background-color: var(--color-black);
+  color: var(--color-black);
+  font-family: var(--font-text);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  letter-spacing: 0.75px;
+
+  a {
+    color: inherit;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.recipe-list li {
+  margin-bottom: calc(var(--gutter) * 1.25);
+}

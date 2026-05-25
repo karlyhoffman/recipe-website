@@ -1,0 +1,47 @@
+@use '../breakpoints' as bp;
+
+#homepage {
+  .group {
+    position: relative;
+    margin-bottom: var(--gutter-lg);
+
+    @include bp.media-breakpoint-up(md) {
+      margin-bottom: var(--gutter-xl);
+    }
+
+    h2 {
+      margin-bottom: var(--gutter);
+    }
+
+    ul li a {
+      @include bp.media-breakpoint-down(sm) {
+        font-size: var(--text-h3);
+        margin-bottom: calc(var(--gutter) * 1.25);
+      }
+    }
+
+    &__featured ul li {
+      margin-bottom: calc(var(--gutter) * 1.5);
+    }
+
+    &__subgroup {
+      ul li {
+        margin-bottom: calc(var(--gutter) * 1.25);
+      }
+
+      &:last-of-type {
+        @include bp.media-breakpoint-up(md) {
+          ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 17px 22px;
+
+            li {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
