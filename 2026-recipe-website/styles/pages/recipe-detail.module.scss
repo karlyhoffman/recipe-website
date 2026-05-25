@@ -1,5 +1,10 @@
 @use '../breakpoints' as bp;
 
+.sticky_wrapper {
+  position: sticky;
+  top: var(--gutter);
+}
+
 .recipe {
   &__hero {
     pointer-events: none;
@@ -82,11 +87,6 @@
 
     .instructions p {
       margin-bottom: var(--gutter);
-    }
-
-    .sticky_wrapper {
-      position: sticky;
-      top: var(--gutter);
     }
   }
 
