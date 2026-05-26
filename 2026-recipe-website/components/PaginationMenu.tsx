@@ -20,16 +20,16 @@ function PaginationMenuInner({ totalCount, pageSize, page }: Props) {
 
   return (
     <ul className={styles.pagination_menu}>
-      {[...Array(numOfPages).keys()].map((index) => {
+      {Array.from({ length: numOfPages }, (_, i) => i + 1).map((pageNum) => {
         const params = new URLSearchParams(searchParams.toString());
-        params.set('page', String(index + 1));
+        params.set('page', String(pageNum));
 
         return (
-          <li className="h6" key={`page-${index}`}>
-            {index + 1 === Number(page) ? (
-              <span className="outline">{page}</span>
+          <li className="h6" key={`page-${pageNum}`}>
+            {pageNum === Number(page) ? (
+              <span className="outline">{pageNum}</span>
             ) : (
-              <Link href={`${pathname}?${params.toString()}`}>{index + 1}</Link>
+              <Link href={`${pathname}?${params.toString()}`}>{pageNum}</Link>
             )}
           </li>
         );
