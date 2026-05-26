@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import classNames from 'classnames';
 import { Row, Column } from '@/components/Grid';
 import { recipes } from '@/lib/placeholder-data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';

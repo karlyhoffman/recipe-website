@@ -56,7 +56,11 @@ function SeasonTags({ tags, basePath, start }: { tags: Tag[]; basePath: string; 
   const mainSeasonUids = ['fall', 'winter', 'spring', 'summer'];
   const { mainSeasons, other } = tags.reduce(
     (acc, tag) => {
-      mainSeasonUids.includes(tag.uid) ? acc.mainSeasons.push(tag) : acc.other.push(tag);
+      if (mainSeasonUids.includes(tag.uid)) {
+        acc.mainSeasons.push(tag);
+      } else {
+        acc.other.push(tag);
+      }
       return acc;
     },
     { mainSeasons: [] as Tag[], other: [] as Tag[] }
