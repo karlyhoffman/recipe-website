@@ -1,0 +1,19 @@
+.hero {
+  background-color: var(--color-black);
+}
+
+.bone {
+  max-width: var(--bone-width, 100%);
+  height: 1rem;
+  background-color: var(--color-light-grey);
+  border-radius: 3px;
+  margin-bottom: var(--gutter);
+
+  &_lg {
+    height: 1.75rem;
+  }
+
+  &_xl {
+    height: 2.5rem;
+  }
+}
