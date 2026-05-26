@@ -1,14 +1,15 @@
 import TagOverviewLayout from '@/components/TagOverviewLayout';
-import { seasonTags } from '@/lib/placeholder-data';
+import { getSeasonTags } from '@/lib/data';
 
-export default function SeasonsOverview() {
+export default async function SeasonsOverview() {
+  const tags = await getSeasonTags();
   return (
     <TagOverviewLayout
-      tags={seasonTags}
+      tags={tags}
       tagType="season"
       basePath="/recipes/seasons"
       title="Season Tags"
-      totalCount={seasonTags.length}
+      totalCount={tags.length}
       pageSize={100}
       page={1}
     />

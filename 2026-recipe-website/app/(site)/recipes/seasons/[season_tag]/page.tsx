@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import TagsDetailLayout from '@/components/TagsDetailLayout';
-import { seasonTags, recipes } from '@/lib/placeholder-data';
+import { getSeasonTagByUid, getRecipesBySeasonTag, getSeasonTags } from '@/lib/data';
 
 export default async function SeasonDetail({
   params,
@@ -8,17 +8,17 @@ export default async function SeasonDetail({
   params: Promise<{ season_tag: string }>;
 }) {
   const { season_tag: uid } = await params;
-  const tag = seasonTags.find((t) => t.uid === uid);
+  const [tag, taggedRecipes] = await Promise.all([
+    getSeasonTagByUid(uid),
+    getRecipesBySeasonTag(uid),
+  ]);
 
   if (!tag) notFound();
-
-  const taggedRecipes = recipes
-    .filter((r) => r.season_tags.some((t) => t.uid === uid))
-    .map(({ id, uid, title }) => ({ id, uid, title }));
 
   return <TagsDetailLayout recipes={taggedRecipes} tagName={tag.name} />;
 }
 
 export async function generateStaticParams() {
-  return seasonTags.map((tag) => ({ season_tag: tag.uid }));
+  const tags = await getSeasonTags();
+  return tags.map((tag) => ({ season_tag: tag.uid }));
 }

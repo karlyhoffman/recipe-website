@@ -1,14 +1,15 @@
 import TagOverviewLayout from '@/components/TagOverviewLayout';
-import { typeTags } from '@/lib/placeholder-data';
+import { getTypeTags } from '@/lib/data';
 
-export default function DishTypesOverview() {
+export default async function DishTypesOverview() {
+  const tags = await getTypeTags();
   return (
     <TagOverviewLayout
-      tags={typeTags}
+      tags={tags}
       tagType="type"
       basePath="/recipes/dish-types"
       title="Dish Types"
-      totalCount={typeTags.length}
+      totalCount={tags.length}
       pageSize={100}
       page={1}
     />

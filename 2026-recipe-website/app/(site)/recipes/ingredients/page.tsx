@@ -1,14 +1,15 @@
 import TagOverviewLayout from '@/components/TagOverviewLayout';
-import { ingredientTags } from '@/lib/placeholder-data';
+import { getIngredientTags } from '@/lib/data';
 
-export default function IngredientsOverview() {
+export default async function IngredientsOverview() {
+  const tags = await getIngredientTags();
   return (
     <TagOverviewLayout
-      tags={ingredientTags}
+      tags={tags}
       tagType="ingredient"
       basePath="/recipes/ingredients"
       title="Main Ingredient Tags"
-      totalCount={ingredientTags.length}
+      totalCount={tags.length}
       pageSize={100}
       page={1}
     />

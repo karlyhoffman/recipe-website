@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import TagsDetailLayout from '@/components/TagsDetailLayout';
-import { typeTags, recipes } from '@/lib/placeholder-data';
+import { getTypeTagByUid, getRecipesByTypeTag, getTypeTags } from '@/lib/data';
 
 export default async function DishTypeDetail({
   params,
@@ -8,17 +8,17 @@ export default async function DishTypeDetail({
   params: Promise<{ type_tag: string }>;
 }) {
   const { type_tag: uid } = await params;
-  const tag = typeTags.find((t) => t.uid === uid);
+  const [tag, taggedRecipes] = await Promise.all([
+    getTypeTagByUid(uid),
+    getRecipesByTypeTag(uid),
+  ]);
 
   if (!tag) notFound();
-
-  const taggedRecipes = recipes
-    .filter((r) => r.type_tags.some((t) => t.uid === uid))
-    .map(({ id, uid, title }) => ({ id, uid, title }));
 
   return <TagsDetailLayout recipes={taggedRecipes} tagName={tag.name} />;
 }
 
 export async function generateStaticParams() {
-  return typeTags.map((tag) => ({ type_tag: tag.uid }));
+  const tags = await getTypeTags();
+  return tags.map((tag) => ({ type_tag: tag.uid }));
 }

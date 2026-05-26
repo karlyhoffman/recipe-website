@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
 import PaginationMenu from '@/components/PaginationMenu';
-import { recipes } from '@/lib/placeholder-data';
+import { getAllRecipes } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import styles from '@/styles/pages/recipe-overview.module.scss';
 
@@ -14,7 +14,7 @@ export default async function RecipesOverview({
 }) {
   const { page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
-  const allRecipes = recipes;
+  const allRecipes = await getAllRecipes();
   const start = randomColorStart();
 
   return (

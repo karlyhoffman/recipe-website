@@ -1,10 +1,7 @@
 import TagsDetailLayout from '@/components/TagsDetailLayout';
-import { recipes } from '@/lib/placeholder-data';
+import { getWeekdayRecipes } from '@/lib/data';
 
-export default function WeekdayMeals() {
-  const weekdayRecipes = recipes
-    .filter((r) => r.weekday)
-    .map(({ id, uid, title }) => ({ id, uid, title }));
-
+export default async function WeekdayMeals() {
+  const weekdayRecipes = await getWeekdayRecipes();
   return <TagsDetailLayout recipes={weekdayRecipes} tagName="Weekday" />;
 }

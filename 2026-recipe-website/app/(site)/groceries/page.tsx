@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
-import { cookNextRecipes } from '@/lib/placeholder-data';
+import { getCookNextRecipes } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
+import type { Recipe } from '@/types';
 import styles from '@/styles/pages/groceries.module.scss';
 
 const AISLE_ORDER = [
@@ -26,7 +27,7 @@ const AISLE_ORDER = [
   'Other',
 ];
 
-function sortIngredientsByAisle(recipes: typeof cookNextRecipes) {
+function sortIngredientsByAisle(recipes: Recipe[]) {
   const aisleMap: Record<string, { name: string; aisle: string; recipeTitle: string; recipeUid: string }[]> = {};
   AISLE_ORDER.forEach((aisle) => (aisleMap[aisle] = []));
 
@@ -48,7 +49,8 @@ function sortIngredientsByAisle(recipes: typeof cookNextRecipes) {
   return Object.entries(aisleMap);
 }
 
-export default function Groceries() {
+export default async function Groceries() {
+  const cookNextRecipes = await getCookNextRecipes();
   const aisles = sortIngredientsByAisle(cookNextRecipes);
   const start = randomColorStart();
 

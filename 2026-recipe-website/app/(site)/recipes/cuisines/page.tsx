@@ -1,14 +1,15 @@
 import TagOverviewLayout from '@/components/TagOverviewLayout';
-import { cuisineTags } from '@/lib/placeholder-data';
+import { getCuisineTags } from '@/lib/data';
 
-export default function CuisinesOverview() {
+export default async function CuisinesOverview() {
+  const tags = await getCuisineTags();
   return (
     <TagOverviewLayout
-      tags={cuisineTags}
+      tags={tags}
       tagType="cuisine"
       basePath="/recipes/cuisines"
       title="Cuisine Tags"
-      totalCount={cuisineTags.length}
+      totalCount={tags.length}
       pageSize={100}
       page={1}
     />

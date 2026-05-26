@@ -18,6 +18,7 @@ export const ingredientTags: Tag[] = [
   { id: 'i6', uid: 'beef', name: 'Beef' },
   { id: 'i7', uid: 'eggs', name: 'Eggs' },
   { id: 'i8', uid: 'tomato', name: 'Tomato' },
+  { id: 'i9', uid: 'sausage', name: 'Sausage' },
 ];
 
 export const typeTags: Tag[] = [
@@ -53,6 +54,7 @@ export const recipes: Recipe[] = [
     season_tags: [seasonTags[1]],
     related_recipes: [
       { id: '5', uid: 'mushroom-risotto', title: 'Mushroom Risotto' },
+      { id: '10', uid: 'shakshuka', title: 'Shakshuka' },
     ],
     ingredients: [
       { type: 'ingredient', amount: '400g', name: 'spaghetti or rigatoni', aisle: 'Pasta' },
@@ -79,12 +81,16 @@ export const recipes: Recipe[] = [
     total_minutes: 60,
     servings: 6,
     weekday: false,
+    notes: "Don't skip the char on the chicken — it's what separates tikka masala from a generic curry.",
     source: 'Adapted from Kenji Alt-Lopez',
     cuisine_tags: [cuisineTags[1]],
     ingredient_tags: [ingredientTags[0]],
     type_tags: [typeTags[0]],
     season_tags: [seasonTags[0]],
-    related_recipes: [],
+    related_recipes: [
+      { id: '7', uid: 'lemon-herb-roasted-chicken', title: 'Lemon Herb Roasted Chicken' },
+      { id: '5', uid: 'mushroom-risotto', title: 'Mushroom Risotto' },
+    ],
     ingredients: [
       { type: 'heading', name: 'Marinade' },
       { type: 'ingredient', amount: '900g', name: 'boneless chicken thighs', preparation: 'cut into 2-inch pieces', aisle: 'Meat' },
@@ -117,11 +123,15 @@ export const recipes: Recipe[] = [
     total_minutes: 15,
     servings: 4,
     weekday: true,
+    notes: 'Use a whole block of feta placed on top rather than crumbling it. The texture and flavor are completely different.',
     cuisine_tags: [cuisineTags[2]],
     ingredient_tags: [ingredientTags[7]],
     type_tags: [typeTags[2]],
     season_tags: [seasonTags[3]],
-    related_recipes: [],
+    related_recipes: [
+      { id: '4', uid: 'pan-seared-salmon', title: 'Pan-Seared Salmon' },
+      { id: '10', uid: 'shakshuka', title: 'Shakshuka' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '1', name: 'large English cucumber', preparation: 'roughly chopped', aisle: 'Produce' },
       { type: 'ingredient', amount: '4', name: 'large tomatoes', preparation: 'roughly chopped', aisle: 'Produce' },
@@ -146,11 +156,15 @@ export const recipes: Recipe[] = [
     total_minutes: 20,
     servings: 2,
     weekday: true,
+    notes: 'The pan must be genuinely smoking before the fish goes in. A lukewarm pan gives you steamed skin, not crispy skin.',
     cuisine_tags: [cuisineTags[4]],
     ingredient_tags: [ingredientTags[2]],
     type_tags: [typeTags[0]],
     season_tags: [seasonTags[2]],
-    related_recipes: [],
+    related_recipes: [
+      { id: '3', uid: 'greek-salad', title: 'Greek Salad' },
+      { id: '7', uid: 'lemon-herb-roasted-chicken', title: 'Lemon Herb Roasted Chicken' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '2', name: 'salmon fillets (6 oz each)', preparation: 'skin-on', aisle: 'Seafood' },
       { type: 'ingredient', amount: '2 tbsp', name: 'olive oil', aisle: 'World Aisle' },
@@ -175,11 +189,15 @@ export const recipes: Recipe[] = [
     total_minutes: 45,
     servings: 4,
     weekday: false,
+    notes: 'Keep your stock warm in a separate saucepan. Cold stock shocks the rice and slows absorption unevenly.',
     cuisine_tags: [cuisineTags[0]],
     ingredient_tags: [ingredientTags[3]],
     type_tags: [typeTags[0]],
     season_tags: [seasonTags[0]],
-    related_recipes: [{ id: '1', uid: 'pasta-carbonara', title: 'Pasta Carbonara' }],
+    related_recipes: [
+      { id: '1', uid: 'pasta-carbonara', title: 'Pasta Carbonara' },
+      { id: '11', uid: 'pasta-sausage-squash', title: 'Pasta with Sausage, Squash and Sage Brown Butter' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '300g', name: 'Arborio rice', aisle: 'World Aisle' },
       { type: 'ingredient', amount: '500g', name: 'mixed mushrooms', preparation: 'sliced', aisle: 'Produce' },
@@ -206,11 +224,15 @@ export const recipes: Recipe[] = [
     total_minutes: 30,
     servings: 4,
     weekday: true,
+    notes: '80/20 ground beef is worth it here. Leaner beef dries out quickly and lacks flavor in a fast-cooked taco.',
     cuisine_tags: [cuisineTags[3]],
     ingredient_tags: [ingredientTags[5]],
     type_tags: [typeTags[0]],
     season_tags: [seasonTags[4]],
-    related_recipes: [],
+    related_recipes: [
+      { id: '10', uid: 'shakshuka', title: 'Shakshuka' },
+      { id: '3', uid: 'greek-salad', title: 'Greek Salad' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '500g', name: 'ground beef (80/20)', aisle: 'Meat' },
       { type: 'ingredient', amount: '1 tbsp each', name: 'cumin, chili powder, smoked paprika', aisle: 'Spices' },
@@ -233,11 +255,15 @@ export const recipes: Recipe[] = [
     total_minutes: 90,
     servings: 4,
     weekday: false,
+    notes: 'Resting the bird after roasting is not optional. 15 minutes under a tent of foil gives you noticeably juicier meat.',
     cuisine_tags: [cuisineTags[4]],
     ingredient_tags: [ingredientTags[0]],
     type_tags: [typeTags[0]],
     season_tags: [seasonTags[2]],
-    related_recipes: [],
+    related_recipes: [
+      { id: '4', uid: 'pan-seared-salmon', title: 'Pan-Seared Salmon' },
+      { id: '2', uid: 'chicken-tikka-masala', title: 'Chicken Tikka Masala' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '1', name: 'whole chicken (1.8kg)', aisle: 'Meat' },
       { type: 'ingredient', amount: '1', name: 'lemon', preparation: 'halved', aisle: 'Produce' },
@@ -260,11 +286,15 @@ export const recipes: Recipe[] = [
     total_minutes: 60,
     servings: 6,
     weekday: true,
+    notes: 'Roasting the vegetables first is the entire point. Simmering them directly in the pot makes a much flatter soup.',
     ingredient_tags: [ingredientTags[7]],
     type_tags: [typeTags[3]],
     season_tags: [seasonTags[1]],
     cuisine_tags: [],
-    related_recipes: [],
+    related_recipes: [
+      { id: '10', uid: 'shakshuka', title: 'Shakshuka' },
+      { id: '5', uid: 'mushroom-risotto', title: 'Mushroom Risotto' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '1', name: 'butternut squash', preparation: 'cubed', aisle: 'Produce' },
       { type: 'ingredient', amount: '3', name: 'large carrots', preparation: 'chopped', aisle: 'Produce' },
@@ -289,11 +319,15 @@ export const recipes: Recipe[] = [
     total_minutes: 25,
     servings: 4,
     weekday: false,
+    notes: 'Timing is everything — 10 minutes at 220°C works for most ovens, but test your first batch and adjust by 30 seconds.',
     cuisine_tags: [cuisineTags[4]],
     ingredient_tags: [ingredientTags[4]],
     type_tags: [typeTags[1]],
     season_tags: [seasonTags[4]],
-    related_recipes: [],
+    related_recipes: [
+      { id: '1', uid: 'pasta-carbonara', title: 'Pasta Carbonara' },
+      { id: '5', uid: 'mushroom-risotto', title: 'Mushroom Risotto' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '170g', name: 'dark chocolate (70%)', preparation: 'chopped', aisle: 'Baking' },
       { type: 'ingredient', amount: '115g', name: 'butter', preparation: 'plus more for ramekins', aisle: 'Dairy' },
@@ -318,11 +352,15 @@ export const recipes: Recipe[] = [
     total_minutes: 35,
     servings: 4,
     weekday: true,
+    notes: "Don't overcook the eggs. Pull the pan while the whites look barely set — they'll finish from residual heat.",
     cuisine_tags: [cuisineTags[2]],
     ingredient_tags: [ingredientTags[6], ingredientTags[7]],
     type_tags: [typeTags[0]],
     season_tags: [seasonTags[4]],
-    related_recipes: [],
+    related_recipes: [
+      { id: '3', uid: 'greek-salad', title: 'Greek Salad' },
+      { id: '8', uid: 'roasted-vegetable-soup', title: 'Roasted Vegetable Soup' },
+    ],
     ingredients: [
       { type: 'ingredient', amount: '2 cans (400g each)', name: 'diced tomatoes', aisle: 'Soup' },
       { type: 'ingredient', amount: '1', name: 'red pepper', preparation: 'diced', aisle: 'Produce' },
@@ -339,11 +377,49 @@ export const recipes: Recipe[] = [
       { type: 'instruction', text: 'Top with crumbled **feta** and fresh **parsley**. Serve from the pan with crusty bread.' },
     ],
   },
+  {
+    id: '11',
+    uid: 'pasta-sausage-squash',
+    title: 'Pasta with Sausage, Squash and Sage Brown Butter',
+    prep_minutes: 20,
+    total_minutes: 50,
+    servings: 4,
+    weekday: false,
+    notes: 'Sage brown butter is the kind of trick that makes people think you spent all day cooking. It takes about 3 minutes.',
+    cuisine_tags: [cuisineTags[0]],
+    ingredient_tags: [ingredientTags[1], ingredientTags[8]],
+    type_tags: [typeTags[0]],
+    season_tags: [seasonTags[0]],
+    related_recipes: [
+      { id: '5', uid: 'mushroom-risotto', title: 'Mushroom Risotto' },
+      { id: '1', uid: 'pasta-carbonara', title: 'Pasta Carbonara' },
+    ],
+    ingredients: [
+      { type: 'ingredient', amount: '400g', name: 'rigatoni or penne', aisle: 'Pasta' },
+      { type: 'ingredient', amount: '500g', name: 'Italian sausage', preparation: 'casings removed', aisle: 'Meat' },
+      { type: 'ingredient', amount: '1 small', name: 'butternut squash (about 600g)', preparation: 'peeled and cubed', aisle: 'Produce' },
+      { type: 'ingredient', amount: '4 tbsp', name: 'unsalted butter', aisle: 'Dairy' },
+      { type: 'ingredient', amount: '12', name: 'fresh sage leaves', aisle: 'Produce' },
+      { type: 'ingredient', amount: '1', name: 'yellow onion', preparation: 'diced', aisle: 'Produce' },
+      { type: 'ingredient', amount: '3', name: 'garlic cloves', preparation: 'minced', aisle: 'Produce' },
+      { type: 'ingredient', amount: '80g', name: 'Parmesan', preparation: 'grated, plus more to serve', aisle: 'Cheese' },
+      { type: 'ingredient', name: 'Red pepper flakes, salt, black pepper', aisle: 'Spices' },
+    ],
+    instructions: [
+      { type: 'instruction', text: 'Toss **squash** with olive oil, salt, and pepper on a sheet pan. Roast at 220°C until golden and tender, about 25 minutes.' },
+      { type: 'instruction', text: 'Brown **sausage** in a large skillet over medium-high heat, breaking into chunks, until cooked through. Transfer to a plate.' },
+      { type: 'instruction', text: 'Reduce heat to medium. Melt **butter** in the same pan and add **sage leaves**. Cook until butter turns golden-brown and smells nutty, about 3 minutes. Remove sage and set aside.' },
+      { type: 'instruction', text: 'Cook **onion** in the sage butter until soft, about 6 minutes. Add **garlic** and a pinch of **red pepper flakes**, cook 1 minute.' },
+      { type: 'instruction', text: 'Meanwhile, cook **pasta** in well-salted boiling water until al dente. Reserve 1 cup pasta water before draining.' },
+      { type: 'instruction', text: 'Return **sausage** and **squash** to the pan. Add drained **pasta** and enough pasta water to loosen into a light sauce. Toss in **Parmesan**.' },
+      { type: 'instruction', text: 'Serve topped with reserved crispy **sage** leaves and extra **Parmesan**.' },
+    ],
+  },
 ];
 
 // Homepage curations
 export const nextRecipes: RecipeSummary[] = [
-  { id: '2', uid: 'chicken-tikka-masala', title: 'Chicken Tikka Masala' },
+  { id: '11', uid: 'pasta-sausage-squash', title: 'Pasta with Sausage, Squash and Sage Brown Butter' },
   { id: '5', uid: 'mushroom-risotto', title: 'Mushroom Risotto' },
   { id: '7', uid: 'lemon-herb-roasted-chicken', title: 'Lemon Herb Roasted Chicken' },
 ];
@@ -354,7 +430,7 @@ export const favoriteRecipes: RecipeSummary[] = [
   { id: '9', uid: 'chocolate-lava-cake', title: 'Chocolate Lava Cake' },
 ];
 
-export const recentRecipes: RecipeSummary[] = recipes.slice(5, 10).map(({ id, uid, title }) => ({ id, uid, title }));
+export const recentRecipes: RecipeSummary[] = recipes.slice(6, 11).map(({ id, uid, title }) => ({ id, uid, title }));
 
 export const randomRecipes: RecipeSummary[] = [recipes[0], recipes[2], recipes[3], recipes[8]].map(({ id, uid, title }) => ({ id, uid, title }));
 

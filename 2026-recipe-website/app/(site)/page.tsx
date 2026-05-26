@@ -1,11 +1,17 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
-import { nextRecipes, favoriteRecipes, recentRecipes, randomRecipes } from '@/lib/placeholder-data';
+import { getNextRecipes, getFavoriteRecipes, getRecentRecipes, getRandomRecipes } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import styles from '@/styles/pages/homepage.module.scss';
 
-export default function Homepage() {
+export default async function Homepage() {
+  const [nextRecipes, favoriteRecipes, recentRecipes, randomRecipes] = await Promise.all([
+    getNextRecipes(),
+    getFavoriteRecipes(),
+    getRecentRecipes(),
+    getRandomRecipes(),
+  ]);
   const start = randomColorStart();
 
   return (

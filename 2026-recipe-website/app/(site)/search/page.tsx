@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
 import PaginationMenu from '@/components/PaginationMenu';
-import { recipes } from '@/lib/placeholder-data';
+import { searchRecipes } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
 
 const PAGE_SIZE = 100;
@@ -13,10 +13,7 @@ export default async function Search({
 }) {
   const { search: term = '', page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
-
-  const results = term
-    ? recipes.filter((r) => r.title.toLowerCase().includes(term.toLowerCase()))
-    : [];
+  const results = await searchRecipes(term);
 
   const hasResults = !!term && results.length > 0;
   const noResults = !!term && results.length === 0;

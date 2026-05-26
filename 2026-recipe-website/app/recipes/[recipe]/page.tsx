@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
-import { recipes } from '@/lib/placeholder-data';
+import { getRecipeByUid, getAllRecipes } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import type { IngredientSlice, InstructionSlice } from '@/types';
 import styles from '@/styles/pages/recipe-detail.module.scss';
@@ -19,7 +19,7 @@ export default async function RecipeDetail({
   params: Promise<{ recipe: string }>;
 }) {
   const { recipe: uid } = await params;
-  const recipe = recipes.find((r) => r.uid === uid);
+  const recipe = await getRecipeByUid(uid);
 
   if (!recipe) notFound();
 
@@ -253,5 +253,6 @@ function InstructionSliceRenderer({ slice }: { slice: InstructionSlice }) {
 }
 
 export async function generateStaticParams() {
+  const recipes = await getAllRecipes();
   return recipes.map((r) => ({ recipe: r.uid }));
 }
