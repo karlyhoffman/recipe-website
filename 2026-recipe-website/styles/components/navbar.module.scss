@@ -1,0 +1,44 @@
+@use '../breakpoints' as bp;
+
+.navbar {
+  display: block;
+  position: relative;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  padding: 10px 0;
+  z-index: 3;
+
+  &__menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--gutter);
+    padding-bottom: 5px;
+
+    li:last-child {
+      flex: 0 0 100%;
+    }
+
+    @include bp.media-breakpoint-up(md) {
+      justify-content: flex-start;
+      padding-bottom: 0;
+
+      li:last-child {
+        flex: 0 0 50%;
+        max-width: 350px;
+        margin-left: auto;
+      }
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

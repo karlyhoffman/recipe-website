@@ -1,0 +1,81 @@
+// Global typography: heading scale, .highlight color system, .outline badge.
+
+$border-radius: 0.15em;
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--font-heading);
+  font-weight: bold;
+  letter-spacing: -0.25px;
+  margin-bottom: var(--gutter);
+}
+
+h1, .h1 {
+  font-size: var(--text-h1);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--gutter-lg);
+}
+
+h2, .h2 {
+  font-size: var(--text-h2);
+  margin-bottom: var(--gutter-md);
+}
+
+h3, .h3 {
+  font-size: var(--text-h3);
+  margin-bottom: calc(var(--gutter) * 1.25);
+}
+
+h4, .h4 {
+  font-size: var(--text-h4);
+  margin-bottom: calc(var(--gutter) * 1.15);
+}
+
+h5, .h5 {
+  font-size: var(--text-h5);
+  margin-bottom: var(--gutter);
+}
+
+h6, .h6 {
+  font-size: var(--text-h6);
+  margin-bottom: var(--gutter);
+}
+
+strong,
+b {
+  font-weight: 700;
+}
+
+// Highlighted link style — --highlight-color is set inline server-side per element.
+.highlight {
+  display: inline;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  line-height: 1.75;
+  letter-spacing: -0.25px;
+  text-decoration: none;
+  border-radius: $border-radius;
+  transition: 300ms ease-in-out;
+  transition-property: background-color, box-shadow;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.4em 0;
+  box-shadow: 0.6em 0 0 var(--color-black), -0.6em 0 0 var(--color-black);
+  margin-left: 0.6em;
+
+  &:hover {
+    background-color: var(--highlight-color, var(--color-black));
+    box-shadow: 0.6em 0 0 var(--highlight-color, var(--color-black)), -0.6em 0 0 var(--highlight-color, var(--color-black));
+  }
+}
+
+// Outlined badge / heading style.
+.outline {
+  display: inline-block;
+  position: relative;
+  border: 3px solid var(--color-black);
+  border-radius: $border-radius;
+  line-height: 1;
+  text-decoration: none;
+  padding: 0.5em 1em;
+}

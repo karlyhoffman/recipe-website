@@ -1,0 +1,45 @@
+// Breakpoint mixins — import via @use in any module that needs responsive styles.
+
+@use 'sass:map';
+@use 'sass:list';
+
+$breakpoints: (
+  xs: 400px,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1450px,
+) !default;
+
+@mixin media-breakpoint-up($name, $bp: $breakpoints) {
+  $min: map.get($bp, $name);
+
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down($name, $bp: $breakpoints) {
+  $names: map.keys($bp);
+  $n: list.index($names, $name);
+  $next: null;
+  $max: null;
+
+  @if $n != null and $n < list.length($names) {
+    $next: list.nth($names, $n + 1);
+    $max: map.get($bp, $next) - 0.02;
+  }
+
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}

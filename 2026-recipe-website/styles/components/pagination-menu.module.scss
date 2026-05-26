@@ -1,0 +1,25 @@
+.pagination_menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding-top: var(--gutter);
+
+  li {
+    span {
+      padding: 6px;
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &:empty {
+    display: none;
+  }
+}

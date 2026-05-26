@@ -1,0 +1,47 @@
+@use '../breakpoints' as bp;
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+
+  .column {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 var(--gutter);
+
+    @mixin column-classes($size) {
+      $num-of-columns: 12;
+
+      @for $i from 1 through $num-of-columns {
+        &.col-#{$size}-#{$i} {
+          width: calc((100% / #{$num-of-columns}) * #{$i});
+        }
+
+        &.offset-#{$size}-#{$i} {
+          margin-left: calc((100% / #{$num-of-columns}) * #{$i});
+        }
+      }
+    }
+
+    @each $breakpoint in (xs, sm, md, lg, xl) {
+      @if $breakpoint == xs {
+        @include column-classes($breakpoint);
+      } @else {
+        @include bp.media-breakpoint-up($breakpoint) {
+          @include column-classes($breakpoint);
+        }
+      }
+    }
+  }
+}
+
+.row,
+.column {
+  &.no_gutter {
+    padding: 0;
+  }
+}

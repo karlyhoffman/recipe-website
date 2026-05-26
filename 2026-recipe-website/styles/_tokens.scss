@@ -1,0 +1,48 @@
+// Design tokens as CSS custom properties.
+// Consumed by all SCSS modules via var(--token-name) — no variable injection needed.
+
+:root {
+  // Base colors
+  --color-black: #232323;
+  --color-grey: #888;
+  --color-med-grey: #ccc;
+  --color-light-grey: #ddd;
+  --color-white: #fff;
+
+  // Highlight color palette (referenced by JS highlight utility + typography loop)
+  --color-1: #e0bc29; // yellow
+  --color-2: #a39d20; // lime
+  --color-3: #689624; // green
+  --color-4: #29823a; // emerald
+  --color-5: #126b63; // blue-green
+  --color-6: #330136; // deep-purple
+  --color-7: #5f1644; // purple
+  --color-8: #972d42; // blush
+  --color-9: #c9463c; // pink
+  --color-list-length: 10;
+
+  // Fluid spacing — clamp(12px → 15px across 375px → 1200px)
+  --gutter: clamp(0.75rem, 0.6648rem + 0.3636vw, 0.9375rem);
+  --gutter-md: calc(var(--gutter) * 1.5);
+  --gutter-lg: calc(var(--gutter) * 2);
+  --gutter-xl: calc(var(--gutter) * 4);
+
+  // Structural
+  --nav-height: 46px;
+  --footer-height: 49px;
+
+  // Fonts — CSS vars injected by next/font at the html element
+  --font-heading: var(--font-merriweather);
+  --font-text: var(--font-alegreya);
+
+  // Animation
+  --ease: cubic-bezier(0.19, 1, 0.22, 1);
+
+  // Fluid type scale
+  --text-h1: clamp(1.875rem, 1.3248rem + 2.3474vw, 3.4375rem); // 30px → 55px
+  --text-h2: clamp(1.5625rem, 1.2764rem + 1.2207vw, 2.375rem); // 25px → 38px
+  --text-h3: clamp(1.25rem, 0.9859rem + 1.1268vw, 2rem); // 20px → 32px
+  --text-h4: clamp(1.125rem, 0.9049rem + 0.939vw, 1.75rem); // 18px → 28px
+  --text-h5: clamp(1rem, 0.868rem + 0.5634vw, 1.375rem); // 16px → 22px
+  --text-h6: clamp(1rem, 0.912rem + 0.3756vw, 1.25rem); // 16px → 20px
+}
