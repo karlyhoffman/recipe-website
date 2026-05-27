@@ -57,3 +57,7 @@ pages/moms-list.js
 .vercel/project.json
 .vercel/README.txt
 .vercel
+.mcp.json
+skills-lock.json
+.agents
+.claude
