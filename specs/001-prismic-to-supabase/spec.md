@@ -122,8 +122,8 @@ All recipes, tags, curated lists, and related content that exist in Prismic are 
 - **FR-002**: The 2026 site MUST retrieve all tag data (ingredient tags, cuisine tags, dish-type tags, season tags) from Supabase.
 - **FR-003**: The 2026 site MUST retrieve the cook-next list and favorites list from Supabase.
 - **FR-004**: All existing recipe slugs from the Prismic-powered 2023 site MUST be preserved in Supabase so that no URLs break after migration.
-- **FR-005**: Recipe ingredient slices MUST preserve the type (plain ingredient vs. section heading), quantity/amount, name, optional preparation note, and aisle grouping.
-- **FR-006**: Recipe instruction slices MUST preserve the type (plain instruction vs. section heading) and text content, including inline bold formatting.
+- **FR-005**: Recipe ingredient entries MUST preserve the type (plain ingredient vs. section heading), quantity/amount, name, optional preparation note, and aisle grouping.
+- **FR-006**: Recipe instruction entries MUST preserve the type (plain instruction vs. section heading) and text content, including inline bold formatting.
 - **FR-007**: The site MUST display a 404 for any recipe or tag slug that does not exist in Supabase.
 - **FR-008**: Search MUST query Supabase and return recipes matching the visitor's search term against recipe titles (at minimum).
 - **FR-009**: The Groceries page MUST derive its ingredient list from cook-next recipes stored in Supabase, including per-ingredient aisle data.
@@ -132,9 +132,9 @@ All recipes, tags, curated lists, and related content that exist in Prismic are 
 
 ### Key Entities
 
-- **Recipe**: The primary content unit. Has a unique slug, a title, timing data (prep and total minutes), servings count, optional notes, optional source, a weekday boolean, an ordered list of ingredient slices, an ordered list of instruction slices, zero or more tag associations per category, and zero or more related recipe links.
-- **Ingredient Slice**: An ordered item within a recipe's ingredient list. Either a section heading (name only) or an ingredient row (amount, name, optional preparation, aisle).
-- **Instruction Slice**: An ordered item within a recipe's instruction list. Either a section heading (text) or an instruction step (text, may contain inline bold markup).
+- **Recipe**: The primary content unit. Has a unique slug, a title, timing data (prep and total minutes), servings count, optional notes, optional source, a yes/no weekday flag, an ordered list of ingredient entries, an ordered list of instruction entries, zero or more tag associations per category, and zero or more related recipe links.
+- **Ingredient Entry**: An ordered item within a recipe's ingredient list. Either a section heading (name only) or an ingredient row (amount, name, optional preparation, aisle).
+- **Instruction Entry**: An ordered item within a recipe's instruction list. Either a section heading (text) or an instruction step (text, may contain inline bold formatting).
 - **Tag**: A categorization label with a unique slug and display name. Tags belong to one of four categories: ingredient, cuisine, dish type, or season.
 - **Cook-Next List**: An editorially curated, ordered list of recipes marked to cook in the near future. Drives both the homepage "Cook Next" section and the Groceries ingredient list.
 - **Favorites List**: An editorially curated, ordered list of recipes shown in the homepage "Current Favorites" section.
@@ -147,7 +147,7 @@ All recipes, tags, curated lists, and related content that exist in Prismic are 
 - **SC-002**: 100% of previously valid recipe and tag URLs resolve correctly in the migrated site — zero broken links from the original site.
 - **SC-003**: Every page that previously loaded from Prismic data loads from Supabase data with equivalent content visible to a site visitor.
 - **SC-004**: The time to first meaningful content on recipe detail pages is equivalent to or better than the Prismic-powered version.
-- **SC-005**: The placeholder data file (`lib/placeholder-data.ts`) and all Prismic/`@prismicio` dependencies are fully removed from the 2026 site after migration.
+- **SC-005**: All placeholder data and Prismic dependencies are fully removed from the 2026 site after migration.
 
 ## Assumptions
 
