@@ -1,50 +1,78 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+Version change: none -> 1.0.0
+Modified principles:
+  - Added User-Centered Content
+  - Added Maintainable Frontend Architecture
+  - Added Data Integrity & Content Reliability
+  - Added Quality through Documentation & Review
+  - Added Incremental Delivery & Observability
+Added sections:
+  - Constraints & Technology
+  - Development Workflow
+Removed sections: none
+Templates reviewed:
+  - .specify/templates/plan-template.md ✅
+  - .specify/templates/spec-template.md ✅
+  - .specify/templates/tasks-template.md ✅
+Follow-up TODOs: none
+-->
+
+# Recipe Website Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### 1. User-Centered Content
+All decisions MUST prioritize recipe discovery, tag‑driven browsing, accessible navigation, and readable recipe presentation on desktop and mobile. Search, tag filters, and recipe detail views MUST remain functional even when content is incomplete or partially migrated.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### 2. Maintainable Frontend Architecture
+The application MUST use modular React components, explicit data contracts, and minimal external dependencies. The codebase MUST follow Next.js and React conventions that keep UI components composable, reusable, and predictable. Changes MUST avoid monolithic page logic, preserve the existing Next.js, and keep styling aligned with the current stylesheet structure. Styling, layout, and data fetching MUST be organized to keep changes isolated and traceable.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### 3. Data Integrity & Content Reliability
+CMS content is the source of truth for recipes, tags, and metadata; code MUST validate and safely handle missing or malformed entries. Any runtime content failure MUST degrade gracefully rather than expose raw errors to users.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### 4. Quality through Documentation & Review
+All feature changes and content-type updates MUST be documented, reviewed in a pull request, and verified against the current README and local build workflow. Changes to pages, components, or integrations require at least one reviewer and a documented verification step.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### 5. Performance and Reliability
+Public pages MUST load quickly on Vercel through appropriate use of static generation and server-side rendering. New work MUST avoid unnecessary bundle growth, excessive client-side dependencies, and untested cross-browser regressions.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### 6. Incremental Delivery & Observability
+Work MUST be delivered in small, verifiable increments with clear success criteria. Build, test, and deployment outcomes MUST be observable through the repository’s existing tooling, and any production deployment MUST be accompanied by a rollback plan.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Technology Stack
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+- **Framework**: Next.js 16 with App Router (React 19, TypeScript 5)
+- **Styling**: SCSS/Sass modules
+- **Database**: Supabase (PostgreSQL) — active migration from Prismic CMS and placeholder data
+- **Deployment**: Vercel (preview per PR, production from `main`)
+- **Linting**: ESLint via `eslint-config-next`
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+New dependencies MUST be justified in the PR description. Prefer built-in Next.js or browser APIs
+over third-party packages for tasks they already support.
+
+## Constraints & Technology
+The project MUST remain a Next.js website. New frameworks or major architecture changes require explicit approval. Styling MUST continue through the established `styles/` and component-based stylesheet approach. Deployment intent is Vercel or equivalent static/edge hosting.
+
+## Development Workflow
+All work MUST occur in feature branches, with pull requests used for every change. PRs MUST include a description of what was changed, how it was tested locally, and whether the change impacts content types or page routing. PRs require a passing TypeScript + ESLint checks, Vercel preview link for UI changes. Documentation updates MUST accompany code changes that affect behavior or developer setup.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+This constitution is the authoritative guide for repository decisions and overrides informal conventions. This constitution supersedes informal habits or historical patterns. All `.specify` artifacts, templates, and plans MUST comply with this document.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Amendments require a PR updating this file with a version bump following semantic versioning, and a review of all SpecKit templates to propagate constitutional changes
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Versioning follows semantic rules:
+- MAJOR: Incompatible governance or principle changes.
+- MINOR: New principle, additional constraints, or expanded mandatory processes.
+- PATCH: Clarifications, wording fixes, or non-semantic refinements.
+
+Compliance review expectation:
+- Use `.specify/templates/plan-template.md` Constitution Check before design work.
+
+- All pull requests MUST reference this constitution when they introduce new architecture, data handling, or review process changes.
+- Complexity MUST be justified in the PR description when it deviates from the defined principles.
+
+Use `README.md`, `.specify/templates/*`, and this constitution as the authoritative guidance for project workflow, quality decisions, and maintainability.
+
+**Version**: 1.0.0 | **Ratified**: 2026-05-27 | **Last Amended**: 2026-05-27
