@@ -1,55 +1,56 @@
 # Recipe Website
 
-> A Next.js project
+A collection of recipe website iterations built with Next.js over the years. Each sub-directory is a standalone project representing a different version of the site.
 
-## Project Description:
-A simple website to view recipes by tags.
+## Projects
 
-## Technologies Used:
-- Next.js (React Framework)
-- Prismic (headless CMS)
-
-## Resources:
-- [Learn Next.js](https://nextjs.org/learn)
-- [Basic Prismic Walkthrough](https://www.netlify.com/blog/2020/08/28/integrate-next.js-prismic)
-
+|       Directory       |  Next.js |  React |   CMS   |
+|-----------------------|----------|--------|---------|---|
+| `2020-recipe-website` |   15.x   |   16   | Prismic (prismic-javascript)
+| `2021-recipe-website` |   10.x   |   17   | Prismic (prismic-javascript)
+| `2023-recipe-website` |   13.x   |   18   | Prismic (@prismicio/client)
+| `2026-recipe-website` |   16.x   |   19   | Supabase 
 
 ## Getting Started
-Move into the project folder you want to work on (`yarn or npm i` will do nothing here):
-``` bash
-cd [project-name]
+
+Navigate into the project you want to run:
+
+```bash
+cd 2026-recipe-website
 ```
 
 Install dependencies:
-``` bash
-#
+
+```bash
+npm install
+# or
 yarn
-# or
-npm i
 ```
 
-Serve with hot reload at [http://localhost:3000](http://localhost:3000):
-``` bash
-yarn dev
-# or
+Start the dev server at [http://localhost:3000](http://localhost:3000):
+
+```bash
 npm run dev
+# or
+yarn dev
 ```
 
-Build for production with minification:
-``` bash
-yarn build
-# or
+Build for production:
+
+```bash
 npm run build
 ```
 
-Deploy to staging link via [Vercel CLI](https://vercel.com/docs/cli) (will need to install separately):
-``` bash
+## Deploy
+
+Deploy a preview via the [Vercel CLI](https://vercel.com/docs/cli):
+
+```bash
 vercel
 ```
 
 Deploy to production:
-``` bash
+
+```bash
 vercel --prod
 ```
-
-For a detailed explanation on how things work, check out [Next.js](https://nextjs.org/docs) and [Prismic.io](https://prismic.io/).
