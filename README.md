@@ -4,12 +4,12 @@ A collection of recipe website iterations built with Next.js over the years. Wit
 
 ## Projects
 
-| Directory | Next.js | React | CMS |
+| Directory | Next.js (router type) | React | CMS |
 |---|---|---|---|
-| `2020-recipe-website` | 9.x | 16 | Prismic (prismic-javascript) |
-| `2021-recipe-website` | 10.x | 17 | Prismic (prismic-javascript) |
-| `2023-recipe-website` | 13.x | 18 | Prismic (@prismicio/client) |
-| `2026-recipe-website` | 16.x | 19 | Supabase |
+| `2020-recipe-website` | 9.x (Pages) | 16 | Prismic (prismic-javascript) |
+| `2021-recipe-website` | 10.x (Pages) | 17 | Prismic (prismic-javascript) |
+| `2023-recipe-website` | 13.x (Pages) | 18 | Prismic (@prismicio/client) |
+| `2026-recipe-website` | 16.x (App) | 19 | Supabase |
 
 ## Getting Started
 
