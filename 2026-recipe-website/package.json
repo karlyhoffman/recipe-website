@@ -16,7 +16,6 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@prismicio/client": "^7.21.8",
     "@supabase/supabase-js": "^2.106.2",
     "@types/node": "^20",
     "@types/react": "^19",
