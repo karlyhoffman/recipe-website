@@ -29,20 +29,22 @@ const AISLE_ORDER = [
 ];
 
 function sortIngredientsByAisle(recipes: Recipe[]) {
-  const aisleMap: Record<string, { name: string; aisle: string; recipeTitle: string; recipeUid: string }[]> = {};
+  const aisleMap: Record<string, { name: string; amount?: string; aisle: string; preparation?: string; recipeTitle: string; recipeUid: string }[]> = {};
   AISLE_ORDER.forEach((aisle) => (aisleMap[aisle] = []));
 
   recipes.forEach((recipe) => {
     recipe.ingredients
       .filter((s) => s.type === 'ingredient')
-      .forEach((slice) => {
-        const aisle = slice.aisle || 'Other';
+      .forEach(({ amount, name, aisle: aisleName, preparation }) => {
+        const aisle = aisleName || 'Other';
         if (!aisleMap[aisle]) aisleMap[aisle] = [];
         aisleMap[aisle].push({
-          name: slice.name,
+          name,
+          amount,
           aisle,
+          preparation,
           recipeTitle: recipe.title,
-          recipeUid: recipe.uid,
+          recipeUid: recipe.uid
         });
       });
   });
@@ -85,7 +87,7 @@ export default async function Groceries() {
               <ul>
                 {items.map((item, i) => (
                   <li className={styles.ingredient} key={`${item.recipeUid}-${i}`}>
-                    <p>{item.name}</p>
+                    <p>{item.amount && `${item.amount} `}<strong>{item.name}</strong>{item.preparation && `, ${item.preparation}`}</p>
                   </li>
                 ))}
               </ul>
