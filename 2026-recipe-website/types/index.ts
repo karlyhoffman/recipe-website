@@ -33,7 +33,6 @@ export interface GroceryIngredient {
 }
 
 export interface Recipe extends RecipeSummary {
-  hero_image_url?: string;
   prep_minutes?: number;
   total_minutes?: number;
   servings?: number;

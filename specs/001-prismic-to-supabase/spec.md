@@ -127,7 +127,7 @@ All recipes, tags, curated lists, and related content that exist in Prismic are 
 - **FR-007**: The site MUST display a 404 for any recipe or tag slug that does not exist in Supabase.
 - **FR-008**: Search MUST query Supabase and return recipes matching the visitor's search term against recipe titles (at minimum).
 - **FR-009**: The Groceries page MUST derive its ingredient list from cook-next recipes stored in Supabase, including per-ingredient aisle data.
-- **FR-010**: Recipe hero images are OUT OF SCOPE for this migration phase. Image hosting will be addressed in a future phase once a hosting service has been evaluated; hero images will be migrated at that time.
+- **FR-010**: Recipe hero images are intentionally excluded from the 2026 application to avoid storage costs. The `hero_image_url` field has been removed from the `Recipe` type and the recipe detail template. This is a deliberate product decision, not a deferral — if images are added in a future phase it will require a new feature spec.
 - **FR-011**: A content management UI is OUT OF SCOPE for this migration phase. Recipes and tags will be managed directly via the Supabase table editor in the interim. A dedicated admin UI is deferred to a future feature.
 
 ### Key Entities
@@ -152,7 +152,7 @@ All recipes, tags, curated lists, and related content that exist in Prismic are 
 ## Assumptions
 
 - The 2026 site's existing data abstraction layer (`lib/data.ts`) provides the correct function signatures; only the implementations need to be replaced with Supabase queries — no UI changes are required.
-- The TypeScript types already defined in the 2026 site (`Recipe`, `Tag`, `RecipeSummary`, `IngredientSlice`, `InstructionSlice`) accurately reflect the target data shape; the Supabase schema will be designed to match these types.
+- The TypeScript types defined in the 2026 site (`Recipe`, `Tag`, `RecipeSummary`, `IngredientSlice`, `InstructionSlice`) accurately reflect the target data shape; the Supabase schema will be designed to match these types. Note: `hero_image_url` has been intentionally removed from the `Recipe` type (see FR-010) and is not part of the schema.
 - Recipe content will be exported from Prismic via its API (not manually re-entered); a one-time migration script will handle the transformation and import into Supabase.
 - Rich-text fields in Prismic (notes, source) contain simple formatting (paragraphs, links, bold/italic); the migrated values will be stored as plain text or minimal markdown, which is sufficient given how the 2026 site renders them.
 - The site is a personal/private recipe collection, so no row-level security or public write access is needed — read-only public access is sufficient for the site, with admin access for content management.
