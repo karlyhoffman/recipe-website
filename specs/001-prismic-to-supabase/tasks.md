@@ -27,6 +27,7 @@ description: "Task list template for feature implementation"
 
 - [ ] T001 Install `@supabase/ssr` in `2026-recipe-website/package.json` via `pnpm add @supabase/ssr` from the `2026-recipe-website/` directory
 - [ ] T002 Create `2026-recipe-website/.env.local` with `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` (values from Supabase dashboard → Project Settings → API)
+- [ ] T002b Add `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` to Vercel Project Settings → Environment Variables (all environments: Production, Preview, Development) — required before any Vercel deploy; a build without them fails at Supabase client instantiation
 - [ ] T003 Create `2026-recipe-website/lib/supabase.ts` with `createClient()` factory using `createServerClient` from `@supabase/ssr`, reading `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY`, with `cookies: { getAll: () => [] }` (no auth sessions needed)
 
 **Checkpoint**: Run `pnpm build` from `2026-recipe-website/` — must pass. Nothing calls Supabase yet; placeholder data still in use.
@@ -52,7 +53,7 @@ description: "Task list template for feature implementation"
 
 **Independent Test**: After running the script, compare recipe count and each tag category count in Supabase against the Prismic source. Spot-check 5+ recipes across different types for field accuracy.
 
-- [ ] T006 [US6] Create `2026-recipe-website/scripts/migrate-from-prismic.ts`: initialize a Prismic client (using `PRISMIC_API_URL` and `PRISMIC_ACCESS_TOKEN` env vars from the 2023 site's `.env`) and a Supabase client (imported from `../lib/supabase`); add a typed in-memory map to hold `tagUidToId` and `recipeUidToId` for resolving foreign keys during later steps
+- [ ] T006 [US6] Create `2026-recipe-website/scripts/migrate-from-prismic.ts`: initialize a Prismic client (using `PRISMIC_API_URL` and `PRISMIC_ACCESS_TOKEN` env vars from the 2023 site's `.env`) and a Supabase client (imported from `../lib/supabase`); add a typed in-memory map to hold `tagUidToId` and `recipeUidToId` for resolving foreign keys during later steps; **truncate all 8 tables first** in FK-safe dependency order (`favorites_list`, `cook_next_list`, `related_recipes`, `recipe_tags`, `ingredient_entries`, `instruction_entries`, `recipes`, `tags`) so the script is safe to re-run after a partial failure
 - [ ] T007 [US6] Add tag migration to `2026-recipe-website/scripts/migrate-from-prismic.ts`: use `client.getAllByType()` for each of `ingredient_tag`, `cuisine_tag`, `type_tag`, `season_tag`; insert into `tags` table with `uid`, `name` (from the corresponding `.data.*_tag` text field), and `category` (`ingredient`/`cuisine`/`type`/`season`); populate `tagUidToId` map from returned ids
 - [ ] T008 [US6] Add recipe row migration to `2026-recipe-website/scripts/migrate-from-prismic.ts`: fetch all `recipe` documents with `fetchLinks` for all tag types and related recipes; insert into `recipes` with `uid`, `title` (via `asText()`), `prep_minutes`, `total_minutes`, `servings`, `notes` (plain text via `asText()`), `source` (see URL extraction below), `weekday` (convert `weekday_tag === 'Yes'` → `true`, all else → `false`), and `created_at` explicitly set from `first_publication_date`; populate `recipeUidToId` map. **Source URL extraction**: `data.source` is a RichText field — call `asText()` for the text, then inspect `data.source[0]?.spans` for an entry with `type === 'hyperlink'`; if found, store the field as `[link text](url)` (using the span's `data.url`); if not found, store plain `asText()` result; do NOT use `asText()` alone as it silently drops hyperlink URLs
 - [ ] T009 [US6] Add ingredient entries migration to `2026-recipe-website/scripts/migrate-from-prismic.ts`: for each recipe, iterate `data.ingredient_slices[]`; for `ingredient_heading` slices set `type = 'heading'`, `name = asText()`; for `ingredient` slices apply the bold-span parsing logic from `data-model.md` (one bold span → split `amount`/`name`/`preparation`; zero or multiple bold spans → full text in `name`); insert all rows into `ingredient_entries` with 0-based `position` and the recipe's `id`
@@ -75,7 +76,7 @@ description: "Task list template for feature implementation"
 - [ ] T015 [US1] Implement `getAllRecipes()` in `2026-recipe-website/lib/data.ts`: replace placeholder with Supabase query `SELECT id, uid, title FROM recipes` (no joins); return `RecipeSummary[]`; catch errors and return `[]`. **⚠️ Return type change**: the current signature returns `Promise<Recipe[]>` — change it to `Promise<RecipeSummary[]>`. Before implementing, grep for all callers of `getAllRecipes()` in the 2026 site and confirm none access fields beyond `id`, `uid`, and `title`
 - [ ] T016 [US1] Implement `getRecipeByUid(uid: string)` in `2026-recipe-website/lib/data.ts`: replace placeholder with Supabase query fetching the recipe row plus `ingredient_entries` (ordered by `position`), `instruction_entries` (ordered by `position`), `recipe_tags → tags` (all four categories), and `related_recipes → recipes` (ordered by `position`); map rows to the `Recipe` TypeScript type; return `null` if not found; catch errors and return `null`
 
-**Checkpoint**: Recipe detail pages load from Supabase. `generateStaticParams` builds all recipe routes. Manual spot-check of 3 recipes passes.
+**Checkpoint**: Recipe detail pages load from Supabase. `generateStaticParams` builds all recipe routes. Manual spot-check of 3 recipes passes. Visit `/recipes/nonexistent-slug` and confirm the 404 page renders — `notFound()` is already wired at `app/recipes/[recipe]/page.tsx:24`. Verify SC-004: compare page load feel against the live 2023 Prismic site in a browser side-by-side; static generation is preserved so this should pass naturally.
 
 ---
 
@@ -87,7 +88,7 @@ description: "Task list template for feature implementation"
 
 - [ ] T017 [P] [US2] Implement `getCuisineTags()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, name FROM tags WHERE category = 'cuisine' ORDER BY name ASC`; return `Tag[]`; catch errors and return `[]`
 - [ ] T018 [P] [US2] Implement `getIngredientTags()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, name FROM tags WHERE category = 'ingredient' ORDER BY name ASC`; return `Tag[]`; catch errors and return `[]`
-- [ ] T019 [P] [US2] Implement `getTypeTags()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, name FROM tags WHERE category = 'type' ORDER BY name ASC`; return `Tag[]`; catch errors and return `[]`
+- [ ] T019 [P] [US2] Implement `getTypeTags()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, name FROM tags WHERE category = 'type' ORDER BY name ASC`; return `Tag[]`; catch errors and return `[]` — the `'type'` category value corresponds to "dish type" in the spec/UI and is served at `/recipes/dish-types`
 - [ ] T020 [P] [US2] Implement `getSeasonTags()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, name FROM tags WHERE category = 'season' ORDER BY name ASC`; return `Tag[]`; catch errors and return `[]`
 - [ ] T021 [P] [US2] Implement `getCuisineTagByUid(uid: string)` in `2026-recipe-website/lib/data.ts`: query `tags` where `uid = uid AND category = 'cuisine'`; return `Tag | null`; catch errors and return `null`
 - [ ] T022 [P] [US2] Implement `getIngredientTagByUid(uid: string)` in `2026-recipe-website/lib/data.ts`: query `tags` where `uid = uid AND category = 'ingredient'`; return `Tag | null`; catch errors and return `null`
@@ -99,7 +100,7 @@ description: "Task list template for feature implementation"
 - [ ] T028 [P] [US2] Implement `getRecipesBySeasonTag(uid: string)` in `2026-recipe-website/lib/data.ts`: join `recipe_tags → tags` (where `tags.uid = uid AND tags.category = 'season'`) → `recipes`; return `RecipeSummary[]`; catch errors and return `[]`
 - [ ] T029 [US2] Implement `getWeekdayRecipes()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, title FROM recipes WHERE weekday = true`; return `RecipeSummary[]`; catch errors and return `[]`
 
-**Checkpoint**: All tag overview pages (`/recipes/ingredients`, `/recipes/cuisines`, `/recipes/types`, `/recipes/seasons`) and one tag detail page per category load correctly from Supabase. `/recipes/weekday` lists correct recipes.
+**Checkpoint**: All tag overview pages (`/recipes/ingredients`, `/recipes/cuisines`, `/recipes/dish-types`, `/recipes/seasons`) and one tag detail page per category load correctly from Supabase. `/recipes/weekday` lists correct recipes. Verify 404 for a nonexistent tag slug — `notFound()` is already wired in all tag detail pages.
 
 ---
 
@@ -123,8 +124,8 @@ description: "Task list template for feature implementation"
 
 - [ ] T031 [P] [US4] Implement `getNextRecipes()` in `2026-recipe-website/lib/data.ts`: join `cook_next_list → recipes` ordered by `cook_next_list.position ASC`; return `RecipeSummary[]`; catch errors and return `[]`
 - [ ] T032 [P] [US4] Implement `getFavoriteRecipes()` in `2026-recipe-website/lib/data.ts`: join `favorites_list → recipes` ordered by `favorites_list.position ASC`; return `RecipeSummary[]`; catch errors and return `[]`
-- [ ] T033 [P] [US4] Implement `getRecentRecipes()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, title FROM recipes ORDER BY created_at DESC LIMIT 10`; return `RecipeSummary[]`; catch errors and return `[]`
-- [ ] T034 [P] [US4] Implement `getRandomRecipes()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, title FROM recipes ORDER BY random() LIMIT 10`; return `RecipeSummary[]`; catch errors and return `[]`
+- [ ] T033 [P] [US4] Implement `getRecentRecipes()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, title FROM recipes ORDER BY created_at DESC LIMIT 10`; return `RecipeSummary[]`; catch errors and return `[]` — `LIMIT 10` is a tunable default
+- [ ] T034 [P] [US4] Implement `getRandomRecipes()` in `2026-recipe-website/lib/data.ts`: `SELECT id, uid, title FROM recipes ORDER BY random() LIMIT 10`; return `RecipeSummary[]`; catch errors and return `[]` — `LIMIT 10` is a tunable default; `ORDER BY random()` is fine at <500 recipes
 
 **Checkpoint**: All four homepage sections populated from Supabase data. Cook-next and favorites sections match the editorial curation in the Supabase table.
 
@@ -148,8 +149,9 @@ description: "Task list template for feature implementation"
 
 - [ ] T036 Delete `2026-recipe-website/lib/placeholder-data.ts` and remove its import from `2026-recipe-website/lib/data.ts`
 - [ ] T037 Confirm `pnpm build` passes from `2026-recipe-website/` with no import errors, no Prismic references, and all static pages generated from Supabase data
+- [ ] T038 Run `pnpm typecheck && pnpm lint` from `2026-recipe-website/` and resolve all errors — required by constitution before opening a PR
 
-**Checkpoint**: `pnpm build` succeeds. Zero references to `placeholder-data` or `@prismicio/*` in the 2026 site. All recipe and tag routes statically generated.
+**Checkpoint**: `pnpm build` succeeds; TypeScript and ESLint pass. Zero references to `placeholder-data` or `@prismicio/*` in the 2026 site. All recipe and tag routes statically generated. Rollback if needed: revert `lib/data.ts` to restore placeholder data — the 2023 Prismic site remains live throughout.
 
 ---
 
