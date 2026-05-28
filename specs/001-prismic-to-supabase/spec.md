@@ -112,7 +112,7 @@ All recipes, tags, curated lists, and related content that exist in Prismic are 
 - The cook-next or favorites list is empty — the homepage handles this without layout breakage.
 - A tag exists but no recipes are associated with it — the tag detail page shows an empty state.
 - Recipe slugs containing special characters — slugs are preserved exactly as they were in Prismic to avoid broken links.
-- The weekday tag is a boolean, not a relation — weekday-tagged recipes appear correctly under `/recipes/weekday`.
+- The `weekday_tag` field in the live Prismic database is a legacy Select field with values `'Yes'`/`'No'`; the migration converts `'Yes'` → `weekday = true` and all other values → `weekday = false`. Weekday-tagged recipes appear correctly under `/recipes/weekday`.
 
 ## Requirements *(mandatory)*
 
@@ -156,6 +156,7 @@ All recipes, tags, curated lists, and related content that exist in Prismic are 
 - Recipe content will be exported from Prismic via its API (not manually re-entered); a one-time migration script will handle the transformation and import into Supabase.
 - Rich-text fields in Prismic (notes, source) contain simple formatting (paragraphs, links, bold/italic); the migrated values will be stored as plain text or minimal markdown, which is sufficient given how the 2026 site renders them.
 - The site is a personal/private recipe collection, so no row-level security or public write access is needed — read-only public access is sufficient for the site, with admin access for content management.
-- The "weekday" field is a simple boolean flag in the 2026 site and schema (not a tag relation as in Prismic), consistent with how the 2026 codebase already models it.
+- The "weekday" field is stored as a legacy Select (`weekday_tag: 'Yes'/'No'`) in the live Prismic database; the migration converts this to a boolean in Supabase. The content-type JSON in this repo reflects a planned rename to `is_weekday_meal: Boolean` that was never deployed to Prismic.
 - The "meal_tag" Prismic content type exists in the 2023 schema files but is not used in any page or query; it is out of scope for migration.
+- The "is_sunday_meal" boolean field exists on the Prismic recipe content type but is not used in any page or query in the 2026 site; it is out of scope for this migration and will not be included in the Supabase schema.
 - Pagination (present in the 2023 recipes overview) is not implemented in the 2026 site's current page structure and is out of scope unless explicitly added.

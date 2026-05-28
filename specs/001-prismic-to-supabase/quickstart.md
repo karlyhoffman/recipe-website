@@ -74,7 +74,7 @@ The script:
 # Check: recipe count, tag counts per category, cook-next list length
 ```
 
-Spot-check 3–5 recipes by visiting them in the running dev server:
+Spot-check 3-5 recipes by visiting them in the running dev server:
 
 ```bash
 cd 2026-recipe-website && pnpm dev
