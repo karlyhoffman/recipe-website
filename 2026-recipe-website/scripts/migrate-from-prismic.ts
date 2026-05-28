@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// One-time migration: Prismic CMS → Supabase
+
+/* One-time migration: Prismic CMS → Supabase
 //
 // Usage (from repo root):
 //   PRISMIC_API_URL=... PRISMIC_ACCESS_TOKEN=... npx tsx 2026-recipe-website/scripts/migrate-from-prismic.ts
@@ -501,3 +502,4 @@ main().catch((err) => {
   console.error('\nMigration failed:', err.message ?? err);
   process.exit(1);
 });
+*/
