@@ -27,10 +27,10 @@ Create `2026-recipe-website/.env.local`:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_ANON_KEY=your-anon-key
 ```
 
-Both values are found in the Supabase dashboard under **Project Settings → API**.
+Both values are found in the Supabase dashboard under **Project Settings → API**. The URL uses `NEXT_PUBLIC_` (safe to expose). The anon key must **not** — `SUPABASE_ANON_KEY` keeps it server-only and out of the client JS bundle.
 
 ---
 
@@ -95,7 +95,7 @@ import { createServerClient } from '@supabase/ssr'
 export function createClient() {
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_ANON_KEY!,
     { cookies: { getAll: () => [] } }
   )
 }

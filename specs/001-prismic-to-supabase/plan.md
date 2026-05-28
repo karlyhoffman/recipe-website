@@ -75,7 +75,7 @@ specs/001-prismic-to-supabase/
 ├── supabase/
 │   └── migrations/
 │       └── 0001_initial_schema.sql  ← NEW: DDL for all 8 tables
-└── .env.local                ← NEW: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
+└── .env.local                ← NEW: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_ANON_KEY
 
 2023-recipe-website/          ← READ-ONLY: source for migration script only
 ```
@@ -89,7 +89,7 @@ specs/001-prismic-to-supabase/
 1. Create Supabase project (if not already done)
 2. Write DDL for all 8 tables per `data-model.md`; apply via Supabase SQL editor
 3. Create `lib/supabase.ts` client factory
-4. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env.local`
+4. Add `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` to `.env.local`
 5. Install `@supabase/ssr`
 
 **Verify**: `pnpm build` still passes (nothing calls Supabase yet; placeholder data still in use)
