@@ -1,12 +1,20 @@
-.groceries {
-  &__section {
-    display: block;
-    margin: var(--gutter) 0;
+@use '../breakpoints' as bp;
 
-    .wrapper {
-      display: block;
-      height: 100%;
+.groceries {
+
+  &__aisles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gutter);
+    padding: 0 var(--gutter);
+
+    .aisle {
+      flex: 1 1 100%;
       padding-top: var(--gutter-md);
+
+      @include bp.media-breakpoint-up(md) {
+        flex: 1 1 47%;
+      }
 
       ul {
         padding-top: var(--gutter-md);
@@ -26,10 +34,6 @@
           }
         }
       }
-    }
-
-    &__last {
-      order: 1;
     }
   }
 }

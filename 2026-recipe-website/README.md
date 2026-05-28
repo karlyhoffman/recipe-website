@@ -1,5 +1,20 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment Variables
+
+Create a `.env.local` file in this directory with the following variables:
+
+```env
+# Supabase — get both from Supabase Dashboard → Project Settings → API
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+```
+
+Both `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` must also be added to
+**Vercel → Project Settings → Environment Variables** (Production, Preview, and
+Development) before deploying; a build without them will fail at Supabase client
+instantiation.
+
 ## Getting Started
 
 First, run the development server:

@@ -16,7 +16,8 @@ const AISLE_ORDER = [
   'Cheese',
   'World Aisle',
   'Pasta',
-  'Soup',
+  'Condiments',
+  'Soups & Canned Goods',
   'Spices',
   'Baking',
   'Cereal',
@@ -28,20 +29,22 @@ const AISLE_ORDER = [
 ];
 
 function sortIngredientsByAisle(recipes: Recipe[]) {
-  const aisleMap: Record<string, { name: string; aisle: string; recipeTitle: string; recipeUid: string }[]> = {};
+  const aisleMap: Record<string, { name: string; amount?: string; aisle: string; preparation?: string; recipeTitle: string; recipeUid: string }[]> = {};
   AISLE_ORDER.forEach((aisle) => (aisleMap[aisle] = []));
 
   recipes.forEach((recipe) => {
     recipe.ingredients
       .filter((s) => s.type === 'ingredient')
-      .forEach((slice) => {
-        const aisle = slice.aisle || 'Other';
+      .forEach(({ amount, name, aisle: aisleName, preparation }) => {
+        const aisle = aisleName || 'Other';
         if (!aisleMap[aisle]) aisleMap[aisle] = [];
         aisleMap[aisle].push({
-          name: slice.name,
+          name,
+          amount,
           aisle,
+          preparation,
           recipeTitle: recipe.title,
-          recipeUid: recipe.uid,
+          recipeUid: recipe.uid
         });
       });
   });
@@ -69,29 +72,23 @@ export default async function Groceries() {
         </ul>
       </Column>
 
-      {aisles.map(([aisle, items]) => {
-        if (!items.length) return null;
-        return (
-          <Column
-            lg={aisle === 'Other' ? 12 : 6}
-            className={classNames(styles.groceries__section, {
-              [styles.groceries__section__last]: aisle === 'Other',
-            })}
-            key={aisle}
-          >
-            <div className={classNames(styles.wrapper, 'outline')}>
+      <div className={styles.groceries__aisles}>
+        {aisles.map(([aisle, items]) => {
+          if (!items.length) return null;
+          return (
+            <div className={classNames(styles.aisle, 'outline')} key={aisle}>
               <h2 className="h4 highlight">{aisle}</h2>
               <ul>
                 {items.map((item, i) => (
                   <li className={styles.ingredient} key={`${item.recipeUid}-${i}`}>
-                    <p>{item.name}</p>
+                    <p>{item.amount && `${item.amount} `}<strong>{item.name}</strong>{item.preparation && `, ${item.preparation}`}</p>
                   </li>
                 ))}
               </ul>
             </div>
-          </Column>
-        );
-      })}
+          );
+        })}
+      </div>
     </Row>
   );
 }
