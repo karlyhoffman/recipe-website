@@ -150,8 +150,10 @@ description: "Task list template for feature implementation"
 - [ ] T036 Delete `2026-recipe-website/lib/placeholder-data.ts` and remove its import from `2026-recipe-website/lib/data.ts`
 - [ ] T037 Confirm `pnpm build` passes from `2026-recipe-website/` with no import errors, no Prismic references, and all static pages generated from Supabase data
 - [ ] T038 Run `pnpm typecheck && pnpm lint` from `2026-recipe-website/` and resolve all errors — required by constitution before opening a PR
+- [ ] T039 Verify SC-004: open a recipe detail page in `pnpm dev` and compare load feel against the live 2023 site; confirm `pnpm build` output shows recipe pages are statically generated (routes appear without the `ƒ` dynamic marker in build output)
+- [ ] T040 Update `README.md` (or create `.env.example`) to document the required environment variables `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` and where to obtain them — required by constitution (Principle 4) for any change that affects developer setup
 
-**Checkpoint**: `pnpm build` succeeds; TypeScript and ESLint pass. Zero references to `placeholder-data` or `@prismicio/*` in the 2026 site. All recipe and tag routes statically generated. Rollback if needed: revert `lib/data.ts` to restore placeholder data — the 2023 Prismic site remains live throughout.
+**Checkpoint**: `pnpm build` succeeds; TypeScript and ESLint pass. Zero references to `placeholder-data` or `@prismicio/*` in the 2026 site. All recipe and tag routes statically generated. SC-004 performance verified. README updated with env var documentation. Rollback if needed: revert `lib/data.ts` to restore placeholder data — the 2023 Prismic site remains live throughout.
 
 ---
 

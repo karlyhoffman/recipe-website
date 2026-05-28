@@ -141,7 +141,7 @@ Replace each function in `lib/data.ts` with Supabase queries per `contracts/data
 ### Phase 4: Cleanup
 
 1. Delete `lib/placeholder-data.ts`
-2. Remove `@prismicio/*` packages from 2026 site `package.json` (they were never a dependency — the migration script uses them from the 2023 site)
+2. Confirm `@prismicio/*` is absent from the 2026 site `package.json` (it was never added — the migration script reads them from the 2023 site; no action needed)
 3. Confirm `pnpm build` passes with zero Prismic references in the 2026 site
 
 **Verify**: `pnpm build` succeeds; no import errors; all static pages generated from Supabase data.
