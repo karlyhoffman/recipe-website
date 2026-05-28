@@ -8,10 +8,12 @@ The 2026 site's data access layer (`lib/data.ts`) is the interface contract betw
 
 ## Recipe Queries
 
-### `getAllRecipes(): Promise<Recipe[]>`
-Returns all recipes. Used by `generateStaticParams` to pre-build all recipe detail pages.
+### `getAllRecipes(): Promise<RecipeSummary[]>`
+Returns a lightweight list of all recipes for route generation. Used by `generateStaticParams` to pre-build all recipe detail pages — callers only need `uid`. Fetching fully-hydrated recipes here would load every ingredient and instruction row on every build for no benefit.
 
-**Backend query**: `recipes` joined with all child tables (ingredient_entries, instruction_entries, recipe_tags, related_recipes).
+**Backend query**: `SELECT id, uid, title FROM recipes` — no child table joins.
+
+**Type note**: The return type narrows from `Recipe[]` to `RecipeSummary[]`; `generateStaticParams` only maps `uid`, so this is a safe change with no downstream impact.
 
 ---
 

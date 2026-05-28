@@ -12,9 +12,9 @@
 
 **Environment variables needed**:
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_ANON_KEY`
 
-The `NEXT_PUBLIC_` prefix makes them accessible in both server and client contexts if ever needed. The anon key (public, read-only RLS) is sufficient — no service role key needed.
+The URL may use the `NEXT_PUBLIC_` prefix (harmless to expose). The anon key must **not** — all Supabase queries run in Server Components via `createServerClient()`, so the key never needs to reach client-side code. `NEXT_PUBLIC_SUPABASE_ANON_KEY` would embed it in the JS bundle that every visitor can read from their browser's network tab. `SUPABASE_ANON_KEY` keeps it server-only. The anon key (with RLS `SELECT`-only policies per `data-model.md`) is sufficient — no service role key needed.
 
 **Caching note**: Supabase queries via `createServerClient()` are not automatically cached by Next.js (unlike `fetch()`). Pages using `generateStaticParams` will query at build time. For ISR, export `revalidate` from the page module.
 

@@ -96,7 +96,7 @@ Ordered ingredient list for a recipe. Each row is either a section heading or an
 | `preparation` | text    | yes      | e.g. "diced" (ingredient only)    |
 | `aisle`       | text    | yes      | Grocery aisle grouping; must match a value in `AISLE_ORDER` |
 
-**Constraints**: `type` constrained to `heading` or `ingredient`. FK on `recipe_id` is `ON DELETE CASCADE`.
+**Constraints**: `type` constrained to `heading` or `ingredient`. FK on `recipe_id` is `ON DELETE CASCADE`. `aisle` is constrained via `CHECK` to one of the 18 canonical values or `NULL` — enforced at the database level, not only in application code.
 **Index**: Compound B-tree index on `(recipe_id, position)` — every recipe page load fetches all ingredients for a recipe ordered by position; this index satisfies both the filter and the sort in a single pass without a separate sort step.
 
 **Canonical `aisle` values** (must match the 2026 groceries page `AISLE_ORDER` exactly):
@@ -148,6 +148,7 @@ Ordered list of related recipes for a given recipe (self-referencing).
 | `position`          | integer | no       | 0-based, defines display order |
 
 **Constraints**: Primary key is `(recipe_id, related_recipe_id)`. Both FK constraints are `ON DELETE CASCADE` — removing a recipe automatically removes it as both a source and a target of related-recipe links.
+**Index**: B-tree index on `related_recipe_id` — the composite PK covers the `recipe_id` direction for cascade deletes but not the reverse; without this index, deleting a recipe as a *target* requires a sequential scan of `related_recipes`.
 
 ---
 
@@ -157,11 +158,10 @@ Ordered editorial curation of recipes to cook next. Drives both the homepage "Co
 
 | Column      | Type    | Nullable | Notes                          |
 |-------------|---------|----------|--------------------------------|
-| `id`        | uuid    | no       | Primary key, generated         |
-| `recipe_id` | uuid    | no       | FK → recipes.id                |
+| `recipe_id` | uuid    | no       | Primary key; FK → recipes.id   |
 | `position`  | integer | no       | 0-based, defines display order |
 
-**Constraints**: `UNIQUE(recipe_id)` — a recipe may appear only once in the list. FK on `recipe_id` is `ON DELETE CASCADE`.
+**Constraints**: Primary key is `recipe_id` — a recipe may appear only once in the list. FK on `recipe_id` is `ON DELETE CASCADE`.
 
 ---
 
@@ -171,11 +171,10 @@ Ordered editorial curation of current favorite recipes. Drives the homepage "Cur
 
 | Column      | Type    | Nullable | Notes                          |
 |-------------|---------|----------|--------------------------------|
-| `id`        | uuid    | no       | Primary key, generated         |
-| `recipe_id` | uuid    | no       | FK → recipes.id                |
+| `recipe_id` | uuid    | no       | Primary key; FK → recipes.id   |
 | `position`  | integer | no       | 0-based, defines display order |
 
-**Constraints**: `UNIQUE(recipe_id)` — a recipe may appear only once in the list. FK on `recipe_id` is `ON DELETE CASCADE`.
+**Constraints**: Primary key is `recipe_id` — a recipe may appear only once in the list. FK on `recipe_id` is `ON DELETE CASCADE`.
 
 ---
 
@@ -228,3 +227,35 @@ Ordered editorial curation of current favorite recipes. Drives the homepage "Cur
 | `related_recipes` → `recipes` (ordered)             | `Recipe.related_recipes: RecipeSummary[]` |
 | `cook_next_list` → `recipes` (ordered)              | `getCookNextRecipes(): Recipe[]` |
 | `favorites_list` → `recipes` (ordered)              | `getFavoriteRecipes(): RecipeSummary[]` |
+
+---
+
+## Row-Level Security (RLS)
+
+RLS must be enabled on all tables. Without it, the anon key (which is embedded in client-side JS via `NEXT_PUBLIC_`) allows any visitor to call the Supabase API directly and write to the database.
+
+The site is read-only for visitors, so all policies grant `SELECT` to the `anon` role and nothing else. Write access goes through the Supabase dashboard (authenticated as project owner).
+
+```sql
+-- Enable RLS on every table
+ALTER TABLE recipes             ENABLE ROW LEVEL SECURITY;
+ALTER TABLE tags                ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recipe_tags         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ingredient_entries  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE instruction_entries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE related_recipes     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cook_next_list      ENABLE ROW LEVEL SECURITY;
+ALTER TABLE favorites_list      ENABLE ROW LEVEL SECURITY;
+
+-- Public read-only access for all tables
+CREATE POLICY "public read" ON recipes             FOR SELECT USING (true);
+CREATE POLICY "public read" ON tags                FOR SELECT USING (true);
+CREATE POLICY "public read" ON recipe_tags         FOR SELECT USING (true);
+CREATE POLICY "public read" ON ingredient_entries  FOR SELECT USING (true);
+CREATE POLICY "public read" ON instruction_entries FOR SELECT USING (true);
+CREATE POLICY "public read" ON related_recipes     FOR SELECT USING (true);
+CREATE POLICY "public read" ON cook_next_list      FOR SELECT USING (true);
+CREATE POLICY "public read" ON favorites_list      FOR SELECT USING (true);
+```
+
+These policies are included in `supabase/migrations/0001_initial_schema.sql` — not applied manually after the fact.
