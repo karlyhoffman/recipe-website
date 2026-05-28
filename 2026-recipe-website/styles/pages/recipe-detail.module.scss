@@ -6,28 +6,11 @@
 }
 
 .recipe {
-  &__hero {
-    pointer-events: none;
-    display: block;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    max-width: 100%;
-    height: 500px;
-    overflow: hidden;
-    z-index: -1;
-
-    &__img {
-      object-fit: cover;
-      object-position: center center;
-    }
-  }
-
   &__wrapper {
     position: relative;
     background-color: var(--color-white);
     border-top: 3px solid var(--color-black);
-    padding: 0 var(--gutter);
+    padding: var(--gutter-xl) var(--gutter);
   }
 
   &__meta,
@@ -39,10 +22,6 @@
 
   &__meta {
     font-size: 1rem;
-
-    @include bp.media-breakpoint-up(md) {
-      padding-top: var(--gutter-xl);
-    }
 
     h1 {
       display: block;
