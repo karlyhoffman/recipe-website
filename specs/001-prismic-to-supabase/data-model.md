@@ -40,7 +40,7 @@ The primary content record.
 | `source`       | text      | yes      | Plain text, may contain URL  |
 | `weekday`      | boolean   | no       | Default false                |
 | `title_fts`    | tsvector  | no       | `GENERATED ALWAYS AS (to_tsvector('english', title)) STORED` |
-| `created_at`   | timestamptz | no     | Set from Prismic `first_publication_date`; drives "Recently Added" ordering |
+| `created_at`   | timestamptz | no     | Set from Prismic `first_publication_date`; drives "Recently Added" ordering; **no DEFAULT** — must be supplied explicitly in every INSERT |
 
 **Constraints**: `uid` is unique.
 **Indexes**:
@@ -150,6 +150,8 @@ Ordered list of related recipes for a given recipe (self-referencing).
 **Constraints**: Primary key is `(recipe_id, related_recipe_id)`. Both FK constraints are `ON DELETE CASCADE` — removing a recipe automatically removes it as both a source and a target of related-recipe links.
 **Index**: B-tree index on `related_recipe_id` — the composite PK covers the `recipe_id` direction for cascade deletes but not the reverse; without this index, deleting a recipe as a *target* requires a sequential scan of `related_recipes`.
 
+**Migration note (two-pass insert)**: `recipe_id` and `related_recipe_id` are Supabase UUIDs, not Prismic UIDs. The migration script must complete all recipe INSERTs first (pass 1) and capture a `prismic_uid → supabase_uuid` map from the results. `related_recipes` rows can only be inserted in pass 2, after all recipe rows exist in the database — otherwise FK constraints will reject any row whose target hasn't been inserted yet.
+
 ---
 
 ### `cook_next_list`
@@ -188,7 +190,7 @@ Ordered editorial curation of current favorite recipes. Drives the homepage "Cur
 | `recipe.data.minutes_total`           | `recipes.total_minutes`                     |
 | `recipe.data.servings`                | `recipes.servings`                          |
 | `recipe.data.recipe_notes` (RichText) | `recipes.notes` (plain text)               |
-| `recipe.data.source` (RichText)       | `recipes.source` (plain text + URL)        |
+| `recipe.data.source` (RichText)       | `recipes.source` (plain text + URL) ²      |
 | `recipe.data.weekday_tag` (`'Yes'`) ¹  | `recipes.weekday = true`                   |
 | `recipe.first_publication_date`       | `recipes.created_at`                        |
 | `recipe.data.ingredient_slices[]`     | `ingredient_entries` rows (by position)     |
@@ -206,6 +208,8 @@ Ordered editorial curation of current favorite recipes. Drives the homepage "Cur
 | `favorites_list.data.favorite_recipes[]`      | `favorites_list` rows               |
 
 ¹ **Weekday field — legacy Select → boolean conversion**: The live Prismic database stores this as a Select field named `weekday_tag` with values `'Yes'` or `'No'` (a legacy type). The content-type JSON in this repo was updated to rename the field to `is_weekday_meal: Boolean`, but that change was never deployed to Prismic. The migration script must read `data.weekday_tag === 'Yes'` and write `weekday = true`; all other values (`'No'`, null, missing) map to `weekday = false`.
+
+² **Source field — URL extraction**: `recipe.data.source` is a RichText field and may contain hyperlinks. Calling `asText()` alone returns only the link *text* and silently drops the URL. The migration script must inspect the `spans` array for entries with `type === 'hyperlink'`. If a hyperlink span is found, store the field as `[link text](url)` (minimal markdown). If no hyperlink span is present, `asText()` is sufficient. The 2026 site renders source as plain text/markdown, so this format is compatible.
 
 **Fields excluded from migration**:
 - `recipe.data.is_sunday_meal` — not used in any page or query in the 2026 site; excluded from the Supabase schema.

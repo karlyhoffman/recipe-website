@@ -32,6 +32,8 @@ SUPABASE_ANON_KEY=your-anon-key
 
 Both values are found in the Supabase dashboard under **Project Settings → API**. The URL uses `NEXT_PUBLIC_` (safe to expose). The anon key must **not** — `SUPABASE_ANON_KEY` keeps it server-only and out of the client JS bundle.
 
+Also add both variables to **Vercel** (Project Settings → Environment Variables) before deploying the 2026 site. A production build without them will fail when the Supabase client is instantiated.
+
 ---
 
 ## Step 3: Apply the database schema

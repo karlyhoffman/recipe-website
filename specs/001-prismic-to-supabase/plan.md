@@ -91,6 +91,7 @@ specs/001-prismic-to-supabase/
 3. Create `lib/supabase.ts` client factory
 4. Add `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` to `.env.local`
 5. Install `@supabase/ssr`
+6. Add `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` to Vercel environment variables (Project Settings → Environment Variables) — required before the 2026 site can be deployed; a build without them will fail when the Supabase client is instantiated
 
 **Verify**: `pnpm build` still passes (nothing calls Supabase yet; placeholder data still in use)
 
@@ -99,9 +100,11 @@ specs/001-prismic-to-supabase/
 ### Phase 2: Migration Script
 
 1. Write `scripts/migrate-from-prismic.ts`:
+   - **Truncate first**: delete all rows from all 8 tables in dependency order before inserting (makes re-runs safe after partial failures): `favorites_list`, `cook_next_list`, `related_recipes`, `recipe_tags`, `ingredient_entries`, `instruction_entries`, `recipes`, `tags`
    - Fetch all 4 tag types from Prismic → insert into `tags`
-   - Fetch all recipes with `fetchLinks` → insert into `recipes`, `ingredient_entries`, `instruction_entries`, `recipe_tags`, `related_recipes`
-   - Fetch cook-next and favorites singletons → insert into `cook_next_list`, `favorites_list`
+   - **Pass 1 — recipes**: fetch all recipes from Prismic with `fetchLinks`; insert into `recipes`, `ingredient_entries`, `instruction_entries`, `recipe_tags`; capture the returned Supabase UUIDs and build a `prismic_uid → supabase_uuid` map from the insert results
+   - **Pass 2 — related recipes**: for each recipe's `related_recipes[]`, resolve both `recipe_id` and `related_recipe_id` from the uid→uuid map built in pass 1; insert into `related_recipes` (both recipe and its target must already exist in `recipes` for FK constraints to pass)
+   - Fetch cook-next and favorites singletons → resolve recipe IDs from the uid→uuid map → insert into `cook_next_list`, `favorites_list`
    - Print count summary on completion
 2. Run the script against the Supabase project
 3. Verify counts match Prismic source
@@ -115,7 +118,7 @@ specs/001-prismic-to-supabase/
 Replace each function in `lib/data.ts` with Supabase queries per `contracts/data-access.md`:
 
 1. `getRecipeByUid` — recipe + all child tables
-2. `getAllRecipes` — for `generateStaticParams`
+2. `getAllRecipes` — for `generateStaticParams`; **before implementing**, grep for all call sites and confirm none expect a fully-hydrated `Recipe[]` — the Supabase implementation returns `RecipeSummary[]` (id, uid, title only), which is a narrowing of the current placeholder signature
 3. Tag list functions (`getCuisineTags`, `getIngredientTags`, etc.)
 4. Tag lookup functions (`getCuisineTagByUid`, etc.)
 5. Tag → recipe functions (`getRecipesByCuisineTag`, etc.)

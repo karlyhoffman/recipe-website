@@ -13,7 +13,7 @@ Returns a lightweight list of all recipes for route generation. Used by `generat
 
 **Backend query**: `SELECT id, uid, title FROM recipes` — no child table joins.
 
-**Type note**: The return type narrows from `Recipe[]` to `RecipeSummary[]`; `generateStaticParams` only maps `uid`, so this is a safe change with no downstream impact.
+**Type note**: The return type narrows from `Recipe[]` to `RecipeSummary[]`. Before implementing, grep for all call sites of `getAllRecipes` and confirm none expect the full `Recipe` shape. The known caller (`generateStaticParams`) only maps `uid`, so the narrowing is safe — but verify no other caller was added.
 
 ---
 
