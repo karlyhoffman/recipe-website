@@ -70,7 +70,7 @@ file: <PDF file, max 10 MB>
 
 ## POST /api/import/save
 
-Saves a user-confirmed import draft as a new recipe record. All three related tables (`recipes`, `ingredient_entries`, `instruction_entries`) are written in sequence. The recipe starts in `draft` status.
+Saves a user-confirmed import draft as a new recipe record. All three related tables (`recipes`, `ingredient_entries`, `instruction_entries`) are written atomically via the `import_recipe` RPC function (FR-015); if any insert fails the entire operation is rolled back. The recipe starts in `draft` status.
 
 ### Request
 

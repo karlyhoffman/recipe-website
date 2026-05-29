@@ -31,6 +31,7 @@ CREATE POLICY "authenticated update draft" ON recipes
   FOR UPDATE TO authenticated USING (status = 'draft');
 ```
 
+```sql
 -- Atomic recipe import: all three INSERTs run in a single transaction.
 -- If any INSERT fails, the entire operation is rolled back (FR-015).
 CREATE OR REPLACE FUNCTION import_recipe(
@@ -56,6 +57,7 @@ BEGIN
     FROM jsonb_array_elements(p_instructions) AS el;
 END;
 $$;
+```
 
 > Note: `created_at` has no default in the current schema (`NOT NULL` with no default). The INSERT must supply it explicitly (`new Date().toISOString()`). The save route calls `supabase.rpc('import_recipe', { ... })` instead of three separate INSERTs.
 

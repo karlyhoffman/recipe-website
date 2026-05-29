@@ -46,12 +46,12 @@
 **Independent Test**: In development mode, upload a text-based recipe PDF at `/import`; confirm a new row appears in `recipes` with `status = 'draft'`, `import_source` set to the filename, and matching rows in `ingredient_entries` and `instruction_entries`.
 
 - [ ] T006 [US1] Implement supabase/lib/pdf.ts — export async `extractText(arrayBuffer: ArrayBuffer): Promise<string>` wrapping pdf-parse; return the extracted text string (empty string for image-only PDFs)
-- [ ] T007 [US1] Implement supabase/lib/recipe-extractor.ts — call claude-haiku-4-5 via @anthropic-ai/sdk with the raw text; prompt for JSON matching ImportDraft (title, ingredients as IngredientSlice[], instructions as InstructionSlice[], uncategorized as string[]); parse and return ImportDraft
-- [ ] T008 [US1] Implement supabase/app/api/import/extract/route.ts — POST handler: auth guard (401 in non-development environments), file type check (400 if not PDF), file size check (400 if > 10 MB), call extractText() then extractRecipe(), return ImportDraft as JSON 200; per contracts/api.md
+- [ ] T007 [US1] Implement supabase/lib/recipe-extractor.ts — call claude-haiku-4-5-20251001 via @anthropic-ai/sdk with the raw text; prompt for JSON matching ImportDraft (title, ingredients as IngredientSlice[], instructions as InstructionSlice[], uncategorized as string[]); parse and return ImportDraft
+- [ ] T008 [US1] Implement supabase/app/api/import/extract/route.ts — POST handler: auth guard (401 in non-development environments), file type check (400 if not PDF), file size check (400 if > 10 MB), call extractText() then extractRecipe(), return ImportDraft as JSON 200; log extraction failures (pdf-parse errors, Claude API errors) via `console.error` with error message and filename (FR-020); per contracts/api.md
 - [ ] T009 [US1] Implement supabase/app/api/import/save/route.ts — POST handler: auth guard (401 in non-development environments), validate non-empty title (400), slugify title (fall back to "recipe" if slug is empty) and query recipes for uid conflicts with -2/-3 collision suffix, call `import_recipe` RPC to atomically INSERT into recipes, ingredient_entries, and instruction_entries (status: 'draft', import_source, created_at explicitly), return `{ uid }`; per contracts/api.md and data-model.md UID rules
-- [ ] T010 [P] [US1] Create supabase/components/PdfImportForm.tsx — controlled file input restricted to application/pdf; client-side type rejection with error message; client-side size rejection (> 10 MB) with error message before fetch; submit handler POSTs to /api/import/extract as multipart/form-data; shows loading indicator during upload; calls onExtracted(draft: ImportDraft) on success and surfaces API error messages on failure
-- [ ] T011 [US1] Create supabase/components/PdfImportReview.tsx — render title, ingredients list, and instructions list from an ImportDraft prop; include Confirm button (calls onConfirm with current draft) and Cancel button (calls onCancel)
-- [ ] T012 [US1] Create supabase/app/import/page.tsx — client component managing state: idle → loading → review; render PdfImportForm when idle/loading; render PdfImportReview when draft is set; on confirm POST to /api/import/save and redirect to /recipes/{uid}; on cancel reset to idle
+- [ ] T010 [P] [US1] Create supabase/components/PdfImportForm.tsx — controlled file input restricted to application/pdf; client-side type rejection with error message; client-side size rejection (> 10 MB) with error message before fetch; submit handler POSTs to /api/import/extract as multipart/form-data; include a visible `<label>`, an `aria-describedby` hint listing accepted file types and the 10 MB size limit, and ensure full keyboard operability (FR-017); shows loading indicator during upload rendered with `role="status"` so screen readers announce extraction progress (FR-018); layout MUST be responsive for mobile viewports (FR-019); calls onExtracted(draft: ImportDraft) on success and surfaces API error messages on failure
+- [ ] T011 [US1] Create supabase/components/PdfImportReview.tsx — render title, ingredients list, and instructions list from an ImportDraft prop; include Confirm button (calls onConfirm with current draft) and Cancel button (calls onCancel); layout MUST be responsive for mobile viewports (FR-019)
+- [ ] T012 [US1] Create supabase/app/import/page.tsx — client component managing state: idle → loading → review; render PdfImportForm when idle/loading; render PdfImportReview when draft is set; on confirm POST to /api/import/save and redirect to /recipes/{uid}; on save failure display the error message above the review form and remain in the review state so the user can retry without re-uploading (FR-013); on cancel reset to idle
 
 **Checkpoint**: Full upload → extract → review → save pipeline works end-to-end in development mode
 
@@ -63,7 +63,7 @@
 
 **Independent Test**: Upload a PDF, edit at least one ingredient and one instruction on the review screen, delete one item from each list, confirm, and verify the saved recipe in the database reflects only the edited, non-deleted content.
 
-- [ ] T013 [US2] Extend supabase/components/PdfImportReview.tsx — replace title display with a controlled text input; replace each ingredient entry with an editable text input and a delete button; replace each instruction entry with an editable textarea and a delete button; pass the mutated draft state to onConfirm so edits and deletions are included in the save request
+- [ ] T013 [US2] Extend supabase/components/PdfImportReview.tsx — replace title display with a controlled text input; replace each ingredient entry with an editable text input and a delete button; replace each instruction entry with an editable textarea and a delete button; pass the mutated draft state to onConfirm so edits and deletions are included in the save request; disable the Confirm button and display an inline validation message when the title field is empty (FR-014)
 
 **Checkpoint**: Review screen is fully editable; confirmed saves reflect all user edits and deletions
 
@@ -88,8 +88,9 @@
 **Purpose**: Lint compliance and end-to-end validation against the quickstart guide
 
 - [ ] T017 [P] Run ESLint on all new and modified files (supabase/lib/pdf.ts, supabase/lib/recipe-extractor.ts, supabase/lib/supabase.ts, supabase/app/api/import/extract/route.ts, supabase/app/api/import/save/route.ts, supabase/components/PdfImportForm.tsx, supabase/components/PdfImportReview.tsx, supabase/app/import/page.tsx, supabase/types/index.ts) and fix all violations
-- [ ] T019 [P] Run `npx tsc --noEmit` from supabase/ and fix all type errors (required by constitution before merge)
-- [ ] T018 Follow the quickstart.md validation steps: apply migration via `supabase db push`, start `npm run dev` in supabase/, upload a recipe PDF at http://localhost:3000/import, verify redirect to /recipes/{uid}, confirm draft row in DB with correct status and import_source
+- [ ] T018 [P] Run `npx tsc --noEmit` from supabase/ and fix all type errors (required by constitution before merge)
+- [ ] T019 [P] Update the app README with the new environment variables (`ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) and PDF import setup steps so developer onboarding reflects the new dependencies (constitution §4)
+- [ ] T020 Follow the quickstart.md validation steps: apply migration via `supabase db push`, start `npm run dev` in supabase/, upload a recipe PDF at http://localhost:3000/import, verify redirect to /recipes/{uid}, confirm draft row in DB with correct status and import_source
 
 ---
 
@@ -102,7 +103,7 @@
 - **US1 (Phase 3)**: Depends on Phase 2 — T006 → T007 → T008 must be sequential; T009 and T010 can start in parallel after Phase 2; T011 can start after T004; T012 starts after T010 and T011
 - **US2 (Phase 4)**: Depends on T011 from US1 — single task, starts after Phase 3
 - **US3 (Phase 5)**: Depends on T008, T011, and T012 from US1 — T014, T015, T016 can run in parallel with each other; can also run in parallel with US2
-- **Polish (Phase 6)**: Depends on all previous phases
+- **Polish (Phase 6)**: Depends on all previous phases — T017, T018, T019 can run in parallel; T020 must run last
 
 ### User Story Dependencies
 
