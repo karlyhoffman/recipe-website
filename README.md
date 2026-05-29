@@ -5,7 +5,7 @@ A collection of recipe website iterations built with Next.js over the years. Wit
 ## Projects
 
 | Directory | Next.js | Router Type | React | CMS |
-|---|---|---|---|
+|---|---|---|---|---|
 | `prismic` | 13.x | Pages | 18 | Prismic (@prismicio/client) |
 | `supabase` | 16.x | App | 19 | Supabase (@supabase/ssr) |
 
