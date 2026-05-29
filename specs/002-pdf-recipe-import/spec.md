@@ -20,9 +20,10 @@ A user wants to add a recipe they have saved as a PDF. They upload the PDF throu
 
 **Acceptance Scenarios**:
 
-1. **Given** a logged-in user has a PDF file containing a recipe, **When** they upload the PDF, **Then** the system extracts the recipe title, ingredients, and instructions from the file and presents them for review.
+1. **Given** a user is authenticated, or the project is running locally, **When** they upload a PDF file containing a recipe, **Then** the system extracts the recipe title, ingredients, and instructions from the file and presents them for review.
 2. **Given** extracted content is displayed for review, **When** the user confirms the import, **Then** a new recipe entry is created in the database containing the extracted title, ingredients, and instructions.
 3. **Given** a user attempts to upload a non-PDF file (e.g., `.docx`, `.jpg`), **When** they submit it, **Then** the system rejects the file and displays a clear error message explaining that only PDF files are accepted.
+4. **Given** an unauthenticated user accesses the import feature in a non-local environment, **When** they attempt to upload a PDF, **Then** the system prevents the action and prompts them to log in.
 
 ---
 
@@ -59,6 +60,7 @@ A user uploads a PDF that is scanned from paper (image-based) or has formatting 
 
 ### Edge Cases
 
+- What happens when an unauthenticated user tries to import in a non-local environment?
 - What happens when a PDF file exceeds the maximum allowed size?
 - How does the system handle a multi-page PDF where recipe content spans multiple pages?
 - What if a PDF contains content in a language other than English?
@@ -69,7 +71,7 @@ A user uploads a PDF that is scanned from paper (image-based) or has formatting 
 
 ### Functional Requirements
 
-- **FR-001**: System MUST allow authenticated users to upload PDF files for recipe import.
+- **FR-001**: System MUST allow PDF import only when the user is authenticated, or when the project is running in a local environment. Unauthenticated users in non-local environments MUST be prevented from importing.
 - **FR-002**: System MUST extract plain text content from uploaded PDF files.
 - **FR-003**: System MUST identify and separate ingredients from instructions within the extracted text.
 - **FR-004**: System MUST attempt to extract a recipe title from the PDF content.
@@ -99,7 +101,7 @@ A user uploads a PDF that is scanned from paper (image-based) or has formatting 
 
 ## Assumptions
 
-- Authenticated users (any logged-in user) are permitted to import recipes via PDF. If role-based restrictions are needed, that is out of scope for this feature.
+- PDF import is permitted for authenticated users in any environment, and for unauthenticated users only when the project is running locally. Unauthenticated access in non-local environments is not supported.
 - One PDF upload corresponds to one recipe. Multi-recipe PDFs are out of scope; the user is expected to upload one PDF per recipe.
 - PDFs are expected to be text-based (digitally created). Image-only PDFs (scanned documents) will be handled gracefully with a fallback to manual entry, but OCR (optical character recognition) is out of scope.
 - The review step is mandatory before saving; auto-saving without user confirmation is not supported.
