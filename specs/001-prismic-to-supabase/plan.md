@@ -80,7 +80,7 @@ supabase/
 prismic/          ← READ-ONLY: source for migration script only
 ```
 
-**Structure Decision**: Single Next.js project (supabase). The 2023 site is a read-only data source for the migration script and is not modified.
+**Structure Decision**: The production app is `supabase/` at the repo root — a single Next.js project. All source changes target `supabase/`. The `prismic/` directory (the 2023 site) is a read-only data source for the migration script and is not modified.
 
 ## Implementation Phases
 

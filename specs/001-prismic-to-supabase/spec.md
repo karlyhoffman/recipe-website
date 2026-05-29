@@ -6,6 +6,8 @@
 
 **Status**: Draft
 
+**Production App**: `supabase/` — the Next.js app at the repo root. All source code changes target this directory. The `prismic/` directory is the legacy 2023 site used only as a read-only data source for the migration script.
+
 **Input**: User description: "Migrate the Prismic backend of prismic to Supabase in supabase"
 
 ## User Scenarios & Testing *(mandatory)*
