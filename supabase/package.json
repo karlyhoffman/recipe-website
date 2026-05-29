@@ -22,7 +22,7 @@
     "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
-    "postcss": "^8.5.15",
+    "postcss": ">=8.5.10",
     "sass": "^1.100.0",
     "typescript": "^5"
   }
