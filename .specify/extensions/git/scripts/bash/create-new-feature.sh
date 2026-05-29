@@ -134,8 +134,9 @@ _extract_highest_number() {
     local highest=0
     while IFS= read -r name; do
         [ -z "$name" ] && continue
-        if echo "$name" | grep -Eq '^[0-9]{3,}-' && ! echo "$name" | grep -Eq '^[0-9]{8}-[0-9]{6}-'; then
-            number=$(echo "$name" | grep -Eo '^[0-9]+' || echo "0")
+        local stripped="${name#specs/}"
+        if echo "$stripped" | grep -Eq '^[0-9]{3,}-' && ! echo "$stripped" | grep -Eq '^[0-9]{8}-[0-9]{6}-'; then
+            number=$(echo "$stripped" | grep -Eo '^[0-9]+' || echo "0")
             number=$((10#$number))
             if [ "$number" -gt "$highest" ]; then
                 highest=$number
@@ -334,7 +335,7 @@ else
     # Determine branch prefix
     if [ "$USE_TIMESTAMP" = true ]; then
         FEATURE_NUM=$(date +%Y%m%d-%H%M%S)
-        BRANCH_NAME="${FEATURE_NUM}-${BRANCH_SUFFIX}"
+        BRANCH_NAME="specs/${FEATURE_NUM}-${BRANCH_SUFFIX}"
     else
         if [ -z "$BRANCH_NUMBER" ]; then
             if [ "$DRY_RUN" = true ] && [ "$HAS_GIT" = true ]; then
@@ -351,7 +352,7 @@ else
         fi
 
         FEATURE_NUM=$(printf "%03d" "$((10#$BRANCH_NUMBER))")
-        BRANCH_NAME="${FEATURE_NUM}-${BRANCH_SUFFIX}"
+        BRANCH_NAME="specs/${FEATURE_NUM}-${BRANCH_SUFFIX}"
     fi
 fi
 
@@ -363,14 +364,14 @@ if [ -n "${GIT_BRANCH_NAME:-}" ] && [ "$BRANCH_BYTE_LEN" -gt $MAX_BRANCH_LENGTH 
     >&2 echo "Error: GIT_BRANCH_NAME must be 244 bytes or fewer in UTF-8. Provided value is ${BRANCH_BYTE_LEN} bytes."
     exit 1
 elif [ "$BRANCH_BYTE_LEN" -gt $MAX_BRANCH_LENGTH ]; then
-    PREFIX_LENGTH=$(( ${#FEATURE_NUM} + 1 ))
+    PREFIX_LENGTH=$(( ${#FEATURE_NUM} + 7 ))
     MAX_SUFFIX_LENGTH=$((MAX_BRANCH_LENGTH - PREFIX_LENGTH))
 
     TRUNCATED_SUFFIX=$(echo "$BRANCH_SUFFIX" | cut -c1-$MAX_SUFFIX_LENGTH)
     TRUNCATED_SUFFIX=$(echo "$TRUNCATED_SUFFIX" | sed 's/-$//')
 
     ORIGINAL_BRANCH_NAME="$BRANCH_NAME"
-    BRANCH_NAME="${FEATURE_NUM}-${TRUNCATED_SUFFIX}"
+    BRANCH_NAME="specs/${FEATURE_NUM}-${TRUNCATED_SUFFIX}"
 
     >&2 echo "[specify] Warning: Branch name exceeded GitHub's 244-byte limit"
     >&2 echo "[specify] Original: $ORIGINAL_BRANCH_NAME (${#ORIGINAL_BRANCH_NAME} bytes)"

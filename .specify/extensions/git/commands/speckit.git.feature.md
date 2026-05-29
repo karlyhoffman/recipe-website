@@ -63,5 +63,5 @@ If Git is not installed or the current directory is not a Git repository:
 ## Output
 
 The script outputs JSON with:
-- `BRANCH_NAME`: The branch name (e.g., `003-user-auth` or `20260319-143022-user-auth`)
+- `BRANCH_NAME`: The branch name (e.g., `specs/003-user-auth` or `specs/20260319-143022-user-auth`)
 - `FEATURE_NUM`: The numeric or timestamp prefix used
