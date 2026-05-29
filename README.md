@@ -41,8 +41,34 @@ Build for production:
 npm run build
 ```
 
-## [TODO: Prismic and Supabase-specific instructions, i.e, API Keys
-## [TODO: Create a wiki for each^^ and add other documentation]
+## Environment Variables
+
+Each project requires its own `.env` file with CMS credentials before running locally.
+
+### `prismic`
+
+Create a `.env` file in the `prismic/` directory:
+
+```env
+NEXT_PUBLIC_PRISMIC_API_URL=https://your-repo-name.cdn.prismic.io/api/v2
+NEXT_PUBLIC_PRISMIC_ACCESS_TOKEN=your-access-token
+```
+
+- **API URL** — Prismic Dashboard → your repository → Settings → API & Security → API Endpoint
+- **Access Token** — same page → Generate an access token (only required for private repositories)
+
+### `supabase`
+
+Create a `.env.local` file in the `supabase/` directory:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+```
+
+- Both values — Supabase Dashboard → Project Settings → API
+
+If deploying with Vercel, both variables must also be added to **Vercel → Project Settings → Environment Variables** before deployment.
 
 ## Deploy
 
