@@ -89,7 +89,7 @@ export interface Recipe extends RecipeSummary {
 }
 ```
 
-> `RecipeSummary` does not need `status` — recipe listings query all records regardless of status (the app is single-user). The draft/published distinction is only relevant on the detail view and within the import flow.
+> `RecipeSummary` does not need `status` — listing and search queries filter to `status = 'published'` at the data layer (see `lib/data.ts`). Draft recipes remain accessible by direct URL (`getRecipeByUid`) to support the post-import redirect, but they are excluded from all browse, search, and homepage surfaces (FR-012).
 
 ---
 
