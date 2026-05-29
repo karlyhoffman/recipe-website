@@ -65,7 +65,7 @@ specs/001-prismic-to-supabase/
 ### Source Code
 
 ```text
-2026-recipe-website/
+supabase/
 ├── lib/
 │   ├── supabase.ts           ← NEW: Supabase client factory
 │   ├── data.ts               ← CHANGE: replace placeholder impl with Supabase queries
@@ -77,10 +77,10 @@ specs/001-prismic-to-supabase/
 │       └── 0001_initial_schema.sql  ← NEW: DDL for all 8 tables
 └── .env.local                ← NEW: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_ANON_KEY
 
-2023-recipe-website/          ← READ-ONLY: source for migration script only
+prismic/          ← READ-ONLY: source for migration script only
 ```
 
-**Structure Decision**: Single Next.js project (2026-recipe-website). The 2023 site is a read-only data source for the migration script and is not modified.
+**Structure Decision**: Single Next.js project (supabase). The 2023 site is a read-only data source for the migration script and is not modified.
 
 ## Implementation Phases
 

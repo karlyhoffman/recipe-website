@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: User description: "Migrate the Prismic backend of 2023-recipe-website to Supabase in 2026-recipe-website"
+**Input**: User description: "Migrate the Prismic backend of prismic to Supabase in supabase"
 
 ## User Scenarios & Testing *(mandatory)*
 

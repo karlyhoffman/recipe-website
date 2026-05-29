@@ -6,17 +6,17 @@ A collection of recipe website iterations built with Next.js over the years. Wit
 
 | Directory | Next.js (Router Type) | React | CMS |
 |---|---|---|---|
-| `2020-recipe-website` | 9.x (Pages) | 16 | Prismic (prismic-javascript) |
-| `2021-recipe-website` | 10.x (Pages) | 17 | Prismic (prismic-javascript) |
-| `2023-recipe-website` | 13.x (Pages) | 18 | Prismic (@prismicio/client) |
-| `2026-recipe-website` | 16.x (App) | 19 | Supabase (TODO: client-plugin-here) |
+| `prismic` | 13.x (Pages) | 18 | Prismic (@prismicio/client) |
+| `supabase` | 16.x (App) | 19 | Supabase |
 
 ## Getting Started
 
-Navigate into the project you want to run with the following terminal commands. `2026` uses a Supabase backend with no UI editor (yet), and `2023` which offers a Prismic CMS editor with a generous free tier, including image hosting and optimizations.
+Navigate into the project you want to run:
 
 ```bash
-cd [year]-recipe-website
+cd prismic
+# or
+cd supabase
 ```
 
 Install dependencies:

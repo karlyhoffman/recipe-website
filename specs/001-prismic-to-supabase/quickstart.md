@@ -15,7 +15,7 @@
 ## Step 1: Install Supabase client
 
 ```bash
-cd 2026-recipe-website
+cd supabase
 pnpm add @supabase/ssr
 ```
 
@@ -23,7 +23,7 @@ pnpm add @supabase/ssr
 
 ## Step 2: Set environment variables
 
-Create `2026-recipe-website/.env.local`:
+Create `supabase/.env.local`:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
@@ -46,7 +46,7 @@ Run the migration SQL against your Supabase project (via the Supabase SQL editor
 --             instruction_entries, related_recipes, cook_next_list, favorites_list
 ```
 
-The full DDL will live in `2026-recipe-website/supabase/migrations/`.
+The full DDL will live in `supabase/supabase/migrations/`.
 
 ---
 
@@ -56,7 +56,7 @@ The migration script reads all content from Prismic and writes it to Supabase.
 
 ```bash
 # From repo root — requires Prismic env vars from the 2023 site
-PRISMIC_API_URL=... PRISMIC_ACCESS_TOKEN=... npx tsx 2026-recipe-website/scripts/migrate-from-prismic.ts
+PRISMIC_API_URL=... PRISMIC_ACCESS_TOKEN=... npx tsx supabase/scripts/migrate-from-prismic.ts
 ```
 
 The script:
@@ -79,7 +79,7 @@ The script:
 Spot-check 3-5 recipes by visiting them in the running dev server:
 
 ```bash
-cd 2026-recipe-website && pnpm dev
+cd supabase && pnpm dev
 # Visit http://localhost:3000/recipes/{some-slug}
 ```
 
@@ -87,9 +87,9 @@ cd 2026-recipe-website && pnpm dev
 
 ## Step 6: Wire up the data access layer
 
-Replace the placeholder implementations in `2026-recipe-website/lib/data.ts` with Supabase queries as documented in `contracts/data-access.md`.
+Replace the placeholder implementations in `supabase/lib/data.ts` with Supabase queries as documented in `contracts/data-access.md`.
 
-Create `2026-recipe-website/lib/supabase.ts` with the client factory:
+Create `supabase/lib/supabase.ts` with the client factory:
 
 ```typescript
 import { createServerClient } from '@supabase/ssr'
@@ -110,7 +110,7 @@ export function createClient() {
 Once all pages are confirmed working with Supabase data:
 
 ```bash
-cd 2026-recipe-website
+cd supabase
 rm lib/placeholder-data.ts
 pnpm remove @prismicio/client @prismicio/helpers @prismicio/next @prismicio/react
 ```
