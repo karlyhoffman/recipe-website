@@ -20,6 +20,8 @@
 - Regex / heuristic pattern matching — brittle; fails on unusual PDF layouts; unlikely to meet the SC-002 80% accuracy target
 - Other LLM providers — equivalent capability but Anthropic is the project's existing AI tooling context
 
+> **Future optimization**: Prompt caching (`cache_control: {type: "ephemeral"}` on the system prompt) may be worth adding once the system prompt shape is stable. Haiku 4.5 requires a 4,096-token minimum cacheable prefix — worth revisiting if the prompt grows with few-shot examples.
+
 ---
 
 ### Auth Strategy
