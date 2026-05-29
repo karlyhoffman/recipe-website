@@ -45,7 +45,7 @@ npm run build
 
 Each project requires its own `.env` file with CMS credentials before running locally.
 
-### `prismic`
+##### `prismic`
 
 Create a `.env` file in the `prismic/` directory:
 
@@ -57,7 +57,7 @@ NEXT_PUBLIC_PRISMIC_ACCESS_TOKEN=your-access-token
 - **API URL** — Prismic Dashboard → your repository → Settings → API & Security → API Endpoint
 - **Access Token** — same page → Generate an access token (only required for private repositories)
 
-### `supabase`
+##### `supabase`
 
 Create a `.env.local` file in the `supabase/` directory:
 
