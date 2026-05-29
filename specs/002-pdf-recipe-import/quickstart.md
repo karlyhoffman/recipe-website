@@ -24,7 +24,7 @@ npm install --save-dev @types/pdf-parse
 
 ## Database Migration
 
-Apply `supabase/supabase/migrations/0002_pdf_import.sql`:
+Apply `supabase/migrations/0002_pdf_import.sql`:
 
 ```bash
 # With Supabase CLI (local dev stack)

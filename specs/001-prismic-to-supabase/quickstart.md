@@ -46,7 +46,7 @@ Run the migration SQL against your Supabase project (via the Supabase SQL editor
 --             instruction_entries, related_recipes, cook_next_list, favorites_list
 ```
 
-The full DDL will live in `supabase/supabase/migrations/`.
+The full DDL will live in `supabase/migrations/`.
 
 ---
 

@@ -2,7 +2,7 @@
 
 ## Schema Changes
 
-### Migration: `supabase/supabase/migrations/0002_pdf_import.sql`
+### Migration: `supabase/migrations/0002_pdf_import.sql`
 
 Adds `status` and `import_source` to the existing `recipes` table; adds INSERT and UPDATE RLS policies for authenticated users.
 
