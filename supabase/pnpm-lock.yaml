@@ -24,9 +24,6 @@ importers:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@supabase/supabase-js':
-        specifier: ^2.106.2
-        version: 2.106.2
       '@types/node':
         specifier: ^20
         version: 20.19.41
