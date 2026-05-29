@@ -83,9 +83,8 @@ supabase/
 │   └── supabase.ts                   # Extend: add auth-aware client + service role client
 ├── types/
 │   └── index.ts                       # Add ImportDraft; add status/import_source to Recipe
-└── supabase/
-    └── migrations/
-        └── 0002_pdf_import.sql        # status, import_source columns + INSERT/UPDATE policies
+└── migrations/
+    └── 0002_pdf_import.sql            # status, import_source columns + INSERT/UPDATE policies
 ```
 
 **Structure Decision**: This feature extends the existing web application structure (Option 2 in template terms: `app/` for pages + API routes, `components/` for UI, `lib/` for data access). No new top-level directories are needed.

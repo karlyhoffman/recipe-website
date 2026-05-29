@@ -54,7 +54,7 @@ A user uploads a PDF that is scanned from paper (image-based) or has formatting 
 **Acceptance Scenarios**:
 
 1. **Given** a PDF with no extractable text (e.g., a scanned image), **When** the user uploads it, **Then** the system displays a message explaining that text could not be extracted, and presents an empty review form for manual entry.
-2. **Given** a PDF where ingredients or instructions could not be confidently identified, **When** the review screen is displayed, **Then** any unidentified sections are marked as incomplete so the user knows to fill them in.
+2. **Given** a PDF where ingredients or instructions could not be confidently identified, **When** the review screen is displayed, **Then** empty ingredient or instruction sections show a visible warning banner prompting the user to fill them in, and any text the system could not classify appears in a labeled "Uncategorized Content" section for manual placement.
 
 ---
 
@@ -95,7 +95,7 @@ A user uploads a PDF that is scanned from paper (image-based) or has formatting 
 ### Measurable Outcomes
 
 - **SC-001**: Users can upload a PDF and reach the review screen in under 15 seconds for files up to 10 MB. The upload and extraction process is synchronous; a loading indicator is shown while the user waits.
-- **SC-002**: For well-structured recipe PDFs, the system correctly identifies ingredients and instructions without manual correction in at least 80% of cases.
+- **SC-002**: For well-structured recipe PDFs, the system correctly identifies ingredients and instructions without manual correction in at least 80% of cases. *(Post-launch benchmark — measured qualitatively in v1; not a sprint gate.)*
 - **SC-003**: Users can complete the full import workflow — upload, review, confirm — in under 3 minutes.
 - **SC-004**: 100% of import attempts either result in a new recipe record or a clear explanation of why the import could not be completed.
 - **SC-005**: Invalid file types are rejected immediately with no delay or ambiguity.
@@ -119,4 +119,4 @@ A user uploads a PDF that is scanned from paper (image-based) or has formatting 
 - Extracted content that cannot be confidently categorized as either ingredients or instructions will be surfaced to the user as uncategorized text for manual placement.
 - The recipe title will be pre-populated from extracted text if available; if not found, the user must provide one before confirming.
 - Existing recipe fields on the platform (title, ingredients, instructions) define the scope of what is imported. Other recipe metadata (prep time, servings, nutritional info) is out of scope for extraction in this version.
-- The maximum supported PDF file size will be determined during planning based on storage and processing constraints.
+- The maximum supported PDF file size is 10 MB (determined during planning based on storage and processing constraints).
