@@ -20,8 +20,8 @@
 
 **Purpose**: Install new dependencies and update environment configuration
 
-- [ ] T001 Install pdf-parse, @anthropic-ai/sdk, and @types/pdf-parse from the supabase/ directory
-- [ ] T002 [P] Add ANTHROPIC_API_KEY and SUPABASE_SERVICE_ROLE_KEY entries to supabase/.env.example
+- [X] T001 Install pdf-parse, @anthropic-ai/sdk, and @types/pdf-parse from the supabase/ directory
+- [X] T002 [P] Add ANTHROPIC_API_KEY and SUPABASE_SERVICE_ROLE_KEY entries to supabase/.env.example
 
 ---
 
@@ -31,9 +31,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 Create supabase/migrations/0002_pdf_import.sql — add status (text NOT NULL DEFAULT 'published' with check constraint) and import_source (text nullable) columns to recipes; add authenticated INSERT policies to recipes, ingredient_entries, and instruction_entries; add authenticated UPDATE policy scoped to draft recipes; add `import_recipe` RPC function performing an atomic INSERT into all three tables within a single transaction (FR-015); the RPC must accept and INSERT created_at explicitly for all three tables — none of the three tables have a default on that column; per data-model.md. Additionally, update supabase/lib/data.ts to add `.eq('status', 'published')` to all public browse and search queries: getAllRecipes, searchRecipes, getWeekdayRecipes, getRecentRecipes, getRandomRecipes. Do NOT filter getRecipeByUid — draft recipes must be accessible by direct URL for the post-import redirect (FR-012).
-- [ ] T004 [P] Add IngredientSlice, InstructionSlice, and ImportDraft interfaces (title, ingredients as IngredientSlice[], instructions as InstructionSlice[], uncategorized, filename) and add status and import_source fields to the Recipe interface in supabase/types/index.ts per data-model.md
-- [ ] T005 [P] Extend supabase/lib/supabase.ts with a session-cookie-aware client function for Route Handlers (production writes) and a service role client function using SUPABASE_SERVICE_ROLE_KEY (dev-mode writes); per research.md auth strategy
+- [X] T003 Create supabase/migrations/0002_pdf_import.sql — add status (text NOT NULL DEFAULT 'published' with check constraint) and import_source (text nullable) columns to recipes; add authenticated INSERT policies to recipes, ingredient_entries, and instruction_entries; add authenticated UPDATE policy scoped to draft recipes; add `import_recipe` RPC function performing an atomic INSERT into all three tables within a single transaction (FR-015); the RPC must accept and INSERT created_at explicitly for all three tables — none of the three tables have a default on that column; per data-model.md. Additionally, update supabase/lib/data.ts to add `.eq('status', 'published')` to all public browse and search queries: getAllRecipes, searchRecipes, getWeekdayRecipes, getRecentRecipes, getRandomRecipes. Do NOT filter getRecipeByUid — draft recipes must be accessible by direct URL for the post-import redirect (FR-012).
+- [X] T004 [P] Add IngredientSlice, InstructionSlice, and ImportDraft interfaces (title, ingredients as IngredientSlice[], instructions as InstructionSlice[], uncategorized, filename) and add status and import_source fields to the Recipe interface in supabase/types/index.ts per data-model.md
+- [X] T005 [P] Extend supabase/lib/supabase.ts with a session-cookie-aware client function for Route Handlers (production writes) and a service role client function using SUPABASE_SERVICE_ROLE_KEY (dev-mode writes); per research.md auth strategy
 
 **Checkpoint**: Foundation ready — all three user stories can now be implemented
 
@@ -45,13 +45,13 @@
 
 **Independent Test**: In development mode, upload a text-based recipe PDF at `/import`; confirm a new row appears in `recipes` with `status = 'draft'`, `import_source` set to the filename, and matching rows in `ingredient_entries` and `instruction_entries`.
 
-- [ ] T006 [US1] Implement supabase/lib/pdf.ts — export async `extractText(arrayBuffer: ArrayBuffer): Promise<string>` wrapping pdf-parse; return the extracted text string (empty string for image-only PDFs)
-- [ ] T007 [US1] Implement supabase/lib/recipe-extractor.ts — call claude-haiku-4-5-20251001 via @anthropic-ai/sdk with the raw text; prompt for JSON matching ImportDraft (title, ingredients as IngredientSlice[], instructions as InstructionSlice[], uncategorized as string[]); parse and return ImportDraft
-- [ ] T008 [US1] Implement supabase/app/api/import/extract/route.ts — POST handler: auth guard (401 in non-development environments), file type check (400 if not PDF), file size check (400 if > 10 MB), call extractText() then extractRecipe(), return ImportDraft as JSON 200; log extraction failures (pdf-parse errors, Claude API errors) via `console.error` with error message and filename (FR-020); per contracts/api.md
-- [ ] T009 [US1] Implement supabase/app/api/import/save/route.ts — POST handler: auth guard (401 in non-development environments), validate non-empty title (400), slugify title (fall back to "recipe" if slug is empty) and query recipes for uid conflicts with -2/-3 collision suffix, call `import_recipe` RPC to atomically INSERT into recipes, ingredient_entries, and instruction_entries (status: 'draft', import_source, created_at explicitly), return `{ uid }`; per contracts/api.md and data-model.md UID rules
-- [ ] T010 [P] [US1] Create supabase/components/PdfImportForm.tsx — controlled file input restricted to application/pdf; client-side type rejection with error message; client-side size rejection (> 10 MB) with error message before fetch; submit handler POSTs to /api/import/extract as multipart/form-data; include a visible `<label>`, an `aria-describedby` hint listing accepted file types and the 10 MB size limit, and ensure full keyboard operability (FR-017); shows loading indicator during upload rendered with `role="status"` so screen readers announce extraction progress (FR-018); layout MUST be responsive for mobile viewports (FR-019); calls onExtracted(draft: ImportDraft) on success and surfaces API error messages on failure
-- [ ] T011 [US1] Create supabase/components/PdfImportReview.tsx — render title, ingredients list, and instructions list from an ImportDraft prop; include Confirm button (calls onConfirm with current draft) and Cancel button (calls onCancel); layout MUST be responsive for mobile viewports (FR-019)
-- [ ] T012 [US1] Create supabase/app/import/page.tsx — client component managing state: idle → loading → review; render PdfImportForm when idle/loading; render PdfImportReview when draft is set; on confirm POST to /api/import/save and redirect to /recipes/{uid}; on save failure display the error message above the review form and remain in the review state so the user can retry without re-uploading (FR-013); on cancel reset to idle
+- [X] T006 [US1] Implement supabase/lib/pdf.ts — export async `extractText(arrayBuffer: ArrayBuffer): Promise<string>` wrapping pdf-parse; return the extracted text string (empty string for image-only PDFs)
+- [X] T007 [US1] Implement supabase/lib/recipe-extractor.ts — call claude-haiku-4-5-20251001 via @anthropic-ai/sdk with the raw text; prompt for JSON matching ImportDraft (title, ingredients as IngredientSlice[], instructions as InstructionSlice[], uncategorized as string[]); parse and return ImportDraft
+- [X] T008 [US1] Implement supabase/app/api/import/extract/route.ts — POST handler: auth guard (401 in non-development environments), file type check (400 if not PDF), file size check (400 if > 10 MB), call extractText() then extractRecipe(), return ImportDraft as JSON 200; log extraction failures (pdf-parse errors, Claude API errors) via `console.error` with error message and filename (FR-020); per contracts/api.md
+- [X] T009 [US1] Implement supabase/app/api/import/save/route.ts — POST handler: auth guard (401 in non-development environments), validate non-empty title (400), slugify title (fall back to "recipe" if slug is empty) and query recipes for uid conflicts with -2/-3 collision suffix, call `import_recipe` RPC to atomically INSERT into recipes, ingredient_entries, and instruction_entries (status: 'draft', import_source, created_at explicitly), return `{ uid }`; per contracts/api.md and data-model.md UID rules
+- [X] T010 [P] [US1] Create supabase/components/PdfImportForm.tsx — controlled file input restricted to application/pdf; client-side type rejection with error message; client-side size rejection (> 10 MB) with error message before fetch; submit handler POSTs to /api/import/extract as multipart/form-data; include a visible `<label>`, an `aria-describedby` hint listing accepted file types and the 10 MB size limit, and ensure full keyboard operability (FR-017); shows loading indicator during upload rendered with `role="status"` so screen readers announce extraction progress (FR-018); layout MUST be responsive for mobile viewports (FR-019); calls onExtracted(draft: ImportDraft) on success and surfaces API error messages on failure
+- [X] T011 [US1] Create supabase/components/PdfImportReview.tsx — render title, ingredients list, and instructions list from an ImportDraft prop; include Confirm button (calls onConfirm with current draft) and Cancel button (calls onCancel); layout MUST be responsive for mobile viewports (FR-019)
+- [X] T012 [US1] Create supabase/app/import/page.tsx — client component managing state: idle → loading → review; render PdfImportForm when idle/loading; render PdfImportReview when draft is set; on confirm POST to /api/import/save and redirect to /recipes/{uid}; on save failure display the error message above the review form and remain in the review state so the user can retry without re-uploading (FR-013); on cancel reset to idle
 
 **Checkpoint**: Full upload → extract → review → save pipeline works end-to-end in development mode
 
@@ -63,7 +63,7 @@
 
 **Independent Test**: Upload a PDF, edit at least one ingredient and one instruction on the review screen, delete one item from each list, confirm, and verify the saved recipe in the database reflects only the edited, non-deleted content.
 
-- [ ] T013 [US2] Extend supabase/components/PdfImportReview.tsx — replace title display with a controlled text input; replace each ingredient entry with an editable text input and a delete button; add an "Add ingredient" button that appends a new blank IngredientSlice to the list; replace each instruction entry with an editable textarea and a delete button; add an "Add step" button that appends a new blank InstructionSlice to the list; pass the mutated draft state to onConfirm so edits, additions, and deletions are included in the save request; disable the Confirm button and display an inline validation message when the title field is empty (FR-006, FR-014); do NOT add editing controls to the Uncategorized Content section — FR-006 requires it to be display-only (the section is introduced in T015)
+- [X] T013 [US2] Extend supabase/components/PdfImportReview.tsx — replace title display with a controlled text input; replace each ingredient entry with an editable text input and a delete button; add an "Add ingredient" button that appends a new blank IngredientSlice to the list; replace each instruction entry with an editable textarea and a delete button; add an "Add step" button that appends a new blank InstructionSlice to the list; pass the mutated draft state to onConfirm so edits, additions, and deletions are included in the save request; disable the Confirm button and display an inline validation message when the title field is empty (FR-006, FR-014); do NOT add editing controls to the Uncategorized Content section — FR-006 requires it to be display-only (the section is introduced in T015)
 
 **Checkpoint**: Review screen is fully editable; confirmed saves reflect all user edits and deletions
 
@@ -75,9 +75,9 @@
 
 **Independent Test**: Upload an image-only or near-empty PDF; confirm the review screen appears with a visible warning and empty/partial fields rather than a blank or error page; confirm the user can still type content and save.
 
-- [ ] T014 [US3] Update supabase/app/api/import/extract/route.ts — after extractText(), if the result is empty or whitespace-only, return 422 with `{ error: "No text content could be extracted from this PDF. The review form has been left blank for manual entry." }` per contracts/api.md
-- [ ] T015 [US3] Extend supabase/components/PdfImportReview.tsx — when ingredients or instructions are empty arrays, render a visible warning banner instructing the user to fill in that section manually; if uncategorized is non-empty, display those text blocks in a labeled "Uncategorized Content" section below instructions
-- [ ] T016 [US3] Update supabase/app/import/page.tsx — handle 422 response from /api/import/extract by transitioning to the review state with an empty ImportDraft (null title, empty arrays) and rendering the 422 error message above the review form
+- [X] T014 [US3] Update supabase/app/api/import/extract/route.ts — after extractText(), if the result is empty or whitespace-only, return 422 with `{ error: "No text content could be extracted from this PDF. The review form has been left blank for manual entry." }` per contracts/api.md
+- [X] T015 [US3] Extend supabase/components/PdfImportReview.tsx — when ingredients or instructions are empty arrays, render a visible warning banner instructing the user to fill in that section manually; if uncategorized is non-empty, display those text blocks in a labeled "Uncategorized Content" section below instructions
+- [X] T016 [US3] Update supabase/app/import/page.tsx — handle 422 response from /api/import/extract by transitioning to the review state with an empty ImportDraft (null title, empty arrays) and rendering the 422 error message above the review form
 
 **Checkpoint**: Image-only and ambiguous PDFs are handled gracefully; user can always proceed to manual entry
 
@@ -87,9 +87,9 @@
 
 **Purpose**: Lint compliance and end-to-end validation against the quickstart guide
 
-- [ ] T017 [P] Run ESLint on all new and modified files (supabase/lib/pdf.ts, supabase/lib/recipe-extractor.ts, supabase/lib/supabase.ts, supabase/app/api/import/extract/route.ts, supabase/app/api/import/save/route.ts, supabase/components/PdfImportForm.tsx, supabase/components/PdfImportReview.tsx, supabase/app/import/page.tsx, supabase/types/index.ts) and fix all violations
-- [ ] T018 [P] Run `npx tsc --noEmit` from supabase/ and fix all type errors (required by constitution before merge)
-- [ ] T019 [P] Update the app README with the new environment variables (`ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) and PDF import setup steps so developer onboarding reflects the new dependencies (constitution §4)
+- [X] T017 [P] Run ESLint on all new and modified files (supabase/lib/pdf.ts, supabase/lib/recipe-extractor.ts, supabase/lib/supabase.ts, supabase/app/api/import/extract/route.ts, supabase/app/api/import/save/route.ts, supabase/components/PdfImportForm.tsx, supabase/components/PdfImportReview.tsx, supabase/app/import/page.tsx, supabase/types/index.ts) and fix all violations
+- [X] T018 [P] Run `npx tsc --noEmit` from supabase/ and fix all type errors (required by constitution before merge)
+- [X] T019 [P] Update the app README with the new environment variables (`ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) and PDF import setup steps so developer onboarding reflects the new dependencies (constitution §4)
 - [ ] T020 Follow the quickstart.md validation steps: apply migration via `supabase db push`, start `npm run dev` in supabase/, upload a recipe PDF at http://localhost:3000/import, verify redirect to /recipes/{uid}, confirm draft row in DB with correct status and import_source
 
 ---
