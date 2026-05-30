@@ -1,45 +1,30 @@
-// TODO: CLEAN UP
+.review {
+  padding: var(--gutter-lg) 0;
 
-// .review {
-//   max-width: 720px;
-//   width: 100%;
-// }
+  .section {
+    display: grid;
+    padding: var(--gutter-lg) 0;
 
-// .section {
-//   margin-bottom: var(--gutter-md);
-// }
+    label, h3 {
+      width: fit-content;
+    }
 
-// .titleInput {
-//   width: 100%;
-//   padding: calc(var(--gutter) * 0.5);
-// }
+    .list li {
+      display: flex;
+      gap: var(--gutter-xs);
 
-// .list {
-//   list-style: none;
-//   padding: 0;
-// }
+      input, textarea {
+        flex: 1 0 200px;
+      }
 
-// .listItem {
-//   display: flex;
-//   gap: calc(var(--gutter) * 0.5);
-//   margin-bottom: calc(var(--gutter) * 0.5);
-//   align-items: flex-start;
-//   flex-wrap: wrap;
-// }
+      button {
+        flex: 0 1 100px;
+      }
+    }
+  }
 
-// .inlineInput {
-//   flex: 1 1 200px;
-//   padding: calc(var(--gutter) * 0.375);
-// }
-
-// .uncategorizedBlock {
-//   background: #f5f5f5;
-//   padding: calc(var(--gutter) * 0.5);
-//   margin-bottom: calc(var(--gutter) * 0.5);
-// }
-
-// .actions {
-//   display: flex;
-//   gap: var(--gutter);
-//   flex-wrap: wrap;
-// }
+  .actions {
+    display: inline-flex;
+    gap: var(--gutter-xs);
+  }
+}

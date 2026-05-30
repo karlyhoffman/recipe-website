@@ -77,7 +77,8 @@ function SeasonTags({ tags, basePath, start }: { tags: Tag[]; basePath: string; 
           </li>
         ))}
       </ul>
-      {other.length > 0 && (
+
+      {!!other.length && (
         <>
           <h2 className="h5 outline">Other</h2>
           <ul className="recipe-list">

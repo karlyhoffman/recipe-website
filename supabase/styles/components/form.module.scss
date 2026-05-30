@@ -1,6 +1,6 @@
 .form {
   width: 100%;
-  padding-block-end: var(--gutter-lg);
+  padding: var(--gutter-lg) 0;
 
   &__field-group {
     display: grid;
@@ -8,16 +8,12 @@
     margin-block-end: var(--gutter);
   }
 
-  &__hint {
-    font-size: 0.9rem;
-    color: var(--color-grey);
-  }
-
   label {
     margin: 0;
   }
 
   .error,
+  .hint,
   .status {
     font-size: 0.9rem;
     margin-block-end: var(--gutter-sm);

@@ -31,3 +31,29 @@ main {
   min-height: calc(100vh - var(--nav-height) - var(--footer-height));
   padding: var(--gutter-lg) 0;
 }
+
+ol, ul {
+  padding-inline-start: 0;
+
+  li {
+    margin-block-end: var(--gutter);
+  }
+}
+
+input, textarea {
+  border: 2px solid var(--color-med-grey);
+  border-radius: var(--border-radius);
+  padding: var(--gutter-xs);
+}
+
+button {
+  cursor: pointer;
+  border: 2px solid var(--color-black);
+  border-radius: var(--border-radius);
+  padding: var(--gutter-xs);
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: var(--color-med-grey);
+  }
+}

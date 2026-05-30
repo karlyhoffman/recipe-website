@@ -1,7 +1,5 @@
 // Global typography: heading scale, .highlight color system, .outline badge.
 
-$border-radius: 0.15em;
-
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: var(--font-heading);
@@ -54,7 +52,7 @@ b {
   line-height: 1.75;
   letter-spacing: -0.25px;
   text-decoration: none;
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
   transition: 300ms ease-in-out;
   transition-property: background-color, box-shadow;
   box-decoration-break: clone;
@@ -75,7 +73,7 @@ b {
   position: relative;
   border: 3px solid var(--color-black);
   border-color: inherit;
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
   line-height: 1;
   text-decoration: none;
   padding: 0.5em 1em;
@@ -83,6 +81,10 @@ b {
 
 .error {
   color: var(--color-9);
+}
+
+.hint {
+  color: var(--color-grey);
 }
 
 .status {

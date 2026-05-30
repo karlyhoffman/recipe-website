@@ -65,7 +65,7 @@ export default function ImportPage() {
   return (
     <Row>
       <Column>
-        <h1 className="h2 outline">Import Recipe from PDF</h1>
+        <h1 className="h2 highlight">Import Recipe from PDF</h1>
       </Column>
 
       {state !== 'review' && (
@@ -85,16 +85,21 @@ export default function ImportPage() {
         <Column>
           {extractError && (
             <>
-              <h2 className="h5 outline error">Extraction Error</h2>
-              <p role="alert" className="error">{extractError}</p>
+              <h2 className="h6 outline error">Extraction Error</h2>
+              <p role="alert" className="error">
+                <strong>{extractError}</strong>
+              </p>
               <br/>
             </>
           )}
 
           {saveError && (
             <>
-              <h2 className="h5 outline error">Saving Error</h2>
-              <p role="alert" className="error">{saveError}</p>
+              <h2 className="h6 outline error">Saving Error</h2>
+              <p role="alert" className="error">
+                <strong>{saveError}</strong>
+              </p>
+              <br/>
             </>
           )}
 

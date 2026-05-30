@@ -86,14 +86,14 @@ export default function PdfImportForm({ onExtracted, isLoading, onLoadingChange 
           onChange={(e) => setHasFile(!!e.target.files?.length)}
         />
 
-        <p id={HINT_ID} className={styles['form__hint']}>
+        <p id={HINT_ID} className={classNames(styles.hint, 'hint')}>
           Accepted file types: PDF. Maximum size: 10 MB.
         </p>
       </div>
 
       {error && (
         <p role="alert" className={classNames(styles.error, 'error')}>
-          {error}
+          <strong>{error}</strong>
         </p>
       )}
 
