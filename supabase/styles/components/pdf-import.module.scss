@@ -9,17 +9,50 @@
       width: fit-content;
     }
 
-    .list li {
-      display: flex;
-      gap: var(--gutter-xs);
+    &__meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--gutter-sm);
 
-      input, textarea {
-        flex: 1 0 200px;
+      input,
+      textarea {
+        width: 100%;
       }
 
-      button {
-        flex: 0 1 100px;
+      .notes {
+        width: 100%;
+        grid-column: 1 / -1;
       }
+    }
+
+    ul, ol {
+      display: grid;
+
+      li {
+        display: flex;
+        gap: var(--gutter-xs);
+        width: 100%;
+
+        fieldset {
+          flex: 1 0 100px;
+
+          &[data-ingredient-name] {
+            flex: 1 0 400px;
+          }
+        }
+
+        textarea {
+          width: 100%;
+        }
+      }
+    }
+
+    ul li {
+      align-items: flex-end;
+    }
+
+    button {
+      flex: 0 1 100px;
     }
   }
 
