@@ -46,7 +46,9 @@ ${text}`,
     };
     return {
       title: parsed.title ?? null,
-      ingredients: Array.isArray(parsed.ingredients) ? parsed.ingredients : [],
+      ingredients: Array.isArray(parsed.ingredients)
+        ? parsed.ingredients.map((ing) => ({ ...ing, name: ing.name.replace(/\b\w/g, (c) => c.toUpperCase()) }))
+        : [],
       instructions: Array.isArray(parsed.instructions) ? parsed.instructions : [],
       uncategorized: Array.isArray(parsed.uncategorized) ? parsed.uncategorized : [],
       filename,
