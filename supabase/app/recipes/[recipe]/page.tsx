@@ -44,7 +44,7 @@ export default async function RecipeDetail({
   const hasTags = !!cuisine_tags.length || !!ingredient_tags.length || !!type_tags.length || !!weekday || !!season_tags.length;
 
   return (
-    <div className={styles.recipe__wrapper}>
+    <>
       <Row className={styles.recipe__meta}>
         <Column>
           <h1 className="highlight">{title}</h1>
@@ -200,7 +200,7 @@ export default async function RecipeDetail({
           )}
         </Row>
       )}
-    </div>
+    </>
   );
 }
 

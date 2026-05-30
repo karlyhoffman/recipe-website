@@ -1,6 +1,0 @@
-// Applied by the (site) route group layout — all pages except recipe detail.
-.siteLayout {
-  background-color: var(--color-white);
-  min-height: calc(100vh - var(--nav-height) - var(--footer-height));
-  padding: var(--gutter-lg) 0;
-}

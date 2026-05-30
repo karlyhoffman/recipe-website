@@ -26,6 +26,8 @@ body {
   }
 }
 
-.recipe-list li {
-  margin-bottom: calc(var(--gutter) * 1.25);
+main {
+  background-color: var(--color-white);
+  min-height: calc(100vh - var(--nav-height) - var(--footer-height));
+  padding: var(--gutter-lg) 0;
 }

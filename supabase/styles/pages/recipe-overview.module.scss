@@ -6,18 +6,10 @@
   }
 
   &__categories {
-    li {
-      margin-bottom: calc(var(--gutter) * 1.25);
-    }
-
     @include bp.media-breakpoint-up(md) {
       display: flex;
       flex-wrap: wrap;
-      gap: 30px;
-
-      li {
-        margin-bottom: calc(var(--gutter) * 0.5);
-      }
+      column-gap: var(--gutter-lg);
     }
   }
 }
