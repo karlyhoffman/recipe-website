@@ -1,18 +1,12 @@
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import SearchBar from '@/components/SearchBar';
 import { Row, Column } from '@/components/Grid';
-import { createSessionClient } from '@/lib/supabase';
 import styles from '@/styles/components/navbar.module.scss';
 
 export default async function Navbar() {
-  const isDev = process.env.NODE_ENV === 'development';
-  let showImport = isDev;
-
-  if (!isDev) {
-    const supabase = await createSessionClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    showImport = !!user;
-  }
+  const headersList = await headers();
+  const showImport = headersList.get('x-user-authenticated') === 'true';
 
   return (
     <header className={styles.navbar}>
