@@ -12,12 +12,16 @@ interface Props {
 
 export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
   const [title, setTitle] = useState(draft.title ?? '');
+  const [prepMinutes, setPrepMinutes] = useState<number | ''>(draft.prep_minutes ?? '');
+  const [totalMinutes, setTotalMinutes] = useState<number | ''>(draft.total_minutes ?? '');
+  const [servings, setServings] = useState<number | ''>(draft.servings ?? '');
+  const [notes, setNotes] = useState(draft.notes ?? '');
   const [ingredients, setIngredients] = useState<IngredientSlice[]>(draft.ingredients);
   const [instructions, setInstructions] = useState<InstructionSlice[]>(draft.instructions);
   const titleEmpty = title.trim() === '';
 
-  function updateIngredientName(index: number, value: string) {
-    setIngredients((prev) => prev.map((ing, i) => (i === index ? { ...ing, name: value } : ing)));
+  function updateIngredient(index: number, field: keyof IngredientSlice, value: string) {
+    setIngredients((prev) => prev.map((ing, i) => (i === index ? { ...ing, [field]: value } : ing)));
   }
 
   function deleteIngredient(index: number) {
@@ -42,7 +46,16 @@ export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
 
   function handleConfirm() {
     if (titleEmpty) return;
-    onConfirm({ ...draft, title, ingredients, instructions });
+    onConfirm({
+      ...draft,
+      title,
+      ingredients,
+      instructions,
+      prep_minutes: prepMinutes === '' ? undefined : prepMinutes,
+      total_minutes: totalMinutes === '' ? undefined : totalMinutes,
+      servings: servings === '' ? undefined : servings,
+      notes: notes.trim() || undefined,
+    });
   }
 
   const showIngredientWarning = ingredients.length === 0;
@@ -71,6 +84,55 @@ export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
       </div>
 
       <div className={styles.section}>
+        <h3 className="h5 outline">Recipe Details</h3>
+
+        <div className={styles.section__meta}>
+          <fieldset>
+            <label htmlFor="review-prep">Prep Time (min)</label>
+            <input
+              id="review-prep"
+              type="number"
+              min="0"
+              value={prepMinutes}
+              onChange={(e) => setPrepMinutes(e.target.value === '' ? '' : Number(e.target.value))}
+            />
+          </fieldset>
+
+          <fieldset>
+            <label htmlFor="review-total">Total Time (min)</label>
+            <input
+              id="review-total"
+              type="number"
+              min="0"
+              value={totalMinutes}
+              onChange={(e) => setTotalMinutes(e.target.value === '' ? '' : Number(e.target.value))}
+            />
+          </fieldset>
+
+          <fieldset>
+            <label htmlFor="review-servings">Servings</label>
+            <input
+              id="review-servings"
+              type="number"
+              min="0"
+              value={servings}
+              onChange={(e) => setServings(e.target.value === '' ? '' : Number(e.target.value))}
+            />
+          </fieldset>
+
+          <fieldset className={styles.notes}>
+            <label htmlFor="review-notes">Notes</label>
+            <textarea
+              id="review-notes"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={3}
+            />
+          </fieldset>
+        </div>
+      </div>
+
+      <div className={styles.section}>
         <h3 className="h5 outline">Ingredients</h3>
 
         {showIngredientWarning && (
@@ -79,17 +141,41 @@ export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
           </p>
         )}
 
-        <ul className={styles.list}>
+        <ul className={styles.ingredients}>
           {ingredients.map((ing, i) => (
             <li key={i}>
-              {/* TODO: show other ingredient properties: amount and preparation */}
-              <input
-                type="text"
-                value={ing.name}
-                onChange={(e) => updateIngredientName(i, e.target.value)}
-                aria-label={`Ingredient ${i + 1}`}
-                className={styles.inlineInput}
-              />
+              <fieldset data-ingredient-name>
+                <label htmlFor={`ingredient-name-${i}`}>Name</label>
+                <input
+                  type="text"
+                  value={ing.name}
+                  onChange={(e) => updateIngredient(i, 'name', e.target.value)}
+                  aria-label={`Ingredient ${i + 1} name`}
+                />
+              </fieldset>
+
+              <fieldset>
+                <label htmlFor={`ingredient-amount-${i}`}>Amount</label>
+                <input
+                  type="text"
+                  value={ing.amount ?? ''}
+                  onChange={(e) => updateIngredient(i, 'amount', e.target.value)}
+                  aria-label={`Ingredient ${i + 1} amount`}
+                  data-ingredient-amount
+                />
+              </fieldset>
+
+              <fieldset>
+                <label htmlFor={`ingredient-preparation-${i}`}>Preparation</label>
+                <input
+                  type="text"
+                  value={ing.preparation ?? ''}
+                  onChange={(e) => updateIngredient(i, 'preparation', e.target.value)}
+                  aria-label={`Ingredient ${i + 1} preparation`}
+                  data-ingredient-preparation
+                />
+              </fieldset>
+
               <button
                 type="button"
                 onClick={() => deleteIngredient(i)}
@@ -121,7 +207,6 @@ export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
                 onChange={(e) => updateInstructionText(i, e.target.value)}
                 aria-label={`Instruction step ${i + 1}`}
                 rows={1}
-                className={styles.inlineInput}
               />
 
               <button

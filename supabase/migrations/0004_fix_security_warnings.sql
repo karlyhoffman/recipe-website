@@ -23,10 +23,6 @@ AS $$
 DECLARE
   v_recipe_id uuid;
 BEGIN
-  IF (SELECT auth.uid()) IS NULL THEN
-    RAISE EXCEPTION 'authentication required';
-  END IF;
-
   INSERT INTO public.recipes (uid, title, status, import_source, created_at)
     VALUES (p_uid, p_title, p_status, p_import_source, p_created_at)
     RETURNING id INTO v_recipe_id;

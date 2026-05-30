@@ -39,6 +39,10 @@ export default function ImportPage() {
           ingredients: confirmed.ingredients,
           instructions: confirmed.instructions,
           import_source: confirmed.filename,
+          prep_minutes: confirmed.prep_minutes,
+          total_minutes: confirmed.total_minutes,
+          servings: confirmed.servings,
+          notes: confirmed.notes,
         }),
       });
 

@@ -38,6 +38,10 @@ export interface ImportDraft {
   instructions: InstructionSlice[];
   uncategorized: string[];
   filename: string;
+  prep_minutes?: number;
+  total_minutes?: number;
+  servings?: number;
+  notes?: string;
 }
 
 export interface Recipe extends RecipeSummary {

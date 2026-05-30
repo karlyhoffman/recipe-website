@@ -40,6 +40,15 @@ ol, ul {
   }
 }
 
+fieldset {
+  display: grid;
+
+  label {
+    font-size: 0.95rem;
+    font-weight: bold;
+  }
+}
+
 input, textarea {
   border: 2px solid var(--color-med-grey);
   border-radius: var(--border-radius);
@@ -51,6 +60,7 @@ button {
   border: 2px solid var(--color-black);
   border-radius: var(--border-radius);
   padding: var(--gutter-xs);
+  max-height: fit-content;
 
   &:disabled {
     cursor: not-allowed;
