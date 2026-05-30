@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { ImportDraft, IngredientSlice, InstructionSlice } from '@/types';
+import styles from '@/styles/components/pdf-import.module.scss';
 
 interface Props {
   draft: ImportDraft;
@@ -48,43 +49,42 @@ export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
   const showInstructionWarning = instructions.length === 0;
 
   return (
-    <div style={{ maxWidth: '720px', width: '100%' }}>
-      <h2>Review Extracted Recipe</h2>
+    <div className={styles.review}>
+      <h2 className="h3">Review Extracted Recipe</h2>
 
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label htmlFor="review-title" style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
-          Title
-        </label>
+      <div className={styles.section}>
+        <label htmlFor="review-title" className={styles.label}>Title</label>
+
         <input
           id="review-title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          style={{ width: '100%', padding: '0.5rem', boxSizing: 'border-box' }}
+          className={styles.titleInput}
         />
         {titleEmpty && (
-          <p role="alert" style={{ color: '#c00', marginTop: '0.25rem', fontSize: '0.875rem' }}>
+          <p role="alert" className={styles.error}>
             A recipe title is required before saving.
           </p>
         )}
       </div>
 
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div className={styles.section}>
         <h3>Ingredients</h3>
         {showIngredientWarning && (
-          <p role="alert" style={{ color: '#b45309', marginBottom: '0.5rem' }}>
+          <p role="alert" className={styles.warning}>
             No ingredients were extracted. Please add them manually.
           </p>
         )}
-        <ul style={{ listStyle: 'none', padding: 0 }}>
+        <ul className={styles.list}>
           {ingredients.map((ing, i) => (
-            <li key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <li key={i} className={styles.listItem}>
               <input
                 type="text"
                 value={ing.name}
                 onChange={(e) => updateIngredientName(i, e.target.value)}
                 aria-label={`Ingredient ${i + 1}`}
-                style={{ flex: '1 1 200px', padding: '0.375rem' }}
+                className={styles.inlineInput}
               />
               <button type="button" onClick={() => deleteIngredient(i)} aria-label={`Delete ingredient ${i + 1}`}>
                 Delete
@@ -95,22 +95,22 @@ export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
         <button type="button" onClick={addIngredient}>Add ingredient</button>
       </div>
 
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div className={styles.section}>
         <h3>Instructions</h3>
         {showInstructionWarning && (
-          <p role="alert" style={{ color: '#b45309', marginBottom: '0.5rem' }}>
+          <p role="alert" className={styles.warning}>
             No instructions were extracted. Please add them manually.
           </p>
         )}
-        <ol style={{ listStyle: 'none', padding: 0 }}>
+        <ol className={styles.list}>
           {instructions.map((ins, i) => (
-            <li key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            <li key={i} className={styles.listItem}>
               <textarea
                 value={ins.text}
                 onChange={(e) => updateInstructionText(i, e.target.value)}
                 aria-label={`Instruction step ${i + 1}`}
                 rows={2}
-                style={{ flex: '1 1 200px', padding: '0.375rem' }}
+                className={styles.inlineInput}
               />
               <button type="button" onClick={() => deleteInstruction(i)} aria-label={`Delete instruction step ${i + 1}`}>
                 Delete
@@ -121,21 +121,21 @@ export default function PdfImportReview({ draft, onConfirm, onCancel }: Props) {
         <button type="button" onClick={addInstruction}>Add step</button>
       </div>
 
-      {draft.uncategorized.length > 0 && (
-        <div style={{ marginBottom: '1.5rem' }}>
+      {!!draft.uncategorized.length && (
+        <div className={styles.section}>
           <h3>Uncategorized Content</h3>
-          <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>
+          <p className={styles.hint}>
             The following text could not be classified. You can copy from it manually.
           </p>
           {draft.uncategorized.map((block, i) => (
-            <p key={i} style={{ background: '#f5f5f5', padding: '0.5rem', marginBottom: '0.5rem' }}>
+            <p key={i} className={styles.uncategorizedBlock}>
               {block}
             </p>
           ))}
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <div className={styles.actions}>
         <button type="button" onClick={handleConfirm} disabled={titleEmpty}>
           Save Recipe
         </button>

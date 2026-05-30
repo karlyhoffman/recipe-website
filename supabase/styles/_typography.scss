@@ -74,8 +74,17 @@ b {
   display: inline-block;
   position: relative;
   border: 3px solid var(--color-black);
+  border-color: inherit;
   border-radius: $border-radius;
   line-height: 1;
   text-decoration: none;
   padding: 0.5em 1em;
+}
+
+.error {
+  color: var(--color-9);
+}
+
+.status {
+  color: var(--color-5);
 }

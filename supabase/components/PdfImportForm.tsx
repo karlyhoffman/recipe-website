@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import type { ImportDraft } from '@/types';
+import classNames from 'classnames';
+import styles from '@/styles/components/form.module.scss';
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024;
 const HINT_ID = 'pdf-upload-hint';
@@ -14,6 +16,7 @@ interface Props {
 
 export default function PdfImportForm({ onExtracted, isLoading, onLoadingChange }: Props) {
   const [error, setError] = useState<string | null>(null);
+  const [hasFile, setHasFile] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -69,11 +72,10 @@ export default function PdfImportForm({ onExtracted, isLoading, onLoadingChange 
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '480px', width: '100%' }}>
-      <div style={{ marginBottom: '1rem' }}>
-        <label htmlFor="pdf-file" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-          Upload Recipe PDF
-        </label>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles['form__field-group']}>
+        <label htmlFor="pdf-file" className="h6">Upload Recipe PDF</label>
+
         <input
           id="pdf-file"
           ref={inputRef}
@@ -81,26 +83,27 @@ export default function PdfImportForm({ onExtracted, isLoading, onLoadingChange 
           accept="application/pdf"
           aria-describedby={HINT_ID}
           disabled={isLoading}
-          style={{ display: 'block', width: '100%' }}
+          onChange={(e) => setHasFile(!!e.target.files?.length)}
         />
-        <p id={HINT_ID} style={{ fontSize: '0.875rem', marginTop: '0.25rem', color: '#666' }}>
+
+        <p id={HINT_ID} className={styles['form__hint']}>
           Accepted file types: PDF. Maximum size: 10 MB.
         </p>
       </div>
 
       {error && (
-        <p role="alert" style={{ color: '#c00', marginBottom: '1rem' }}>
+        <p role="alert" className={classNames(styles.error, 'error')}>
           {error}
         </p>
       )}
 
       {isLoading && (
-        <p role="status" style={{ marginBottom: '1rem' }}>
+        <p role="status" className={classNames(styles.status, 'status')}>
           Extracting recipe…
         </p>
       )}
 
-      <button type="submit" disabled={isLoading}>
+      <button type="submit" disabled={isLoading || !hasFile}>
         {isLoading ? 'Extracting…' : 'Import PDF'}
       </button>
     </form>

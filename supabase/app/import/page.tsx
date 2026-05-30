@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Row, Column } from '@/components/Grid';
 import PdfImportForm from '@/components/PdfImportForm';
 import PdfImportReview from '@/components/PdfImportReview';
 import type { ImportDraft } from '@/types';
@@ -62,39 +63,48 @@ export default function ImportPage() {
   }
 
   return (
-    <main style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-      <h1>Import Recipe from PDF</h1>
+    <Row>
+      <Column>
+        <h1 className="h2 outline">Import Recipe from PDF</h1>
+      </Column>
 
       {state !== 'review' && (
-        <PdfImportForm
-          onExtracted={(extracted, extractionError) => {
-            setExtractError(extractionError ?? null);
-            handleExtracted(extracted);
-          }}
-          isLoading={state === 'loading'}
-          onLoadingChange={handleLoadingChange}
-        />
+        <Column>
+          <PdfImportForm
+            onExtracted={(extracted, extractionError) => {
+              setExtractError(extractionError ?? null);
+              handleExtracted(extracted);
+            }}
+            isLoading={state === 'loading'}
+            onLoadingChange={handleLoadingChange}
+          />
+        </Column>
       )}
-
+      
       {state === 'review' && draft && (
-        <>
+        <Column>
           {extractError && (
-            <p role="alert" style={{ color: '#b45309', marginBottom: '1rem' }}>
-              {extractError}
-            </p>
+            <>
+              <h2 className="h5 outline error">Extraction Error</h2>
+              <p role="alert" className="error">{extractError}</p>
+              <br/>
+            </>
           )}
+
           {saveError && (
-            <p role="alert" style={{ color: '#c00', marginBottom: '1rem' }}>
-              {saveError}
-            </p>
+            <>
+              <h2 className="h5 outline error">Saving Error</h2>
+              <p role="alert" className="error">{saveError}</p>
+            </>
           )}
+
           <PdfImportReview
             draft={draft}
             onConfirm={handleConfirm}
             onCancel={handleCancel}
           />
-        </>
+        </Column>
       )}
-    </main>
+    </Row>
   );
 }

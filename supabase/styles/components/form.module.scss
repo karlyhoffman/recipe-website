@@ -1,0 +1,25 @@
+.form {
+  width: 100%;
+  padding-block-end: var(--gutter-lg);
+
+  &__field-group {
+    display: grid;
+    gap: var(--gutter-sm);
+    margin-block-end: var(--gutter);
+  }
+
+  &__hint {
+    font-size: 0.9rem;
+    color: var(--color-grey);
+  }
+
+  label {
+    margin: 0;
+  }
+
+  .error,
+  .status {
+    font-size: 0.9rem;
+    margin-block-end: var(--gutter-sm);
+  }
+}
