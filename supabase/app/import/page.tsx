@@ -80,7 +80,7 @@ export default function ImportPage() {
           />
         </Column>
       )}
-      
+
       {state === 'review' && draft && (
         <Column>
           {extractError && (
