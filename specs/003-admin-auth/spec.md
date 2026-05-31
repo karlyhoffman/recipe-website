@@ -98,6 +98,7 @@ The authenticated admin can log out at any time, immediately ending their sessio
 - What happens when the admin tries to navigate to the login page while already authenticated?
 - What happens if there is a network or server error during the login request? A generic form-level error ("Something went wrong, please try again") is displayed; no automatic retry occurs.
 - What happens when an IP exceeds the failed login attempt threshold? The login form displays a rate-limit error message and the IP is blocked from further attempts for the duration of the lockout window.
+- What happens when the admin's JWT expires during an active AJAX call (e.g., while the PDF import form is mid-submit)? The proxy redirects the API request (302); the import form will display a generic error rather than the session-expired message. This is an accepted limitation — the next page navigation will trigger the full expiry redirect with notification.
 
 ## Requirements *(mandatory)*
 

@@ -51,7 +51,7 @@ description: "Task list for Admin Authentication & Session Management"
 
 - [ ] T005 [P] [US1] Create `supabase/app/api/auth/login/route.ts`: `POST` handler; validate `username` and `password` are non-empty (400 if missing); check `isRateLimited(ip)` from `x-forwarded-for` (429 if limited); compare `username` against `ADMIN_USERNAME` env var and `password` against `ADMIN_PASSWORD_HASH` using `bcryptjs.compare` (401 on mismatch, with `recordFailedAttempt`); on success call `clearAttempts`, `signToken`, set `admin_session` cookie via `cookies().set`, validate `returnUrl` (relative path, no `://`, no `//` prefix), return `{ ok: true, redirectTo }` (200); catch-all returns 500 with `"Something went wrong, please try again."`
 - [ ] T006 [P] [US1] Create `supabase/styles/pages/login.module.scss`: page layout styles centering the login card; form field styles consistent with existing `form.module.scss` patterns; error message styles; submit button styles
-- [ ] T007 [US1] Create `supabase/components/LoginForm.tsx`: Client Component (`'use client'`); controlled `username` and `password` inputs; client-side empty-field validation (inline errors, no fetch) satisfying SC-007; `fetch('/api/auth/login', { method: 'POST', body: JSON.stringify({username, password, returnUrl}) })`; display API error message on non-2xx; `router.push(redirectTo)` on success; display session-expiry message ("Your session has expired. Please log in again.") when `expired` prop is `true`; WCAG 2.1 AA: visible `<label>` elements, keyboard navigable, focus management on error (FR-012)
+- [ ] T007 [US1] Create `supabase/components/LoginForm.tsx`: Client Component (`'use client'`); controlled `username` and `password` inputs; client-side empty-field validation (inline errors, no fetch) satisfying SC-007; `fetch('/api/auth/login', { method: 'POST', body: JSON.stringify({username, password, returnUrl}) })`; display API error message on non-2xx; `router.push(redirectTo)` on success; display session-expiry message ("Your session has expired. Please log in again.") when `expired` prop is `true`; WCAG 2.1 AA: visible `<label>` elements, keyboard navigable, focus management on error; session-expiry message MUST use `role="alert"` so screen readers announce it (FR-012)
 - [ ] T008 [US1] Create `supabase/app/(site)/login/page.tsx`: Server Component; read `expired` and `returnUrl` from `searchParams`; render `<LoginForm expired={!!expired} returnUrl={returnUrl} />`; include `<title>` and page heading
 
 **Checkpoint**: US1 fully functional. Admin can log in, see errors, and be redirected. Validate independently before US2.
@@ -78,8 +78,7 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Independent Test**: Log in, refresh the page → still authenticated (cookie refreshed by proxy). Manually delete the `admin_session` cookie, navigate to `/import` → redirected to `/login` (no expiry message, just unauthenticated). To test expiry notification: log in, manually edit the cookie to an expired JWT, navigate to a protected page → redirected to `/login?expired=1` and expiry message is shown.
 
-- [ ] T012 [US3] Modify `supabase/components/LoginForm.tsx`: ensure the `expired` prop (already accepted in T007) renders the session-expiry message — verify it's displayed correctly and accessible (role="alert" or equivalent); confirm `?expired=1` in URL triggers the message end-to-end from T009's redirect
-- [ ] T013 [US3] Modify `supabase/app/(site)/login/page.tsx`: verify `searchParams.expired` is read and passed to `<LoginForm expired={searchParams.expired === '1'} />` — confirm the prop plumbing from proxy redirect through to the UI message
+- [ ] T012 [US3] Verify end-to-end session expiry notification: manually set `admin_session` cookie to an expired JWT, navigate to `/import` → confirm proxy redirects to `/login?expired=1` → confirm LoginForm displays "Your session has expired. Please log in again." with `role="alert"` (no code changes if T007, T008, T009 are implemented correctly; update those tasks if the flow is broken)
 
 **Checkpoint**: US3 fully functional. Session persists across refreshes. Expiry notification appears on `/login` after an expired JWT redirect.
 
@@ -91,8 +90,8 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Independent Test**: While authenticated, confirm a logout button is visible in the Navbar. Click logout → redirected to `/login`, `admin_session` cookie is cleared. Navigate to `/import` → redirected to `/login`. Browser back button to `/import` → still redirected to `/login`.
 
-- [ ] T014 [US4] Create `supabase/app/api/auth/logout/route.ts`: `POST` handler; delete the `admin_session` cookie by calling `cookies().set('admin_session', '', { ...getCookieOptions(), expires: new Date(0), maxAge: 0 })`; return `NextResponse.redirect('/login')` (302); idempotent — no error if cookie is absent
-- [ ] T015 [US4] Modify `supabase/components/Navbar.tsx`: import and conditionally render a logout form: `<form method="POST" action="/api/auth/logout"><button type="submit">Logout</button></form>` when `x-user-authenticated` header is `'true'`; style consistently with existing nav items; accessible (button with visible label)
+- [ ] T013 [US4] Create `supabase/app/api/auth/logout/route.ts`: `POST` handler; delete the `admin_session` cookie by calling `cookies().set('admin_session', '', { ...getCookieOptions(), expires: new Date(0), maxAge: 0 })`; return `NextResponse.redirect('/login')` (302); idempotent — no error if cookie is absent
+- [ ] T014 [US4] Modify `supabase/components/Navbar.tsx`: import and conditionally render a logout form: `<form method="POST" action="/api/auth/logout"><button type="submit">Logout</button></form>` when `x-user-authenticated` header is `'true'`; style consistently with existing nav items; accessible (button with visible label)
 
 **Checkpoint**: US4 fully functional. Logout ends session, clears cookie, redirects to login. All four user stories now complete.
 
@@ -102,8 +101,8 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Purpose**: Final validation, lint pass, and quickstart verification.
 
-- [ ] T016 [P] Run ESLint on all new and modified files: `supabase/lib/session.ts`, `supabase/lib/rate-limiter.ts`, `supabase/app/api/auth/login/route.ts`, `supabase/app/api/auth/logout/route.ts`, `supabase/app/(site)/login/page.tsx`, `supabase/components/LoginForm.tsx`, `supabase/components/Navbar.tsx`, `supabase/proxy.ts`, `supabase/app/api/import/extract/route.ts`, `supabase/app/api/import/save/route.ts` — resolve all warnings and errors
-- [ ] T017 [P] Validate the full quickstart.md flow end-to-end: install deps (T001), generate bcrypt hash, generate JWT secret, set `.env.local`, run `npm run dev`, test login flow (valid creds → /import), test session expiry (delete cookie → redirect), test rate limiting (5 bad passwords → rate-limit error on 6th attempt)
+- [ ] T015 [P] Run ESLint on all new and modified files: `supabase/lib/session.ts`, `supabase/lib/rate-limiter.ts`, `supabase/app/api/auth/login/route.ts`, `supabase/app/api/auth/logout/route.ts`, `supabase/app/(site)/login/page.tsx`, `supabase/components/LoginForm.tsx`, `supabase/components/Navbar.tsx`, `supabase/proxy.ts`, `supabase/app/api/import/extract/route.ts`, `supabase/app/api/import/save/route.ts` — resolve all warnings and errors
+- [ ] T016 [P] Validate the full quickstart.md flow end-to-end: install deps (T001), generate bcrypt hash, generate JWT secret, set `.env.local`, run `npm run dev`, test login flow (valid creds → /import), test session expiry (delete cookie → redirect), test rate limiting (5 bad passwords → rate-limit error on 6th attempt)
 
 ---
 
@@ -132,7 +131,7 @@ description: "Task list for Admin Authentication & Session Management"
 - T007 depends on T005 (POSTs to the login route) and T006 (imports styles)
 - T008 depends on T007 (renders LoginForm)
 - T010 and T011 are parallel (different files), both independent of T009 order-wise but T009 must be working for the full flow
-- T012 and T013 are a small paired change; T013 is trivial if T012 is done
+- T012 is a verification task: no new code if T007, T008, T009 are implemented correctly
 
 ### Parallel Opportunities
 
@@ -140,7 +139,7 @@ description: "Task list for Admin Authentication & Session Management"
 - T003 and T004 (Phase 2) can run in parallel
 - T005 and T006 (Phase 3) can run in parallel
 - T010 and T011 (Phase 4) can run in parallel
-- T016 and T017 (Phase 7) can run in parallel
+- T015 and T016 (Phase 7) can run in parallel
 - US1 (Phase 3) and US2 (Phase 4) and US4 (Phase 6) can run in parallel once Foundational is done
 
 ---
