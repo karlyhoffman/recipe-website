@@ -64,6 +64,7 @@ Create a `.env.local` file in the `supabase/` directory:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 SUPABASE_ANON_KEY=your-anon-key
+ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 - Both values — Supabase Dashboard → Project Settings → API
