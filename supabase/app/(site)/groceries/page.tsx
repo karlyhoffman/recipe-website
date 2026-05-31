@@ -4,29 +4,10 @@ import { Row, Column } from '@/components/Grid';
 import { getCookNextRecipes } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import type { Recipe } from '@/types';
+import { AISLES } from '@/utils/aisles';
 import styles from '@/styles/pages/groceries.module.scss';
 
-const AISLE_ORDER = [
-  'Beer and Wine',
-  'Produce',
-  'Deli',
-  'Bread',
-  'Seafood',
-  'Meat',
-  'Cheese',
-  'World Aisle',
-  'Pasta',
-  'Condiments',
-  'Soups & Canned Goods',
-  'Spices',
-  'Baking',
-  'Cereal',
-  'Chips',
-  'Soda',
-  'Frozen',
-  'Dairy',
-  'Other',
-];
+const AISLE_ORDER = [...AISLES, 'Other'];
 
 function sortIngredientsByAisle(recipes: Recipe[]) {
   const aisleMap: Record<string, { name: string; amount?: string; aisle: string; preparation?: string; recipeTitle: string; recipeUid: string }[]> = {};

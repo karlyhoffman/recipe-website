@@ -32,6 +32,19 @@ export interface GroceryIngredient {
   recipeUid?: string;
 }
 
+export interface ImportDraft {
+  title: string | null;
+  ingredients: IngredientSlice[];
+  instructions: InstructionSlice[];
+  uncategorized: string[];
+  filename: string;
+  prep_minutes?: number;
+  total_minutes?: number;
+  servings?: number;
+  notes?: string;
+  recipe_tags?: Tag[];
+}
+
 export interface Recipe extends RecipeSummary {
   prep_minutes?: number;
   total_minutes?: number;
@@ -39,6 +52,8 @@ export interface Recipe extends RecipeSummary {
   notes?: string;
   source?: string;
   weekday: boolean;
+  status: 'draft' | 'published';
+  import_source?: string;
   ingredients: IngredientSlice[];
   instructions: InstructionSlice[];
   cuisine_tags: Tag[];

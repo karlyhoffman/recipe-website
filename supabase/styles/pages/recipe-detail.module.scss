@@ -6,15 +6,6 @@
 }
 
 .recipe {
-  &__wrapper {
-    position: relative;
-    display: grid;
-    gap: var(--gutter);
-    background-color: var(--color-white);
-    border-top: 3px solid var(--color-black);
-    padding: var(--gutter-lg) var(--gutter);
-  }
-
   &__meta,
   &__body,
   &__related,

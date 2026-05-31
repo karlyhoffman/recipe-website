@@ -1,0 +1,21 @@
+.form {
+  width: 100%;
+  padding: var(--gutter-lg) 0;
+
+  &__field-group {
+    display: grid;
+    gap: var(--gutter-sm);
+    margin-block-end: var(--gutter);
+  }
+
+  label {
+    margin: 0;
+  }
+
+  .error,
+  .hint,
+  .status {
+    font-size: 0.9rem;
+    margin-block-end: var(--gutter-sm);
+  }
+}

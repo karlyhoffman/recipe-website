@@ -8,12 +8,21 @@ Create a `.env.local` file in this directory with the following variables:
 # Supabase — get both from Supabase Dashboard → Project Settings → API
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 SUPABASE_ANON_KEY=your-anon-key
+
+# PDF import: Anthropic API key for recipe extraction via Claude
+ANTHROPIC_API_KEY=sk-ant-...
+
+# PDF import: Supabase service role key for dev-mode unauthenticated writes
+# Found in Supabase Dashboard → Project Settings → API → service_role key
+# NEVER expose this in client code or production paths
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
-Both `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` must also be added to
-**Vercel → Project Settings → Environment Variables** (Production, Preview, and
-Development) before deploying; a build without them will fail at Supabase client
-instantiation.
+`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `ANTHROPIC_API_KEY` must also be
+added to **Vercel → Project Settings → Environment Variables** (Production, Preview,
+and Development) before deploying; a build without them will fail at Supabase client
+instantiation. `SUPABASE_SERVICE_ROLE_KEY` is only used in local development
+(`NODE_ENV=development`) and does not need to be set on Vercel.
 
 ## Getting Started
 

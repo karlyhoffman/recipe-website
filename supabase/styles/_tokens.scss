@@ -23,6 +23,9 @@
 
   // Fluid spacing — clamp(12px → 15px across 375px → 1200px)
   --gutter: clamp(0.75rem, 0.6648rem + 0.3636vw, 0.9375rem);
+  // Multiples
+  --gutter-xs: calc(var(--gutter) * 0.5);
+  --gutter-sm: calc(var(--gutter) * 0.75);
   --gutter-md: calc(var(--gutter) * 1.5);
   --gutter-lg: calc(var(--gutter) * 2);
   --gutter-xl: calc(var(--gutter) * 4);
@@ -30,6 +33,9 @@
   // Structural
   --nav-height: 46px;
   --footer-height: 49px;
+
+  // Layout
+  --border-radius: 0.15em;
 
   // Fonts — CSS vars injected by next/font at the html element
   --font-heading: var(--font-merriweather);

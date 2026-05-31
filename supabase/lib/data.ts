@@ -22,6 +22,8 @@ type RecipeRow = {
   notes: string | null;
   source: string | null;
   weekday: boolean;
+  status: 'draft' | 'published';
+  import_source: string | null;
 };
 
 type IngredientRow = {
@@ -133,6 +135,8 @@ async function hydrateRecipes(
       notes: recipe.notes ?? undefined,
       source: recipe.source ?? undefined,
       weekday: recipe.weekday,
+      status: recipe.status ?? 'published',
+      import_source: recipe.import_source ?? undefined,
       ingredients: ings.map(mapIngredient),
       instructions: insts.map(mapInstruction),
       cuisine_tags: tags.filter((t) => t.category === 'cuisine').map(mapTag),
@@ -153,7 +157,8 @@ export async function getAllRecipes(): Promise<RecipeSummary[]> {
   try {
     const { data, error } = await createClient()
       .from('recipes')
-      .select('id, uid, title');
+      .select('id, uid, title')
+      .eq('status', 'published');
     if (error) return [];
     return (data as RecipeSummary[]) ?? [];
   } catch {
@@ -166,7 +171,7 @@ export async function getRecipeByUid(uid: string): Promise<Recipe | null> {
     const supabase = createClient();
     const { data, error } = await supabase
       .from('recipes')
-      .select('id, uid, title, prep_minutes, total_minutes, servings, notes, source, weekday')
+      .select('id, uid, title, prep_minutes, total_minutes, servings, notes, source, weekday, status, import_source')
       .eq('uid', uid)
       .single();
     if (error || !data) return null;
@@ -183,6 +188,7 @@ export async function searchRecipes(term: string): Promise<RecipeSummary[]> {
     const { data, error } = await createClient()
       .from('recipes')
       .select('id, uid, title')
+      .eq('status', 'published')
       .textSearch('title_fts', term);
     if (error) return [];
     return (data as RecipeSummary[]) ?? [];
@@ -196,6 +202,7 @@ export async function getWeekdayRecipes(): Promise<RecipeSummary[]> {
     const { data, error } = await createClient()
       .from('recipes')
       .select('id, uid, title')
+      .eq('status', 'published')
       .eq('weekday', true);
     if (error) return [];
     return (data as RecipeSummary[]) ?? [];
@@ -380,6 +387,7 @@ export async function getRecentRecipes(): Promise<RecipeSummary[]> {
     const { data, error } = await createClient()
       .from('recipes')
       .select('id, uid, title')
+      .eq('status', 'published')
       .order('created_at', { ascending: false })
       .limit(10);
     if (error) return [];
@@ -394,7 +402,8 @@ export async function getRandomRecipes(): Promise<RecipeSummary[]> {
     // Fetch all and shuffle client-side — acceptable at < 500 recipes
     const { data, error } = await createClient()
       .from('recipes')
-      .select('id, uid, title');
+      .select('id, uid, title')
+      .eq('status', 'published');
     if (error || !data) return [];
     const shuffled = [...(data as RecipeSummary[])].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 10);
@@ -421,7 +430,7 @@ export async function getCookNextRecipes(): Promise<Recipe[]> {
 
     const { data: recipeRows, error: recipeError } = await supabase
       .from('recipes')
-      .select('id, uid, title, prep_minutes, total_minutes, servings, notes, source, weekday')
+      .select('id, uid, title, prep_minutes, total_minutes, servings, notes, source, weekday, status, import_source')
       .in('id', ids);
     if (recipeError || !recipeRows) return [];
 

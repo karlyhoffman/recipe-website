@@ -1,9 +1,13 @@
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import SearchBar from '@/components/SearchBar';
 import { Row, Column } from '@/components/Grid';
 import styles from '@/styles/components/navbar.module.scss';
 
-export default function Navbar() {
+export default async function Navbar() {
+  const headersList = await headers();
+  const showImport = headersList.get('x-user-authenticated') === 'true';
+
   return (
     <header className={styles.navbar}>
       <Row>
@@ -24,6 +28,13 @@ export default function Navbar() {
                 <strong>Grocery List</strong>
               </Link>
             </li>
+            {showImport && (
+              <li>
+                <Link href="/import">
+                  <strong>Import</strong>
+                </Link>
+              </li>
+            )}
             <li>
               <SearchBar />
             </li>

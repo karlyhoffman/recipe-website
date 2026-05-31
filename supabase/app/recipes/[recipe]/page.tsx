@@ -41,10 +41,10 @@ export default async function RecipeDetail({
     related_recipes,
   } = recipe;
 
-  const hasTags = cuisine_tags.length || ingredient_tags.length || type_tags.length || weekday || season_tags.length;
+  const hasTags = !!cuisine_tags.length || !!ingredient_tags.length || !!type_tags.length || !!weekday || !!season_tags.length;
 
   return (
-    <div className={styles.recipe__wrapper}>
+    <>
       <Row className={styles.recipe__meta}>
         <Column>
           <h1 className="highlight">{title}</h1>
@@ -109,7 +109,7 @@ export default async function RecipeDetail({
         </Column>
       </Row>
 
-      {related_recipes.length > 0 && (
+      {!!related_recipes.length && (
         <Row className={styles.recipe__related}>
           <Column>
             <h2 className="h4 outline">Related</h2>
@@ -132,7 +132,7 @@ export default async function RecipeDetail({
             <h2 className="h4 outline">Tags</h2>
           </Column>
 
-          {ingredient_tags.length > 0 && (
+          {!!ingredient_tags.length && (
             <Column md={3} className={styles.tag_column}>
               <h3 className="h5 highlight">Ingredients</h3>
               <ul className="recipe-list">
@@ -147,7 +147,7 @@ export default async function RecipeDetail({
             </Column>
           )}
 
-          {cuisine_tags.length > 0 && (
+          {!!cuisine_tags.length && (
             <Column md={3} className={styles.tag_column}>
               <h3 className="h5 highlight">Cuisine</h3>
               <ul className="recipe-list">
@@ -162,7 +162,7 @@ export default async function RecipeDetail({
             </Column>
           )}
 
-          {(type_tags.length > 0 || weekday) && (
+          {(!!type_tags.length || weekday) && (
             <Column md={3} className={styles.tag_column}>
               <h3 className="h5 highlight">Dish Type</h3>
               <ul className="recipe-list">
@@ -184,7 +184,7 @@ export default async function RecipeDetail({
             </Column>
           )}
 
-          {season_tags.length > 0 && (
+          {!!season_tags.length && (
             <Column md={3} className={styles.tag_column}>
               <h3 className="h5 highlight">Season</h3>
               <ul className="recipe-list">
@@ -200,7 +200,7 @@ export default async function RecipeDetail({
           )}
         </Row>
       )}
-    </div>
+    </>
   );
 }
 

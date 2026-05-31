@@ -18,8 +18,12 @@
     gap: var(--gutter);
     padding-bottom: 5px;
 
-    li:last-child {
-      flex: 0 0 100%;
+    li {
+      margin: 0;
+
+      &:last-child {
+        flex: 0 0 100%;
+      }
     }
 
     @include bp.media-breakpoint-up(md) {

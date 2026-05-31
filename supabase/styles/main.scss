@@ -26,6 +26,44 @@ body {
   }
 }
 
-.recipe-list li {
-  margin-bottom: calc(var(--gutter) * 1.25);
+main {
+  background-color: var(--color-white);
+  min-height: calc(100vh - var(--nav-height) - var(--footer-height));
+  padding: var(--gutter-lg) 0;
+}
+
+ol, ul {
+  padding-inline-start: 0;
+
+  li {
+    margin-block-end: var(--gutter);
+  }
+}
+
+fieldset {
+  display: grid;
+
+  label {
+    font-size: 0.95rem;
+    font-weight: bold;
+  }
+}
+
+input, textarea, select {
+  border: 2px solid var(--color-med-grey);
+  border-radius: var(--border-radius);
+  padding: var(--gutter-xs);
+}
+
+button {
+  cursor: pointer;
+  border: 2px solid var(--color-black);
+  border-radius: var(--border-radius);
+  padding: var(--gutter-xs);
+  max-height: fit-content;
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: var(--color-med-grey);
+  }
 }
