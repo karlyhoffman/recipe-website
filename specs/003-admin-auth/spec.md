@@ -8,6 +8,18 @@
 
 **Input**: User description: "Update the existing user authentication to the application to add a login page and session management. The system will support exactly one admin account, so no signup or account‑creation flow is required. The admin must authenticate before accessing gated content, including the import page and its corresponding navigation link. Unauthenticated users must not see or access any gated content. The feature should include input validation, clear error messaging, accessibility‑compliant UI, and well‑defined UX flows for login, logout, and session expiration."
 
+## Clarifications
+
+### Session 2026-05-31
+
+- Q: What session mechanism should be used to persist and validate the admin's authenticated state? → A: HTTP-only cookie with JWT (stateless, signed with a secret, no server store needed)
+- Q: How should the admin password be stored in environment configuration? → A: Bcrypt or argon2 hash stored in env var; submitted password is hashed and compared at login
+- Q: Should the login endpoint enforce rate limiting to protect against brute-force attacks? → A: Yes — simple server-side rate limiting: lock out an IP after N failed attempts within a time window
+- Q: What should the login identifier be — email, username, or either? → A: Username only (arbitrary string, no email format requirement)
+- Q: What should happen if the login request fails due to a network or server error? → A: Display a generic form-level error: "Something went wrong, please try again" (no retry logic)
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Admin Login (Priority: P1)
@@ -20,7 +32,7 @@ The admin navigates to the login page, enters their credentials, and gains acces
 
 **Acceptance Scenarios**:
 
-1. **Given** the admin is not logged in, **When** they navigate to `/login`, **Then** they see a form with email and password fields plus a submit button
+1. **Given** the admin is not logged in, **When** they navigate to `/login`, **Then** they see a form with username and password fields plus a submit button
 2. **Given** the admin is on the login page, **When** they submit valid credentials, **Then** they are redirected to the page they originally requested (or a default gated landing page if none)
 3. **Given** the admin is on the login page, **When** they submit invalid credentials, **Then** they see a descriptive error message and the form remains on screen
 4. **Given** the admin is on the login page, **When** they submit the form with one or both fields empty, **Then** they see inline validation errors identifying the missing fields before the form is submitted
@@ -84,13 +96,14 @@ The authenticated admin can log out at any time, immediately ending their sessio
 - What happens when the admin's session expires while they are actively on a gated page?
 - What happens when an unauthenticated user attempts to directly access a gated URL by typing it into the browser?
 - What happens when the admin tries to navigate to the login page while already authenticated?
-- What happens if there is a network error during the login request?
+- What happens if there is a network or server error during the login request? A generic form-level error ("Something went wrong, please try again") is displayed; no automatic retry occurs.
+- What happens when an IP exceeds the failed login attempt threshold? The login form displays a rate-limit error message and the IP is blocked from further attempts for the duration of the lockout window.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: System MUST provide a publicly accessible login page with email/username and password input fields and a submit control
+- **FR-001**: System MUST provide a publicly accessible login page with username and password input fields and a submit control
 - **FR-002**: System MUST validate that all required fields are filled before processing a login submission, displaying inline error messages for any empty fields
 - **FR-003**: System MUST display a clear, user-facing error message when submitted credentials do not match the admin account, without revealing which field was incorrect
 - **FR-004**: System MUST grant access to gated content upon successful login and redirect the admin to their originally requested destination (or a default gated page if no destination was recorded)
@@ -102,10 +115,11 @@ The authenticated admin can log out at any time, immediately ending their sessio
 - **FR-010**: System MUST provide a logout control visible to authenticated users that immediately invalidates the session and redirects to the login page or a public landing page
 - **FR-011**: System MUST redirect an already-authenticated admin away from the login page to a default gated landing page
 - **FR-012**: Login form, error messages, and all interactive controls MUST meet WCAG 2.1 AA accessibility standards, including visible labels, keyboard navigability, and appropriate focus management
+- **FR-013**: The login endpoint MUST enforce server-side rate limiting, blocking further attempts from an IP after 5 consecutive failed logins within a 15-minute window, and returning a user-facing error message when the limit is exceeded
 
 ### Key Entities
 
-- **Admin Session**: Represents an authenticated period for the single admin account; tracks authentication state and expiry time
+- **Admin Session**: Represents an authenticated period for the single admin account; implemented as a stateless JWT signed with a server secret, stored in an HTTP-only cookie; tracks authentication state and expiry time
 - **Gated Route**: Any application page or navigation link that requires authentication to access or display
 
 ## Success Criteria *(mandatory)*
@@ -122,8 +136,8 @@ The authenticated admin can log out at any time, immediately ending their sessio
 
 ## Assumptions
 
-- The single admin account's credentials (email/username and password) are pre-configured in the application environment; no database-based user record or signup flow is needed
-- Session duration defaults to 24 hours of inactivity; this value is configurable via environment configuration without code changes
+- The single admin account's credentials are pre-configured via environment variables: the admin username as plaintext and the admin password as a bcrypt (or argon2) hash; no database-based user record or signup flow is needed
+- Sessions are implemented as stateless JWTs stored in HTTP-only cookies, signed with a server-side secret configured via environment variable; session duration defaults to 24 hours of inactivity and is configurable without code changes
 - After session expiry, the admin is shown a visible notification (e.g., "Your session has expired. Please log in again.") on the login page
 - After successful login, the admin is redirected to the page they originally attempted to access; if no destination is recorded, they land on a default gated page (e.g., the import page)
 - "Gated content" refers to the import page (spec 002: PDF recipe import) and any future admin-only pages; public-facing recipe pages remain accessible to all visitors
