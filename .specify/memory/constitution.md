@@ -1,15 +1,10 @@
 <!--
 Sync Impact Report
-Version change: none -> 1.0.0
+Version change: 1.0.0 -> 1.1.0
 Modified principles:
-  - Added User-Centered Content
-  - Added Maintainable Frontend Architecture
-  - Added Data Integrity & Content Reliability
-  - Added Quality through Documentation & Review
-  - Added Incremental Delivery & Observability
+  - Added Codebase Consistency & Pattern Adherence
 Added sections:
-  - Constraints & Technology
-  - Development Workflow
+  - Best Practices
 Removed sections: none
 Templates reviewed:
   - .specify/templates/plan-template.md ✅
@@ -40,6 +35,9 @@ Public pages MUST load quickly on Vercel through appropriate use of static gener
 ### 6. Incremental Delivery & Observability
 Work MUST be delivered in small, verifiable increments with clear success criteria. Build, test, and deployment outcomes MUST be observable through the repository’s existing tooling, and any production deployment MUST be accompanied by a rollback plan.
 
+### 7. Codebase Consistency & Pattern Adherence
+All new code MUST follow the patterns, conventions, and idioms already established in the codebase. Before implementing any feature or fix, the existing implementation of similar features MUST be reviewed to ensure consistency. Introducing a new pattern where an existing one already solves the problem is not permitted without explicit justification in the PR.
+
 ## Technology Stack
 
 - **Framework**: Next.js 16 with App Router (React 19, TypeScript 5)
@@ -56,6 +54,25 @@ The project MUST remain a Next.js website. New frameworks or major architecture 
 
 ## Development Workflow
 All work MUST occur in feature branches, with pull requests used for every change. PRs MUST include a description of what was changed, how it was tested locally, and whether the change impacts content types or page routing. PRs require a passing TypeScript + ESLint checks, Vercel preview link for UI changes. Documentation updates MUST accompany code changes that affect behavior or developer setup.
+
+## Best Practices
+
+The following practices MUST be applied to all implementation work in this repository.
+
+### Think Before Coding
+Assumptions MUST be stated explicitly before implementation begins. When multiple interpretations of a requirement exist, they MUST be surfaced rather than silently resolved. If a simpler approach exists, it MUST be proposed. Ambiguity MUST be resolved through clarification, not assumption.
+
+### Simplicity First
+Every implementation MUST use the minimum code that solves the problem. No speculative features, no abstractions for single-use code, no configurability that was not explicitly requested, and no error handling for scenarios that cannot occur. If an implementation can be materially shorter without losing correctness, it MUST be rewritten.
+
+### Surgical Changes
+Changes MUST be scoped to only what the task requires. Adjacent code, comments, and formatting MUST NOT be altered unless directly related to the task. Existing style MUST be matched even when the author would choose differently. Unrelated dead code MUST be noted but not removed. Only imports, variables, and functions made unused by the current change may be removed.
+
+### Goal-Driven Execution
+Every task MUST be expressed as a verifiable goal before work begins. Multi-step tasks MUST include a brief plan with explicit verification criteria per step. Work is not complete until the stated success criteria are demonstrably met.
+
+### Follow Existing Patterns
+Before writing any new component, hook, utility, or data-fetching logic, the existing codebase MUST be checked for a similar implementation. New code MUST mirror the structure, naming conventions, and organization of comparable existing code. Diverging from established patterns requires a documented reason in the PR.
 
 ## Governance
 This constitution is the authoritative guide for repository decisions and overrides informal conventions. This constitution supersedes informal habits or historical patterns. All `.specify` artifacts, templates, and plans MUST comply with this document.
@@ -75,4 +92,4 @@ Compliance review expectation:
 
 Use `README.md`, `.specify/templates/*`, and this constitution as the authoritative guidance for project workflow, quality decisions, and maintainability.
 
-**Version**: 1.0.0 | **Ratified**: 2026-05-27 | **Last Amended**: 2026-05-27
+**Version**: 1.1.0 | **Ratified**: 2026-05-27 | **Last Amended**: 2026-05-31
