@@ -97,7 +97,7 @@ export default function PdfImportForm({ onExtracted, isLoading, onLoadingChange 
         </p>
       )}
 
-      <button type="submit" disabled={isLoading || !hasFile} className={classNames({ ['status']: isLoading })}>
+      <button type="submit" disabled={isLoading || !hasFile}>
         {isLoading ? 'Extracting recipe contents…' : 'Import PDF'}
       </button>
     </form>

@@ -49,7 +49,7 @@ fieldset {
   }
 }
 
-input, textarea {
+input, textarea, select {
   border: 2px solid var(--color-med-grey);
   border-radius: var(--border-radius);
   padding: var(--gutter-xs);

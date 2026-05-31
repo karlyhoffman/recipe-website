@@ -42,6 +42,7 @@ export interface ImportDraft {
   total_minutes?: number;
   servings?: number;
   notes?: string;
+  recipe_tags?: Tag[];
 }
 
 export interface Recipe extends RecipeSummary {

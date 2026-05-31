@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Row, Column } from '@/components/Grid';
 import PdfImportForm from '@/components/PdfImportForm';
 import PdfImportReview from '@/components/PdfImportReview';
 import type { ImportDraft } from '@/types';
+import type { TagOption } from '@/app/api/tags/route';
 
 type State = 'idle' | 'loading' | 'review';
 
@@ -15,6 +16,14 @@ export default function ImportPage() {
   const [draft, setDraft] = useState<ImportDraft | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [extractError, setExtractError] = useState<string | null>(null);
+  const [allTags, setAllTags] = useState<TagOption[]>([]);
+
+  useEffect(() => {
+    fetch('/api/tags')
+      .then((r) => r.json())
+      .then((data: TagOption[]) => setAllTags(data))
+      .catch(() => {});
+  }, []);
 
   function handleExtracted(extracted: ImportDraft) {
     setDraft(extracted);
@@ -43,6 +52,7 @@ export default function ImportPage() {
           total_minutes: confirmed.total_minutes,
           servings: confirmed.servings,
           notes: confirmed.notes,
+          tag_ids: confirmed.recipe_tags?.map((t) => t.id) ?? [],
         }),
       });
 
@@ -109,6 +119,7 @@ export default function ImportPage() {
 
           <PdfImportReview
             draft={draft}
+            allTags={allTags}
             onConfirm={handleConfirm}
             onCancel={handleCancel}
           />

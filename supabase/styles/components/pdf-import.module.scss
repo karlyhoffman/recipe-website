@@ -49,10 +49,53 @@
 
     ul li {
       align-items: flex-end;
+
+      fieldset[data-ingredient-aisle] {
+        flex: 0 0 160px;
+
+        select {
+          width: 100%;
+        }
+      }
+    }
+
+    ol li {
+      align-items: center;
     }
 
     button {
       flex: 0 1 100px;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gutter);
+
+    &__item {
+      flex: 1;
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        border: 2px solid var(--color-grey);
+        padding: var(--gutter);
+        height: 100%;
+        max-height: 245px;
+        overflow-y: scroll;
+
+        li {
+          margin-bottom: 0;
+        }
+
+        label {
+          display: flex;
+          align-items: center;
+          gap: var(--gutter-xs);
+          cursor: pointer;
+        }
+      }
     }
   }
 

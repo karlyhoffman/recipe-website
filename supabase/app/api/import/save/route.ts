@@ -50,6 +50,7 @@ export async function POST(request: Request) {
     total_minutes?: number;
     servings?: number;
     notes?: string;
+    tag_ids?: string[];
   };
 
   try {
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
-  const { title, ingredients = [], instructions = [], import_source = '', prep_minutes, total_minutes, servings, notes } = body;
+  const { title, ingredients = [], instructions = [], import_source = '', prep_minutes, total_minutes, servings, notes, tag_ids } = body;
 
   if (!title || !title.trim()) {
     return Response.json({ error: 'A recipe title is required before saving.' }, { status: 400 });
@@ -80,6 +81,7 @@ export async function POST(request: Request) {
     p_total_minutes: total_minutes ?? null,
     p_servings: servings ?? null,
     p_notes: notes ?? null,
+    p_tag_ids: tag_ids?.length ? tag_ids : null,
   });
 
   if (error) {
