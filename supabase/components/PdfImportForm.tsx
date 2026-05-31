@@ -97,7 +97,7 @@ export default function PdfImportForm({ onExtracted, isLoading, onLoadingChange 
         </p>
       )}
 
-      <button type="submit" disabled={isLoading || !hasFile}>
+      <button type="submit" disabled={isLoading || !hasFile} className="outline">
         {isLoading ? 'Extracting recipe contents…' : 'Import PDF'}
       </button>
     </form>

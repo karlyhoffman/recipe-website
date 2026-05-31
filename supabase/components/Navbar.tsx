@@ -35,6 +35,13 @@ export default async function Navbar() {
                 </Link>
               </li>
             )}
+            {showImport && (
+              <li>
+                <form method="POST" action="/api/auth/logout">
+                  <button type="submit">Logout</button>
+                </form>
+              </li>
+            )}
             <li>
               <SearchBar />
             </li>

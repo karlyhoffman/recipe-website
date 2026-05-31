@@ -1,24 +1,11 @@
-import { createSessionClient } from '@/lib/supabase';
 import { extractText } from '@/lib/pdf';
 import { extractRecipe } from '@/lib/recipe-extractor';
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024;
 
 export async function POST(request: Request) {
-  const isDev = process.env.NODE_ENV === 'development';
-
-  if (!isDev) {
-    const supabase = await createSessionClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return Response.json(
-        { error: 'Authentication required to import recipes.' },
-        { status: 401 }
-      );
-    }
-  }
-
   let formData: FormData;
+
   try {
     formData = await request.formData();
   } catch {

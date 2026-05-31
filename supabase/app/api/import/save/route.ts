@@ -1,4 +1,4 @@
-import { createSessionClient, createServiceRoleClient } from '@/lib/supabase';
+import { createServiceRoleClient } from '@/lib/supabase';
 import type { IngredientSlice, InstructionSlice } from '@/types';
 
 function slugify(title: string): string {
@@ -10,7 +10,7 @@ function slugify(title: string): string {
 }
 
 async function findAvailableUid(
-  supabase: Awaited<ReturnType<typeof createSessionClient>>,
+  supabase: ReturnType<typeof createServiceRoleClient>,
   base: string
 ): Promise<string> {
   const { data } = await supabase
@@ -27,19 +27,7 @@ async function findAvailableUid(
 }
 
 export async function POST(request: Request) {
-  const isDev = process.env.NODE_ENV === 'development';
-
-  let supabase: Awaited<ReturnType<typeof createSessionClient>>;
-
-  if (isDev) {
-    supabase = createServiceRoleClient() as unknown as Awaited<ReturnType<typeof createSessionClient>>;
-  } else {
-    supabase = await createSessionClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return Response.json({ error: 'Authentication required to save recipes.' }, { status: 401 });
-    }
-  }
+  const supabase = createServiceRoleClient();
 
   let body: {
     title?: string;

@@ -25,8 +25,8 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Purpose**: Install new dependencies and document environment variable requirements.
 
-- [ ] T001 Install `jose` and `bcryptjs` dependencies: `npm install jose bcryptjs && npm install --save-dev @types/bcryptjs` from `supabase/`
-- [ ] T002 [P] Add `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, and `JWT_SECRET` to `supabase/.env.example` with generation instructions
+- [x] T001 Install `jose` and `bcryptjs` dependencies: `npm install jose bcryptjs && npm install --save-dev @types/bcryptjs` from `supabase/`
+- [x] T002 [P] Add `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, and `JWT_SECRET` to `supabase/.env.example` with generation instructions
 
 ---
 
@@ -36,8 +36,8 @@ description: "Task list for Admin Authentication & Session Management"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T003 Create `supabase/lib/session.ts`: `SessionPayload` interface (`sub: 'admin'`, `iat`, `exp`); `signToken(payload)` using `jose` `SignJWT` with HS256 and 24h expiry; `verifyToken(token)` using `jose` `jwtVerify`; `getCookieOptions()` returning `{ httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', expires: new Date(Date.now() + 24 * 60 * 60 * 1000) }`
-- [ ] T004 [P] Create `supabase/lib/rate-limiter.ts`: `RateLimitEntry` interface (`count: number`, `windowStart: number`); module-level `Map<string, RateLimitEntry>`; `isRateLimited(ip: string): boolean` (5 attempts / 15-min fixed window); `recordFailedAttempt(ip: string): void`; `clearAttempts(ip: string): void`
+- [x] T003 Create `supabase/lib/session.ts`: `SessionPayload` interface (`sub: 'admin'`, `iat`, `exp`); `signToken(payload)` using `jose` `SignJWT` with HS256 and 24h expiry; `verifyToken(token)` using `jose` `jwtVerify`; `getCookieOptions()` returning `{ httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', expires: new Date(Date.now() + 24 * 60 * 60 * 1000) }`
+- [x] T004 [P] Create `supabase/lib/rate-limiter.ts`: `RateLimitEntry` interface (`count: number`, `windowStart: number`); module-level `Map<string, RateLimitEntry>`; `isRateLimited(ip: string): boolean` (5 attempts / 15-min fixed window); `recordFailedAttempt(ip: string): void`; `clearAttempts(ip: string): void`
 
 **Checkpoint**: Foundation ready — user story implementation can now begin.
 
@@ -49,10 +49,10 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Independent Test**: Visit `/login`, submit valid credentials (matching `.env.local` values) → redirected to `/import`. Submit invalid credentials → error message displayed on form. Submit with empty field → inline validation error shown before any fetch occurs.
 
-- [ ] T005 [P] [US1] Create `supabase/app/api/auth/login/route.ts`: `POST` handler; validate `username` and `password` are non-empty (400 if missing); check `isRateLimited(ip)` from `x-forwarded-for` (429 if limited); compare `username` against `ADMIN_USERNAME` env var and `password` against `ADMIN_PASSWORD_HASH` using `bcryptjs.compare` (401 on mismatch, with `recordFailedAttempt`); on success call `clearAttempts`, `signToken`, set `admin_session` cookie via `cookies().set`, validate `returnUrl` (relative path, no `://`, no `//` prefix), return `{ ok: true, redirectTo }` (200); catch-all returns 500 with `"Something went wrong, please try again."`
-- [ ] T006 [P] [US1] Create `supabase/styles/pages/login.module.scss`: page layout styles centering the login card; form field styles consistent with existing `form.module.scss` patterns; error message styles; submit button styles
-- [ ] T007 [US1] Create `supabase/components/LoginForm.tsx`: Client Component (`'use client'`); controlled `username` and `password` inputs; client-side empty-field validation (inline errors, no fetch) satisfying SC-007; `fetch('/api/auth/login', { method: 'POST', body: JSON.stringify({username, password, returnUrl}) })`; disable submit button and show loading state while fetch is in-flight (prevents double-submit); display API error message on non-2xx; `router.push(redirectTo)` on success; display session-expiry message ("Your session has expired. Please log in again.") when `expired` prop is `true`; WCAG 2.1 AA: visible `<label>` elements, keyboard navigable, focus management on error (focus moves to first error field on submit failure); inline validation error elements MUST be associated with their input via `aria-describedby` (FR-012); session-expiry message MUST use `role="alert"` so screen readers announce it (FR-012)
-- [ ] T008 [US1] Create `supabase/app/(site)/login/page.tsx`: Server Component; read `expired` and `returnUrl` from `searchParams`; render `<LoginForm expired={!!expired} returnUrl={returnUrl} />`; include `<title>` and page heading
+- [x] T005 [P] [US1] Create `supabase/app/api/auth/login/route.ts`: `POST` handler; validate `username` and `password` are non-empty (400 if missing); check `isRateLimited(ip)` from `x-forwarded-for` (429 if limited); compare `username` against `ADMIN_USERNAME` env var and `password` against `ADMIN_PASSWORD_HASH` using `bcryptjs.compare` (401 on mismatch, with `recordFailedAttempt`); on success call `clearAttempts`, `signToken`, set `admin_session` cookie via `cookies().set`, validate `returnUrl` (relative path, no `://`, no `//` prefix), return `{ ok: true, redirectTo }` (200); catch-all returns 500 with `"Something went wrong, please try again."`
+- [x] T006 [P] [US1] Create `supabase/styles/pages/login.module.scss`: page layout styles centering the login card; form field styles consistent with existing `form.module.scss` patterns; error message styles; submit button styles
+- [x] T007 [US1] Create `supabase/components/LoginForm.tsx`: Client Component (`'use client'`); controlled `username` and `password` inputs; client-side empty-field validation (inline errors, no fetch) satisfying SC-007; `fetch('/api/auth/login', { method: 'POST', body: JSON.stringify({username, password, returnUrl}) })`; disable submit button and show loading state while fetch is in-flight (prevents double-submit); display API error message on non-2xx; `router.push(redirectTo)` on success; display session-expiry message ("Your session has expired. Please log in again.") when `expired` prop is `true`; WCAG 2.1 AA: visible `<label>` elements, keyboard navigable, focus management on error (focus moves to first error field on submit failure); inline validation error elements MUST be associated with their input via `aria-describedby` (FR-012); session-expiry message MUST use `role="alert"` so screen readers announce it (FR-012)
+- [x] T008 [US1] Create `supabase/app/(site)/login/page.tsx`: Server Component; read `expired` and `returnUrl` from `searchParams`; render `<LoginForm expired={!!expired} returnUrl={returnUrl} />`; include `<title>` and page heading
 
 **Checkpoint**: US1 fully functional. Admin can log in, see errors, and be redirected. Validate independently before US2.
 
@@ -64,9 +64,9 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Independent Test**: While unauthenticated, visit `/import` → redirected to `/login?returnUrl=/import`. While unauthenticated, visit `/api/import/extract` → redirected to `/login`. Navbar: no Import link when unauthenticated; Import link visible when authenticated.
 
-- [ ] T009 [US2] Modify `supabase/proxy.ts`: import `verifyToken` from `lib/session.ts`; remove Supabase `createServerClient` / `auth.getUser()` logic; attempt `verifyToken` from `admin_session` cookie; on protected routes (`/import`, `/api/import/**`): redirect unauthenticated requests to `/login?returnUrl=<original-path>`; on `/login`: redirect authenticated requests to `/import`; on all requests: set `x-user-authenticated: 'true'` or `'false'` header; on authenticated requests: refresh the `admin_session` cookie with a new 24h expiry (sliding window); on expired-JWT redirects from protected routes: use `/login?returnUrl=<path>&expired=1`; pass `/api/auth/**` through without auth check
-- [ ] T010 [P] [US2] Modify `supabase/app/api/import/extract/route.ts`: remove the Supabase auth check (`supabase.auth.getUser()` block and the `if (!isDev)` guard) — the proxy now enforces authentication for this route
-- [ ] T011 [P] [US2] Modify `supabase/app/api/import/save/route.ts`: remove the Supabase auth check — the proxy now enforces authentication for this route
+- [x] T009 [US2] Modify `supabase/proxy.ts`: import `verifyToken` from `lib/session.ts`; remove Supabase `createServerClient` / `auth.getUser()` logic; attempt `verifyToken` from `admin_session` cookie; on protected routes (`/import`, `/api/import/**`): redirect unauthenticated requests to `/login?returnUrl=<original-path>`; on `/login`: redirect authenticated requests to `/import`; on all requests: set `x-user-authenticated: 'true'` or `'false'` header; on authenticated requests: refresh the `admin_session` cookie with a new 24h expiry (sliding window); on expired-JWT redirects from protected routes: use `/login?returnUrl=<path>&expired=1`; pass `/api/auth/**` through without auth check
+- [x] T010 [P] [US2] Modify `supabase/app/api/import/extract/route.ts`: remove the Supabase auth check (`supabase.auth.getUser()` block and the `if (!isDev)` guard) — the proxy now enforces authentication for this route
+- [x] T011 [P] [US2] Modify `supabase/app/api/import/save/route.ts`: remove the Supabase auth check — the proxy now enforces authentication for this route
 
 **Checkpoint**: US2 fully functional. All gated routes blocked for unauthenticated users. Navbar correctly hides/shows Import link. Validate independently before US3.
 
@@ -78,7 +78,7 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Independent Test**: Log in, refresh the page → still authenticated (cookie refreshed by proxy). Manually delete the `admin_session` cookie, navigate to `/import` → redirected to `/login` (no expiry message, just unauthenticated). To test expiry notification: log in, manually edit the cookie to an expired JWT, navigate to a protected page → redirected to `/login?expired=1` and expiry message is shown.
 
-- [ ] T012 [US3] Verify end-to-end session expiry notification: manually set `admin_session` cookie to an expired JWT, navigate to `/import` → confirm proxy redirects to `/login?expired=1` → confirm LoginForm displays "Your session has expired. Please log in again." with `role="alert"` (no code changes if T007, T008, T009 are implemented correctly; update those tasks if the flow is broken)
+- [x] T012 [US3] Verify end-to-end session expiry notification: manually set `admin_session` cookie to an expired JWT, navigate to `/import` → confirm proxy redirects to `/login?expired=1` → confirm LoginForm displays "Your session has expired. Please log in again." with `role="alert"` (no code changes if T007, T008, T009 are implemented correctly; update those tasks if the flow is broken)
 
 **Checkpoint**: US3 fully functional. Session persists across refreshes. Expiry notification appears on `/login` after an expired JWT redirect.
 
@@ -90,8 +90,8 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Independent Test**: While authenticated, confirm a logout button is visible in the Navbar. Click logout → redirected to `/login`, `admin_session` cookie is cleared. Navigate to `/import` → redirected to `/login`. Browser back button to `/import` → still redirected to `/login`.
 
-- [ ] T013 [US4] Create `supabase/app/api/auth/logout/route.ts`: `POST` handler; delete the `admin_session` cookie by calling `cookies().set('admin_session', '', { ...getCookieOptions(), expires: new Date(0), maxAge: 0 })`; return `NextResponse.redirect('/login')` (302); idempotent — no error if cookie is absent
-- [ ] T014 [US4] Modify `supabase/components/Navbar.tsx`: import and conditionally render a logout form: `<form method="POST" action="/api/auth/logout"><button type="submit">Logout</button></form>` when `x-user-authenticated` header is `'true'`; style consistently with existing nav items; accessible (button with visible label)
+- [x] T013 [US4] Create `supabase/app/api/auth/logout/route.ts`: `POST` handler; delete the `admin_session` cookie by calling `cookies().set('admin_session', '', { ...getCookieOptions(), expires: new Date(0), maxAge: 0 })`; return `NextResponse.redirect('/login')` (302); idempotent — no error if cookie is absent
+- [x] T014 [US4] Modify `supabase/components/Navbar.tsx`: import and conditionally render a logout form: `<form method="POST" action="/api/auth/logout"><button type="submit">Logout</button></form>` when `x-user-authenticated` header is `'true'`; style consistently with existing nav items; accessible (button with visible label)
 
 **Checkpoint**: US4 fully functional. Logout ends session, clears cookie, redirects to login. All four user stories now complete.
 
@@ -101,7 +101,7 @@ description: "Task list for Admin Authentication & Session Management"
 
 **Purpose**: Final validation, lint pass, and quickstart verification.
 
-- [ ] T015 [P] Run ESLint on all new and modified files: `supabase/lib/session.ts`, `supabase/lib/rate-limiter.ts`, `supabase/app/api/auth/login/route.ts`, `supabase/app/api/auth/logout/route.ts`, `supabase/app/(site)/login/page.tsx`, `supabase/components/LoginForm.tsx`, `supabase/components/Navbar.tsx`, `supabase/proxy.ts`, `supabase/app/api/import/extract/route.ts`, `supabase/app/api/import/save/route.ts` — resolve all warnings and errors
+- [x] T015 [P] Run ESLint on all new and modified files: `supabase/lib/session.ts`, `supabase/lib/rate-limiter.ts`, `supabase/app/api/auth/login/route.ts`, `supabase/app/api/auth/logout/route.ts`, `supabase/app/(site)/login/page.tsx`, `supabase/components/LoginForm.tsx`, `supabase/components/Navbar.tsx`, `supabase/proxy.ts`, `supabase/app/api/import/extract/route.ts`, `supabase/app/api/import/save/route.ts` — resolve all warnings and errors
 - [ ] T016 [P] Validate the full quickstart.md flow end-to-end: install deps (T001), generate bcrypt hash, generate JWT secret, set `.env.local`, run `npm run dev`, test login flow (valid creds → /import), test session expiry (delete cookie → redirect), test rate limiting (5 bad passwords → rate-limit error on 6th attempt)
 
 ---
