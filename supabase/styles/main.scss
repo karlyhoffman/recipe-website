@@ -50,20 +50,19 @@ fieldset {
 }
 
 input, textarea, select {
-  border: 2px solid var(--color-med-grey);
+  border: 3px solid var(--color-med-grey);
   border-radius: var(--border-radius);
   padding: var(--gutter-xs);
 }
 
 button {
   cursor: pointer;
-  border: 2px solid var(--color-black);
-  border-radius: var(--border-radius);
   padding: var(--gutter-xs);
-  max-height: fit-content;
+  min-height: 50px;
+  font-size: 1rem;
 
   &:disabled {
     cursor: not-allowed;
-    border-color: var(--color-med-grey);
+    border-color: var(--color-grey);
   }
 }

@@ -34,10 +34,18 @@
         width: 100%;
 
         fieldset {
-          flex: 1 0 100px;
+          flex: 0.5;
 
           &[data-ingredient-name] {
-            flex: 1 0 400px;
+            flex: 5;
+          }
+
+          &[data-ingredient-aisle] {
+            flex: 3;
+          }
+
+          &[data-ingredient-unit] {
+            flex: 4;
           }
         }
 
@@ -50,21 +58,13 @@
     ul li {
       align-items: flex-end;
 
-      fieldset[data-ingredient-aisle] {
-        flex: 0 0 160px;
-
-        select {
-          width: 100%;
-        }
+      fieldset select {
+        width: 100%;
       }
     }
 
-    ol li {
-      align-items: center;
-    }
-
-    button {
-      flex: 0 1 100px;
+    ol li button {
+      height: 100%;
     }
   }
 
@@ -79,7 +79,7 @@
       ul {
         display: flex;
         flex-direction: column;
-        border: 2px solid var(--color-grey);
+        border: 3px solid var(--color-med-grey);
         padding: var(--gutter);
         height: 100%;
         max-height: 245px;

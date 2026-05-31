@@ -5,11 +5,16 @@
   &__field-group {
     display: grid;
     gap: var(--gutter-sm);
-    margin-block-end: var(--gutter);
+    margin-block: var(--gutter) 0;
   }
 
   label {
+    max-width: max-content;
     margin: 0;
+  }
+
+  button[type="submit"] {
+    margin-block-start: var(--gutter);
   }
 
   .error,

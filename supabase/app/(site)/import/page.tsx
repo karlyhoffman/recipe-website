@@ -79,7 +79,7 @@ export default function ImportPage() {
   return (
     <Row>
       <Column>
-        <h1 className="h2 highlight">Import Recipe from PDF</h1>
+        <h1 className="h2 outline">Import Recipe from PDF</h1>
       </Column>
 
       {state !== 'review' && (

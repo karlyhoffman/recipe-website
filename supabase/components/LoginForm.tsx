@@ -116,7 +116,7 @@ export default function LoginForm({ expired, returnUrl }: Props) {
         )}
       </div>
 
-      <button type="submit" disabled={loading} className="outline">
+      <button type="submit" disabled={loading}>
         {loading ? 'Signing in…' : 'Sign in'}
       </button>
     </form>
