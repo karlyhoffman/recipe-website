@@ -37,8 +37,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const isValid =
-      username === validUsername && (await bcrypt.compare(password, validHash));
+    const passwordMatch = await bcrypt.compare(password, validHash);
+    const isValid = username === validUsername && passwordMatch;
 
     if (!isValid) {
       recordFailedAttempt(ip);

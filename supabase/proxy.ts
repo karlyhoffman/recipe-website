@@ -1,12 +1,6 @@
 import { errors, jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
-import { getCookieOptions, signToken } from '@/lib/session';
-
-function getSecret(): Uint8Array {
-  const key = process.env.JWT_SECRET;
-  if (!key) throw new Error('JWT_SECRET is not set');
-  return new TextEncoder().encode(key);
-}
+import { getCookieOptions, getSecret, signToken } from '@/lib/session';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

@@ -6,7 +6,7 @@ export interface SessionPayload {
   exp?: number;
 }
 
-function getSecret(): Uint8Array {
+export function getSecret(): Uint8Array {
   const key = process.env.JWT_SECRET;
   if (!key) throw new Error('JWT_SECRET is not set');
   return new TextEncoder().encode(key);
