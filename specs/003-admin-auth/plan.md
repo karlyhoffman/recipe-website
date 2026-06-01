@@ -98,6 +98,13 @@ supabase/
 └── .env.example                        # Add ADMIN_USERNAME, ADMIN_PASSWORD_HASH, JWT_SECRET
 ```
 
+**New migrations:**
+
+```text
+supabase/migrations/
+└── 0007_grant_import_recipe_service_role.sql   # GRANT EXECUTE on import_recipe to service_role
+```
+
 **Structure Decision**: Extends the existing web application structure (`proxy.ts` for route protection, `lib/` for utilities, `components/` for UI, `styles/pages/` for page-scoped styles, `app/(site)/` for pages, `app/api/` for route handlers). No new top-level directories.
 
 ## Phase Artifacts

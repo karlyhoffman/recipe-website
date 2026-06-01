@@ -125,14 +125,14 @@ No body required. Typically submitted via an HTML form from the authenticated UI
 ```http
 HTTP/1.1 302 Found
 Set-Cookie: admin_session=; HttpOnly; Secure; SameSite=Lax; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT
-Location: /login
+Location: /
 ```
 
-The session cookie is deleted by setting it to an empty value with a past expiry. The client is redirected to `/login`.
+The session cookie is deleted by setting it to an empty value with a past expiry. The client is redirected to the homepage (`/`).
 
 ### Response: No Active Session (302)
 
-If no valid session cookie is present, the endpoint still responds with a redirect to `/login`. It does not return an error — idempotent logout is safe.
+If no valid session cookie is present, the endpoint still responds with a redirect to `/`. It does not return an error — idempotent logout is safe.
 
 ---
 
@@ -142,8 +142,10 @@ Not an API endpoint, but documented here for completeness.
 
 | Condition | Action |
 |-----------|--------|
-| Request to `/import` or `/api/import/**`, no valid JWT cookie | Redirect to `/login?returnUrl=<original-path>` |
+| Request to `/import` (exact) or `/import/**` or `/api/import/**`, no cookie or invalid JWT | Redirect to `/login?returnUrl=<original-path>` |
+| Request to `/import` (exact) or `/import/**` or `/api/import/**`, expired JWT | Redirect to `/login?returnUrl=<original-path>&expired=1` |
 | Request to `/login`, valid JWT cookie | Redirect to `/import` |
+| Request to `/login`, expired JWT cookie (and `?expired` not already in URL) | Redirect to `/login?expired=1` |
 | Request to `/api/auth/**` | Pass through (no auth check) |
 | Authenticated request (any route) | Refresh JWT cookie expiry by 24h; set `x-user-authenticated: true` header |
 | Unauthenticated request (any route) | Set `x-user-authenticated: false` header; no redirect (unless protected route) |

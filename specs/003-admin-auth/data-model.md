@@ -77,7 +77,7 @@ Or use the quickstart helper script (see [quickstart.md](./quickstart.md)).
 
 ## Rate Limiter State (in-memory, not persisted)
 
-The rate limiter holds ephemeral state in a module-level `Map`. It is **not** persisted to any database.
+The rate limiter holds ephemeral state in module-level variables. It is **not** persisted to any database.
 
 ```ts
 interface RateLimitEntry {
@@ -85,14 +85,25 @@ interface RateLimitEntry {
   windowStart: number; // Unix timestamp (ms)
 }
 
-const attempts: Map<string, RateLimitEntry> = new Map();
+const ipAttempts: Map<string, RateLimitEntry> = new Map(); // per-IP counter
+let globalEntry: RateLimitEntry | null = null;             // cross-IP counter
 ```
+
+Two counters run in parallel:
+
+| Counter | Limit | Purpose |
+|---------|-------|---------|
+| Per-IP (`ipAttempts`) | 5 attempts / 15-min window | Blocks a single IP after 5 failures |
+| Global (`globalEntry`) | 25 attempts / 15-min window | Catches distributed attacks spread across many IPs |
+
+Either counter triggering causes a 429 response. On successful login, only the per-IP entry for that IP is cleared; the global counter continues accumulating until its window expires naturally.
 
 | Parameter | Value |
 |-----------|-------|
 | Window type | Fixed (resets when `now - windowStart >= WINDOW_MS`) |
 | Window duration | 15 minutes |
-| Max attempts per window | 5 |
+| Per-IP max attempts | 5 |
+| Global max attempts | 25 |
 | Key | Client IP address (from `x-forwarded-for` header, first value) |
 
 ---
