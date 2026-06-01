@@ -49,5 +49,7 @@ export function recordFailedAttempt(ip: string): void {
 
 export function clearAttempts(ip: string): void {
   ipAttempts.delete(ip);
-  globalEntry = null;
+  // globalEntry is intentionally not reset here — window expiry handles cleanup.
+  // Resetting it on a successful login would let a distributed attacker reset the
+  // global counter by timing a login between attack waves.
 }

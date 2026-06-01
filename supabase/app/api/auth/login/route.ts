@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       returnUrl?: string;
     };
 
-    if (!username || !password) {
+    if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
       return Response.json({ error: 'Username and password are required.' }, { status: 400 });
     }
 
