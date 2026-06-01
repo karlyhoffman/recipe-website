@@ -55,6 +55,7 @@ export default function LoginForm({ expired, returnUrl }: Props) {
       }
 
       router.push(json.redirectTo as string);
+      router.refresh();
     } catch {
       setFormError('Something went wrong, please try again.');
     } finally {
