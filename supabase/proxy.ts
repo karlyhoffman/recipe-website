@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
   }
 
   const isProtected =
-    pathname.startsWith('/import') || pathname.startsWith('/api/import/');
+    pathname === '/import' || pathname.startsWith('/import/') || pathname.startsWith('/api/import/');
   const isLoginPage = pathname === '/login';
 
   const token = request.cookies.get('admin_session')?.value;
@@ -37,6 +37,12 @@ export async function proxy(request: NextRequest) {
 
   if (isLoginPage && isAuthenticated) {
     return NextResponse.redirect(new URL('/import', request.url));
+  }
+
+  if (isLoginPage && isExpired && !request.nextUrl.searchParams.has('expired')) {
+    const loginUrl = new URL(request.url);
+    loginUrl.searchParams.set('expired', '1');
+    return NextResponse.redirect(loginUrl);
   }
 
   const requestHeaders = new Headers(request.headers);
