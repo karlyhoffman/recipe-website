@@ -49,5 +49,4 @@ export function recordFailedAttempt(ip: string): void {
 
 export function clearAttempts(ip: string): void {
   ipAttempts.delete(ip);
-  globalEntry = null;
 }

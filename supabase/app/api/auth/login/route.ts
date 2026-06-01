@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
+import { ipAddress } from '@vercel/functions';
 import bcrypt from 'bcryptjs';
 import { signToken, getCookieOptions } from '@/lib/session';
 import { isRateLimited, recordFailedAttempt, clearAttempts } from '@/lib/rate-limiter';
@@ -17,8 +18,7 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: 'Username and password are required.' }, { status: 400 });
     }
 
-    // request.ip is the verified peer IP on Vercel; not spoofable unlike x-forwarded-for
-    const ip = request.ip ?? '127.0.0.1';
+    const ip = ipAddress(request) ?? '127.0.0.1';
 
     if (isRateLimited(ip)) {
       return Response.json(

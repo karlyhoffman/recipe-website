@@ -11,5 +11,5 @@ export async function POST(request: NextRequest) {
     maxAge: 0,
   });
 
-  return NextResponse.redirect(new URL('/login', request.url));
+  return NextResponse.redirect(new URL('/login', request.url), { status: 302 });
 }

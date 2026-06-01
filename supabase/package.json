@@ -11,6 +11,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
     "@supabase/ssr": "^0.10.3",
+    "@vercel/functions": "^3.6.1",
     "bcryptjs": "^3.0.3",
     "classnames": "^2.5.1",
     "jose": "^6.2.3",
