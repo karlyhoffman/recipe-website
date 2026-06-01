@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error('[extract] pdf-parse extraction failed:', err, filename);
     return Response.json(
-      { error: 'An error occurred during extraction. Please try again.' },
+      { error: 'pdf-parse failed', detail: String(err), stack: (err as Error)?.stack },
       { status: 500 }
     );
   }
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error('[extract] Claude extraction failed:', err, filename);
     return Response.json(
-      { error: 'An error occurred during extraction. Please try again.' },
+      { error: 'Claude failed', detail: String(err), stack: (err as Error)?.stack },
       { status: 500 }
     );
   }
