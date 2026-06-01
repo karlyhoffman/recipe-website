@@ -44,7 +44,7 @@ export default function LoginForm({ expired, returnUrl }: Props) {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, returnUrl }),
+        body: JSON.stringify({ username: username.trim(), password, returnUrl }),
       });
 
       const json = await res.json();
