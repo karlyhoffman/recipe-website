@@ -17,10 +17,10 @@ export default function RecipeError({
           <h1 className="h4 outline">Something went wrong</h1>
           <p>There was a problem loading this recipe.</p>
           <div className={styles.actions}>
-            <button onClick={unstable_retry} className="h6 outline">
+            <button onClick={unstable_retry} className="h6">
               Try again
             </button>
-            <Link href="/recipes" className="h6 outline">
+            <Link href="/recipes" className="h6">
               Browse all recipes
             </Link>
           </div>

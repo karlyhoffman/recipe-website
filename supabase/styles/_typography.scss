@@ -68,6 +68,7 @@ b {
 }
 
 // Outlined badge / heading style.
+button,
 .outline {
   display: inline-block;
   position: relative;
@@ -76,6 +77,12 @@ b {
   line-height: 1;
   text-decoration: none;
   padding: 0.5em 1em;
+  font-weight: 700;
+  font-family: var(--font-heading);
+
+  &:not(a) {
+    border-color: inherit;
+  }
 }
 
 .error {

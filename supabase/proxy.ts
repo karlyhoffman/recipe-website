@@ -1,48 +1,59 @@
-import { createServerClient } from '@supabase/ssr';
+import { errors, jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
+import { getCookieOptions, getSecret, signToken } from '@/lib/session';
 
 export async function proxy(request: NextRequest) {
-  const isDev = process.env.NODE_ENV === 'development';
+  const { pathname } = request.nextUrl;
 
-  let supabaseResponse = NextResponse.next({ request });
+  if (pathname.startsWith('/api/auth/')) {
+    return NextResponse.next();
+  }
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          supabaseResponse = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
-      },
+  const isProtected =
+    pathname === '/import' || pathname.startsWith('/import/') || pathname.startsWith('/api/import/');
+  const isLoginPage = pathname === '/login';
+
+  const token = request.cookies.get('admin_session')?.value;
+  let isAuthenticated = false;
+  let isExpired = false;
+
+  if (token) {
+    try {
+      await jwtVerify(token, getSecret(), { algorithms: ['HS256'] });
+      isAuthenticated = true;
+    } catch (err) {
+      if (err instanceof errors.JWTExpired) {
+        isExpired = true;
+      }
     }
-  );
+  }
 
-  const { data: { user } } = await supabase.auth.getUser();
-  const isAuthenticated = isDev || !!user;
+  if (isProtected && !isAuthenticated) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('returnUrl', pathname);
+    if (isExpired) loginUrl.searchParams.set('expired', '1');
+    return NextResponse.redirect(loginUrl);
+  }
 
-  if (request.nextUrl.pathname.startsWith('/import') && !isAuthenticated) {
-    const redirect = NextResponse.redirect(new URL('/', request.url));
-    supabaseResponse.cookies.getAll().forEach(({ name, value, ...rest }) =>
-      redirect.cookies.set(name, value, rest)
-    );
-    return redirect;
+  if (isLoginPage && isAuthenticated) {
+    return NextResponse.redirect(new URL('/import', request.url));
+  }
+
+  if (isLoginPage && isExpired && !request.nextUrl.searchParams.has('expired')) {
+    const loginUrl = new URL(request.url);
+    loginUrl.searchParams.set('expired', '1');
+    return NextResponse.redirect(loginUrl);
   }
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-user-authenticated', String(isAuthenticated));
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
-  supabaseResponse.cookies.getAll().forEach(({ name, value, ...rest }) =>
-    response.cookies.set(name, value, rest)
-  );
+
+  if (isAuthenticated) {
+    const newToken = await signToken();
+    response.cookies.set('admin_session', newToken, getCookieOptions());
+  }
 
   return response;
 }

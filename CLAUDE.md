@@ -68,4 +68,6 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
+
+[specs/003-admin-auth/plan.md](specs/003-admin-auth/plan.md)
 <!-- SPECKIT END -->

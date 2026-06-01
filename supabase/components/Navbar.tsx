@@ -29,11 +29,18 @@ export default async function Navbar() {
               </Link>
             </li>
             {showImport && (
-              <li>
-                <Link href="/import">
-                  <strong>Import</strong>
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link href="/import">
+                    <strong>Import</strong>
+                  </Link>
+                </li>
+                <li>
+                  <form method="POST" action="/api/auth/logout">
+                    <button type="submit">Logout</button>
+                  </form>
+                </li>
+              </>
             )}
             <li>
               <SearchBar />

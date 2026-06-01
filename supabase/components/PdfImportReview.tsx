@@ -201,7 +201,7 @@ export default function PdfImportReview({ draft, allTags, onConfirm, onCancel }:
                 />
               </fieldset>
 
-              <fieldset>
+              <fieldset data-ingredient-unit>
                 <label htmlFor={`ingredient-preparation-${i}`}>Preparation</label>
                 <input
                   type="text"
@@ -323,11 +323,14 @@ export default function PdfImportReview({ draft, allTags, onConfirm, onCancel }:
           type="button"
           onClick={handleConfirm}
           disabled={titleEmpty}
+          className="outline"
         >
           Save Recipe
         </button>
 
-        <button type="button" onClick={onCancel}>Cancel</button>
+        <button type="button" onClick={onCancel} className="outline">
+          Cancel
+        </button>
       </div>
     </div>
   );

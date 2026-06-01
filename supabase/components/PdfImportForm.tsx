@@ -73,9 +73,10 @@ export default function PdfImportForm({ onExtracted, isLoading, onLoadingChange 
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={styles['form__field-group']}>
-        <label htmlFor="pdf-file" className="h6">Upload Recipe PDF</label>
+      <h2 className="h6 highlight">Upload Recipe PDF</h2>
 
+      <div className={styles['form__field-group']}>
+        <label htmlFor="pdf-file" className="sr-only">Upload a recipe PDF</label>
         <input
           id="pdf-file"
           ref={inputRef}
