@@ -1,21 +1,22 @@
 @use '../breakpoints' as bp;
 
-.navbar {
+header.navbar {
   display: block;
   position: relative;
   background-color: var(--color-black);
   color: var(--color-white);
   font-family: var(--font-heading);
   font-size: 1rem;
-  padding: 10px 0;
+  padding-inline: var(--gutter-lg);
+  padding-block: 10px;
   z-index: 3;
 
-  &__menu {
+  .navbar__menu {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--gutter);
+    gap: var(--gutter-md);
     padding-bottom: 5px;
 
     li {

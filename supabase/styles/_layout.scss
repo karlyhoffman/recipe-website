@@ -3,7 +3,7 @@
 .container {
   width: 100%;
   margin: 0 auto;
-  padding: 0 var(--gutter);
+  padding: 0 var(--gutter) var(--gutter-lg) var(--gutter);
 
   @include bp.media-breakpoint-up(md) {
     width: min(90vw, 1300px);

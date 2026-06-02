@@ -53,23 +53,25 @@ export default async function Groceries() {
         </ul>
       </Column>
 
-      <div className={styles.groceries__aisles}>
-        {aisles.map(([aisle, items]) => {
-          if (!items.length) return null;
-          return (
-            <div className={classNames(styles.aisle, 'outline')} key={aisle}>
-              <h2 className="h4 highlight">{aisle}</h2>
-              <ul>
-                {items.map((item, i) => (
-                  <li className={styles.ingredient} key={`${item.recipeUid}-${i}`}>
-                    <p>{item.amount && `${item.amount} `}<strong>{item.name}</strong>{item.preparation && `, ${item.preparation}`}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
+      <Column>
+        <div className={styles.groceries__aisles}>
+          {aisles.map(([aisle, items]) => {
+            if (!items.length) return null;
+            return (
+              <div className={classNames(styles.aisle, 'outline')} key={aisle}>
+                <h2 className="h4 highlight">{aisle}</h2>
+                <ul>
+                  {items.map((item, i) => (
+                    <li className={styles.ingredient} key={`${item.recipeUid}-${i}`}>
+                      <p>{item.amount && `${item.amount} `}<strong>{item.name}</strong>{item.preparation && `, ${item.preparation}`}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+      </Column>
     </Row>
   );
 }
