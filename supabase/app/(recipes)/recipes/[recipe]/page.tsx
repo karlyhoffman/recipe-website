@@ -6,10 +6,25 @@ import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import type { IngredientSlice, InstructionSlice } from '@/types';
 import styles from '@/styles/pages/recipe-detail.module.scss';
 
+const SOURCE_URL_PATTERN = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+const BRACKET_PATTERN = /[\[\]\(\)]/g;
+
 function formatTime(minutes: number) {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
   return hours > 0 ? `${hours}:${mins < 10 ? `0${mins}` : mins}` : `${mins} min`;
+}
+
+function parseSourceInfo(source: string | null) {
+  if (!source) return { url: null, name: null };
+
+  const urlMatch = source.match(SOURCE_URL_PATTERN);
+  const url = urlMatch?.[0] ?? null;
+
+  if (!url) return { url: null, name: null };
+
+  const name = source.replace(url, '').trim().replace(BRACKET_PATTERN, '');
+  return { url, name };
 }
 
 export default async function RecipeDetail({
@@ -42,6 +57,8 @@ export default async function RecipeDetail({
   } = recipe;
 
   const hasTags = !!cuisine_tags.length || !!ingredient_tags.length || !!type_tags.length || !!weekday || !!season_tags.length;
+
+  const { url: sourceUrl, name: sourceName } = parseSourceInfo(source ?? null);
 
   return (
     <>
@@ -84,7 +101,15 @@ export default async function RecipeDetail({
         {source && (
           <Column className={styles.source}>
             <p className={styles.label}>Adapted from:</p>
-            <p>{source}</p>
+            <p>
+              {sourceUrl ? (
+                <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+                  {sourceName || sourceUrl}
+                </a>
+              ) : (
+                source
+              )}
+            </p>
           </Column>
         )}
       </Row>
