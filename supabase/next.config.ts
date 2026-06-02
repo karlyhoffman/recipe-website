@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   serverExternalPackages: ['pdf-parse', 'pdfjs-dist'],
+  outputFileTracingIncludes: {
+    '/api/import/extract': [
+      './node_modules/.pnpm/pdfjs-dist*/node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs',
+    ],
+  },
 };
 
 export default nextConfig;

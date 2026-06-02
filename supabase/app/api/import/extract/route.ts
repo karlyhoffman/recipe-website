@@ -32,11 +32,8 @@ export async function POST(request: Request) {
     const arrayBuffer = await file.arrayBuffer();
     rawText = await extractText(arrayBuffer);
   } catch (err) {
-    console.error('[extract] pdf-parse extraction failed:', (err as Error).message, filename);
-    return Response.json(
-      { error: 'An error occurred during extraction. Please try again.' },
-      { status: 500 }
-    );
+    console.error('[extract] pdf-parse extraction failed:', err, filename);
+    return Response.json({ error: 'Failed to extract text from PDF.' }, { status: 500 });
   }
 
   if (!rawText || !rawText.trim()) {
@@ -50,10 +47,7 @@ export async function POST(request: Request) {
     const draft = await extractRecipe(rawText, filename);
     return Response.json(draft);
   } catch (err) {
-    console.error('[extract] Claude extraction failed:', (err as Error).message, filename);
-    return Response.json(
-      { error: 'An error occurred during extraction. Please try again.' },
-      { status: 500 }
-    );
+    console.error('[extract] Claude extraction failed:', err, filename);
+    return Response.json({ error: 'Failed to extract recipe from PDF.' }, { status: 500 });
   }
 }
