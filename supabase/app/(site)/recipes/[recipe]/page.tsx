@@ -30,7 +30,7 @@ export default async function RecipeDetail({
     total_minutes,
     servings,
     notes,
-    // source,
+    source,
     weekday,
     ingredients,
     instructions,
@@ -81,12 +81,12 @@ export default async function RecipeDetail({
           </Column>
         )}
 
-        {/* {source && (
+        {source && (
           <Column className={styles.source}>
-            <p className={styles.label}>Source:</p>
+            <p className={styles.label}>Adapted from:</p>
             <p>{source}</p>
           </Column>
-        )} */}
+        )}
       </Row>
 
       <Row className={styles.recipe__body}>
