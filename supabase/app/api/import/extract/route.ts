@@ -4,12 +4,10 @@ import { extractRecipe } from '@/lib/recipe-extractor';
 const MAX_SIZE_BYTES = 10 * 1024 * 1024;
 
 export async function POST(request: Request) {
-  console.log('[extract] POST started');
   let formData: FormData;
 
   try {
     formData = await request.formData();
-    console.log('[extract] formData parsed');
   } catch {
     return Response.json({ error: 'Invalid form data.' }, { status: 400 });
   }
@@ -28,20 +26,14 @@ export async function POST(request: Request) {
   }
 
   const filename = file.name;
-  console.log('[extract] file:', filename, file.size);
   let rawText: string;
 
   try {
     const arrayBuffer = await file.arrayBuffer();
-    console.log('[extract] arrayBuffer obtained, starting pdf extraction');
     rawText = await extractText(arrayBuffer);
-    console.log('[extract] pdf extraction complete, text length:', rawText.length);
   } catch (err) {
     console.error('[extract] pdf-parse extraction failed:', err, filename);
-    return Response.json(
-      { error: 'pdf-parse failed', detail: String(err), stack: (err as Error)?.stack },
-      { status: 500 }
-    );
+    return Response.json({ error: 'Failed to extract text from PDF.' }, { status: 500 });
   }
 
   if (!rawText || !rawText.trim()) {
@@ -51,16 +43,11 @@ export async function POST(request: Request) {
     );
   }
 
-  console.log('[extract] starting Claude extraction');
   try {
     const draft = await extractRecipe(rawText, filename);
-    console.log('[extract] Claude extraction complete');
     return Response.json(draft);
   } catch (err) {
     console.error('[extract] Claude extraction failed:', err, filename);
-    return Response.json(
-      { error: 'Claude failed', detail: String(err), stack: (err as Error)?.stack },
-      { status: 500 }
-    );
+    return Response.json({ error: 'Failed to extract recipe from PDF.' }, { status: 500 });
   }
 }
