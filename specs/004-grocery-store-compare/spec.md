@@ -88,7 +88,7 @@ The authenticated user wants to know how current the displayed prices are before
 - **FR-010**: The section MUST NOT be shown when the grocery page's ingredient list is empty.
 - **FR-011**: The section MUST recalculate and re-render whenever the ingredient list changes (e.g., a recipe is added or removed from the grocery list). If the ingredient list becomes empty as a result of the change, the section MUST hide per FR-010. During recalculation, the previous comparison result MUST remain visible until the updated result is ready.
 - **FR-012**: The pricing data source MUST cover stores in a single configured geographic region; region selection is not user-configurable.
-- **FR-013**: The system MUST obtain pricing data from at least one source at zero or low recurring cost (free tier, open data, or admin-maintained).
+- **FR-013**: The system MUST obtain pricing data from at least one source at zero or low recurring cost (e.g., a free-tier grocery API or public scraping); admin-maintained prices are not a compliant implementation.
 - **FR-014**: For authenticated users, while the price comparison is being computed on page load, the section MUST display a visible loading state so the user knows the section is in progress and not absent.
 - **FR-015**: Ingredient names from the list MUST be normalized before matching against the pricing database (e.g., "all-purpose flour" matches "flour"). When multiple products at a store match a single ingredient, the lowest-priced match MUST be used for that store's total.
 
@@ -119,7 +119,7 @@ The authenticated user wants to know how current the displayed prices are before
 - Pricing data does not need to be real-time. Data refreshed on a scheduled basis (e.g., nightly or weekly) is acceptable, provided the staleness indicator is shown.
 - The feature is intended for personal use by the site's authenticated admin. Scaling to multiple concurrent users is out of scope.
 - Store coverage is limited to stores that serve the configured geographic region; stores outside that region are not shown even if pricing data exists for them.
-- The data source must have zero or very low ongoing cost (free API tier, publicly available data, or manually maintained records). Paid per-query APIs are out of scope unless a free tier covers expected usage.
+- The data source must have zero or very low ongoing cost (free API tier or publicly available data). Paid per-query APIs are out of scope unless a free tier covers expected usage.
 - If the user's session expires while the Cheapest Grocery Store section is visible, standard session expiry behavior applies (e.g., redirect to login); no special handling is required for this section.
 - Sync operational requirements (scheduling mechanism, retry logic, failure timeouts) are out of scope for this specification and will be addressed during implementation planning.
 - The number of stores displayed is bounded by the configured data source; no artificial cap is imposed on the list length.

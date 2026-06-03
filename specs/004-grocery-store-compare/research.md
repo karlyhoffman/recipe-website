@@ -6,16 +6,21 @@
 
 ## Decision 1: Pricing Data Source
 
-**Decision**: Admin-maintained Supabase tables (`stores`, `ingredient_prices`)
+**Decision**: Sync-based data ingestion from a third-party grocery API or custom store scraper. A scheduled sync job fetches current prices and upserts them into `ingredient_prices`. The app reads exclusively from these locally-stored tables at page load — no live external API calls at request time (SC-001 clarification).
 
-**Rationale**: FR-013 requires that the system obtain pricing data from at least one source at zero or low recurring cost; "admin-maintained" is one of the three explicitly listed acceptable source types (alongside free tier and open data). For a single-admin personal recipe site, an admin-maintained Supabase table satisfies this cost constraint with no external API keys, no scraping infrastructure, no recurring costs, and no third-party dependencies. The admin enters and updates prices directly via Supabase Studio. This is the simplest approach that fully satisfies FR-013 and all functional requirements.
+**Rationale**: FR-013 requires zero or low recurring cost. Automated sync removes the price-entry burden and keeps data current without admin intervention. Two viable approaches depending on the admin's geographic region:
 
-**Known limitation**: Prices are only as current as the admin's last update. This is surfaced to the user via the staleness indicator (FR-008), so the tradeoff is transparent.
+- **Option A — Free-tier grocery API** (e.g., Kroger Developer API for US deployments): Free, structured product and pricing data, OAuth authentication, no scraping maintenance. Recommended for US stores.
+- **Option B — Custom scraper** (e.g., Playwright targeting local store websites): Covers any store in any region; no API registration required. Higher maintenance as store DOM changes; potential TOS exposure. Fallback for regions without a suitable free API.
+
+The specific data source is a region-dependent implementation decision deferred to Phase 2 (sync job build). The data model and app-layer code are identical regardless of which option is used. Sync scheduling and retry logic are out of scope for this specification.
+
+**Known limitation**: Prices are only as current as the last successful sync run. Staleness (FR-008) and unavailability (FR-009) states surface this transparently.
 
 **Alternatives considered**:
-- **Kroger API (free tier)** — Geographically limited to the US; requires OAuth application registration and ongoing key management. Adds external dependency that could become unavailable. Rejected.
+- **Admin-maintained Supabase tables** — Requires the admin to manually enter and update every price via Supabase Studio. Error-prone, tedious at scale, and easy to neglect. Rejected.
 - **Open Food Facts** — Provides product data but not current retail prices. Rejected.
-- **Scraping** — Requires a scraper script, maintenance as store websites change, and potential TOS violations. Rejected.
+- **Paid per-query APIs or commercial data feeds** — Ongoing cost. Rejected per FR-013.
 
 ---
 
@@ -63,18 +68,20 @@
 
 **Decision**: Derive both states from `ingredient_prices.updated_at` — no separate sync event table.
 
-**Rationale**: Since pricing data is manually maintained (no automated sync), the concepts of "sync started" / "sync succeeded" / "sync failed" do not apply. A simpler model: the `updated_at` timestamp on each `ingredient_prices` row records when that price was last updated by the admin. Freshness is per-store:
+**Rationale**: The sync job upserts into `ingredient_prices` on every successful run, which sets `updated_at` automatically via the trigger. Freshness is derived per-store from these timestamps:
 
-- **Unavailable**: no `ingredient_prices` rows exist for any active store (DB is empty — admin has never entered prices)
-- **Stale**: for a given store, `max(updated_at)` is more than 7 days ago (FR-008)
+- **Unavailable**: no `ingredient_prices` rows exist for any active store (sync has never run successfully, or all runs have failed since the table was created)
+- **Stale**: for a given store, `max(updated_at)` is more than 7 days ago (sync ran but has not updated this store within the expected window)
 - **Current**: for a given store, `max(updated_at)` is within the last 7 days
 
 The "prices as of" timestamp shown in the UI (FR-007) is `max(ingredient_prices.updated_at)` for that store's price records.
 
-**Known limitation**: updating a single price row refreshes `max(updated_at)` for the entire store, marking it current even if most prices were not changed that session. For the expected admin workflow (weekly review of all prices at once), this is an accepted tradeoff — the timestamp is a best-effort signal, not a guarantee that every individual price is fresh.
+**Known limitation**: a sync run that updates a single price row refreshes `max(updated_at)` for the entire store, marking it current even if most prices were not changed in that run. For the expected sync workflow (weekly full-store price refresh), this is an accepted tradeoff — the timestamp is a best-effort signal.
+
+**Optional audit trail**: a `price_sync_logs` table (id, started_at, completed_at, status, rows_updated, error) can be added to track sync history for debugging. It is not required for the core feature since `updated_at` captures the same effective freshness signal. Implementation is deferred to the sync job build.
 
 **Alternatives considered**:
-- **Separate `price_sync_events` table** — Adds schema complexity and a manual admin step (insert a row when updating prices). Unnecessary overhead for a manually maintained dataset. Rejected.
+- **Required `price_sync_events` table** — Adds mandatory schema complexity and a required write step in the sync job. Unnecessary since `updated_at` captures the same signal. Rejected; an optional `price_sync_logs` table is useful for debugging but not required by this spec.
 
 ---
 

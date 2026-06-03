@@ -50,7 +50,7 @@ CREATE INDEX ingredient_prices_store_id_idx       ON ingredient_prices(store_id)
 CREATE INDEX ingredient_prices_canonical_name_idx ON ingredient_prices(canonical_name);
 ```
 
-**`updated_at` trigger** — auto-sets the timestamp on every `UPDATE` so the admin cannot accidentally leave it stale by omitting it from a manual SQL statement:
+**`updated_at` trigger** — auto-sets the timestamp on every `UPDATE` so sync job upserts always record the correct time without special handling:
 
 ```sql
 CREATE OR REPLACE FUNCTION set_updated_at()
@@ -76,7 +76,7 @@ The trigger ensures `updated_at` always reflects the actual time of the last cha
 |--------|------|-------------|
 | `id` | UUID | Primary key |
 | `store_id` | UUID | FK → `stores.id` |
-| `canonical_name` | TEXT | Normalized ingredient name (e.g., `"flour"`, `"eggs"`, `"butter"`). Admin-controlled. Used for matching recipe ingredient names after normalization (FR-015). |
+| `canonical_name` | TEXT | Normalized ingredient name (e.g., `"flour"`, `"eggs"`, `"butter"`). Used as the search key by the sync job when looking up prices from the external source. Used for matching recipe ingredient names after normalization (FR-015). |
 | `price` | NUMERIC(10,2) | Unit price (e.g., `0.89` for `$0.89/lb`) |
 | `unit` | TEXT | Unit label displayed to user (e.g., `"lb"`, `"dozen"`, `"each"`, `"jar"`) |
 | `in_stock` | BOOLEAN | When `false`, treated identically to an unmatched ingredient — excluded from total and listed separately (FR-006) |
@@ -88,7 +88,7 @@ The trigger ensures `updated_at` always reflects the actual time of the last cha
 - If no rows exist for any active store → unavailable (FR-009)
 - If a store has no rows at all → excluded from `PriceComparisonResult.entries` entirely (not shown as $0)
 
-**Canonical name examples** (admin-maintained):
+**Canonical name examples** (sync job search keys):
 
 | `canonical_name` | Matches recipe ingredients |
 |-----------------|---------------------------|
@@ -99,9 +99,9 @@ The trigger ensures `updated_at` always reflects the actual time of the last cha
 
 ---
 
-## No Additional Tables
+## No Required Additional Tables
 
-No `price_sync_events` table is needed. Since data is admin-maintained (not synced from an external source), freshness is derived directly from `ingredient_prices.updated_at`. See [research.md — Decision 4](./research.md) for rationale.
+No `price_sync_events` table is required. Freshness is derived directly from `ingredient_prices.updated_at`, which the trigger sets automatically on each sync upsert. An optional `price_sync_logs` table (for sync audit and debugging) may be added during Phase 2 (sync job build). See [research.md — Decision 4](./research.md) for rationale.
 
 ---
 

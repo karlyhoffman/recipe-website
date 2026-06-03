@@ -8,7 +8,7 @@
 
 - The `supabase/` project is running locally (`npm run dev` from `supabase/`)
 - Supabase project is accessible (local or remote)
-- The migration `0008_grocery_store_prices.sql` has been applied
+- The migration `0009_grocery_store_prices.sql` has been applied
 
 ---
 
@@ -62,7 +62,7 @@ In Supabase Studio, confirm:
 
 ## Maintaining Price Data
 
-Prices are maintained directly in the Supabase `ingredient_prices` table via Supabase Studio.
+Prices are populated automatically by the sync job. The admin manages which stores are tracked and which canonical ingredient names the sync job looks up.
 
 ### Adding a new store
 
@@ -71,36 +71,20 @@ INSERT INTO stores (name, region)
 VALUES ('Store Name', 'default');
 ```
 
-### Adding / updating ingredient prices
+After inserting a store, trigger a sync run to populate its prices.
 
-```sql
--- Insert (first time)
-INSERT INTO ingredient_prices (store_id, canonical_name, price, unit)
-VALUES (
-  '<store-uuid>',
-  'flour',          -- canonical name: short, lowercase, no modifiers
-  2.99,             -- price per unit
-  'bag'             -- unit label shown to user
-);
+### Adding a new ingredient to track
 
--- Update existing price (updated_at is set automatically by the trigger)
-UPDATE ingredient_prices
-SET price = 2.49
-WHERE store_id = '<store-uuid>' AND canonical_name = 'flour';
-```
+Add the canonical name to the sync job's ingredient list (see the sync job configuration in `app/api/sync-prices/route.ts`). The next sync run will fetch and upsert prices for that ingredient across all active stores.
 
-### Marking an item out of stock / back in stock
+### Triggering a manual sync
 
-```sql
--- updated_at is set automatically by the trigger
-UPDATE ingredient_prices
-SET in_stock = false
-WHERE store_id = '<store-uuid>' AND canonical_name = 'butter';
+```bash
+# Via Vercel cron endpoint (once deployed)
+curl -X POST https://your-site.vercel.app/api/sync-prices \
+  -H 'Authorization: Bearer $CRON_SECRET'
 
--- Restore when back in stock
-UPDATE ingredient_prices
-SET in_stock = true
-WHERE store_id = '<store-uuid>' AND canonical_name = 'butter';
+# Or invoke the function directly during local development
 ```
 
 ### Canonical name guidelines
@@ -108,16 +92,20 @@ WHERE store_id = '<store-uuid>' AND canonical_name = 'butter';
 - Use the shortest unambiguous root (e.g., `"flour"` not `"all-purpose flour"`)
 - Lowercase only
 - No amounts, no modifiers
-- The normalization function in `lib/prices.ts` will match recipe ingredient names against these roots
-- Common roots: `eggs`, `butter`, `flour`, `milk`, `sugar`, `salt`, `olive oil`, `garlic`, `onion`, `chicken`, `beef`, `pasta`, `rice`, `tomatoes`, `lemon`
+- The normalization function in `lib/prices.ts` matches recipe ingredient names against these roots
+- Avoid names that are substrings of unrelated ingredients (e.g., `"oil"` would match `"olive oil"`, `"sesame oil"`, and `"fish oil"` — use `"olive oil"` instead)
+- Common roots: `eggs`, `butter`, `flour`, `milk`, `sugar`, `salt`, `olive oil`, `garlic`, `onion`, `chicken`, `beef`, `pasta`, `rice`, `tomato`, `lemon`
 
 ---
 
 ## Environment Variables
 
-No new environment variables are required. The feature uses the existing `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY` for DB reads.
+The feature's read path uses existing environment variables. The sync job (Phase 2) requires additional variables: a `SUPABASE_SERVICE_ROLE_KEY` for upsert writes, credentials for the chosen pricing data source, and a cron secret for the sync endpoint.
 
 | Variable | Required | Notes |
 |----------|----------|-------|
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes | Existing — no change |
 | `SUPABASE_ANON_KEY` | Yes | Existing — used for price data reads |
+| `SUPABASE_SERVICE_ROLE_KEY` | Sync job | Used by sync job for upsert writes (bypasses RLS); likely already configured for the import feature |
+| *(API key)* | Sync job | Credentials for the chosen pricing data source; name TBD based on API/scraper choice |
+| `CRON_SECRET` | Sync job | Shared secret to authenticate cron requests to the sync endpoint |

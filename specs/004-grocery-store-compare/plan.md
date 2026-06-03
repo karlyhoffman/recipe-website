@@ -6,13 +6,13 @@
 
 ## Summary
 
-Add a "Cheapest Grocery Store" section to the existing grocery page (`app/(utils)/groceries/page.tsx`). The section is conditionally rendered only for authenticated users with a non-empty ingredient list, using the existing `x-user-authenticated` header pattern (same as `Navbar.tsx`). Pricing data is stored in two new Supabase tables (`stores`, `ingredient_prices`) maintained manually by the admin via Supabase Studio. Price comparison is computed server-side in an async `StoreComparison` Server Component wrapped in a React Suspense boundary, enabling a loading state (FR-014) while the grocery list renders immediately. Staleness and unavailability are derived from `max(ingredient_prices.updated_at)` per store. Zero new npm packages are required.
+Add a "Cheapest Grocery Store" section to the existing grocery page (`app/(utils)/groceries/page.tsx`). The section is conditionally rendered only for authenticated users with a non-empty ingredient list, using the existing `x-user-authenticated` header pattern (same as `Navbar.tsx`). Pricing data is stored in two new Supabase tables (`stores`, `ingredient_prices`) populated by a scheduled sync job that fetches current prices from a third-party API or custom scraper. Price comparison is computed server-side in an async `StoreComparison` Server Component wrapped in a React Suspense boundary, enabling a loading state (FR-014) while the grocery list renders immediately. Staleness and unavailability are derived from `max(ingredient_prices.updated_at)` per store. Zero new npm packages are required.
 
 ## Technical Context
 
 **Language/Version**: TypeScript 5, Next.js 16 (App Router), React 19
 
-**Primary Dependencies**: No new dependencies. Existing: `@supabase/ssr`, `classnames`, Next.js 16, React 19.
+**Primary Dependencies**: Existing: `@supabase/ssr`, `classnames`, Next.js 16, React 19. The sync job (Phase 2) may require additional packages depending on the chosen data source (e.g., an API client library or Playwright for scraping).
 
 **Storage**: Supabase (PostgreSQL) — 2 new tables: `stores`, `ingredient_prices`. See [data-model.md](./data-model.md).
 
@@ -26,7 +26,7 @@ Add a "Cheapest Grocery Store" section to the existing grocery page (`app/(utils
 - All data read from Supabase (locally stored); no live external API calls at page load (SC-001 clarification)
 
 **Constraints**:
-- Zero or low recurring cost — data is admin-maintained; no external API (FR-013)
+- Zero or low recurring cost — pricing data fetched from free-tier APIs or public scraping; no paid per-query APIs (FR-013)
 - Single geographic region; region is a fixed value in the `stores.region` column (FR-012)
 - Single-admin personal site; no concurrency concerns
 
@@ -68,14 +68,18 @@ specs/004-grocery-store-compare/
 ```text
 supabase/
 ├── migrations/
-│   └── 0008_grocery_store_prices.sql     # stores + ingredient_prices tables + sample data
+│   └── 0009_grocery_store_prices.sql     # stores + ingredient_prices tables + seed data (for initial testing; sync job populates ongoing prices)
 ├── lib/
 │   └── prices.ts                          # Price fetching + normalization + comparison logic
 ├── components/
 │   └── StoreComparison.tsx               # Async Server Component (auth-gated via props)
-└── styles/
-    └── components/
-        └── store-comparison.module.scss  # Styles for the comparison section
+├── styles/
+│   └── components/
+│       └── store-comparison.module.scss  # Styles for the comparison section
+└── app/
+    └── api/
+        └── sync-prices/
+            └── route.ts                  # Sync Route Handler (cron target — Phase 2)
 ```
 
 **Existing files to modify:**
