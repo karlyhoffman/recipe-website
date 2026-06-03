@@ -53,7 +53,7 @@ The authenticated user wants to know how current the displayed prices are before
 
 **Acceptance Scenarios**:
 
-1. **Given** the Cheapest Grocery Store section is visible, **When** the user looks at the section, **Then** a "prices as of [date/time]" indicator is shown.
+1. **Given** the Cheapest Grocery Store section is visible, **When** the user looks at the section, **Then** a "prices as of [date/time]" indicator is shown on each store entry.
 2. **Given** pricing data has not been refreshed within the expected window (e.g., more than 7 days), **When** the section renders, **Then** a visual indicator or warning flags the data as potentially outdated.
 3. **Given** the most recent pricing sync failed or no sync has ever succeeded, **When** the section renders, **Then** an unavailability message is displayed rather than empty or broken content.
 
@@ -82,7 +82,7 @@ The authenticated user wants to know how current the displayed prices are before
 - **FR-004**: Each store entry MUST include a per-ingredient price breakdown showing the unit price of each matched ingredient at that store (e.g., $0.89/lb, $3.49/dozen). Extended pricing based on recipe quantities is out of scope.
 - **FR-005**: The section MUST clearly indicate how many of the unique ingredient names in the current list were successfully matched to pricing data (e.g., "18 of 22 ingredients priced").
 - **FR-006**: Ingredients that could not be matched to a store's pricing data, or that are currently out of stock at that store, MUST be listed separately in that store's breakdown and excluded from that store's total.
-- **FR-007**: The section MUST display a "prices as of [date/time]" timestamp reflecting when the underlying pricing data was last successfully refreshed.
+- **FR-007**: Each store entry in the section MUST display a "prices as of [date/time]" timestamp reflecting when that store's pricing data was last successfully refreshed (`max(ingredient_prices.updated_at)` for that store).
 - **FR-008**: When pricing data has not been refreshed within 7 days, the section MUST display a visible staleness warning alongside the timestamp.
 - **FR-009**: When the most recent pricing sync failed (or no sync has ever succeeded), the section MUST display a clear unavailability message (e.g., "pricing data unavailable — check back later") rather than empty or broken content. Data from a previously successful sync that is now 7+ days old is considered stale (FR-008), not unavailable.
 - **FR-010**: The section MUST NOT be shown when the grocery page's ingredient list is empty.
@@ -107,7 +107,7 @@ The authenticated user wants to know how current the displayed prices are before
 
 - **SC-001**: An authenticated user can view a store price comparison for a non-empty ingredient list within 10 seconds of the grocery page loading. The comparison is computed from locally-stored sync data; no live external API calls are made at page load time.
 - **SC-002**: When full pricing data is available, the comparison covers at least 2 grocery stores simultaneously. When only one store has data, the section renders with that single store and its breakdown (no ranking shown).
-- **SC-003**: Price data is refreshed at least once per week; the last-updated timestamp is always visible alongside the comparison.
+- **SC-003**: The per-store "prices as of" timestamp is always visible alongside the comparison; when any store's data is more than 7 days old, the staleness warning (FR-008) is shown so the admin knows to click Refresh prices. (Refresh cadence is admin-initiated; this criterion measures the system's ability to surface data age, not enforce a schedule.)
 - **SC-004**: At least 80% of commonly used recipe ingredients (e.g., eggs, flour, butter, chicken, milk, olive oil) are matched to pricing data.
 - **SC-005**: The section is completely invisible to unauthenticated visitors — verified by loading the grocery page while logged out and confirming no related HTML, text, or loading state appears.
 - **SC-006**: When some ingredients are unmatched, a ranked total is still displayed for the matched subset, with the unmatched count clearly labelled.
@@ -118,7 +118,7 @@ The authenticated user wants to know how current the displayed prices are before
 - Authentication state is available on the grocery page via the existing session system; no new auth infrastructure is needed.
 - Geographic scope is a single fixed region matching the admin's location. Configuring the region is an admin setup task, not a runtime user action.
 - Ingredient names from recipes may not exactly match pricing database keys; FR-015 requires normalization as part of the implementation.
-- Pricing data does not need to be real-time. Data refreshed on a scheduled basis (e.g., nightly or weekly) is acceptable, provided the staleness indicator is shown.
+- Pricing data does not need to be real-time. The admin-initiated refresh model (FR-016) defines when sync runs; the staleness indicator (FR-008) surfaces data age between refreshes.
 - The feature is intended for personal use by the site's authenticated admin. Scaling to multiple concurrent users is out of scope.
 - Store coverage is limited to stores that serve the configured geographic region; stores outside that region are not shown even if pricing data exists for them.
 - The data source must have zero or very low ongoing cost (free API tier or publicly available data). Paid per-query APIs are out of scope unless a free tier covers expected usage.

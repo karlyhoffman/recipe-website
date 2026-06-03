@@ -99,6 +99,20 @@ The trigger ensures `updated_at` always reflects the actual time of the last cha
 | `"butter"` | "unsalted butter", "salted butter", "2 tbsp butter" |
 | `"garlic"` | "fresh garlic", "minced garlic", "garlic cloves" |
 
+### Initial `CANONICAL_INGREDIENTS` seed
+
+The initial set of canonical names tracked by the sync job (declared as a `readonly string[]` in `supabase/lib/sync-prices.ts`):
+
+```ts
+export const CANONICAL_INGREDIENTS = [
+  'eggs', 'butter', 'flour', 'milk', 'sugar', 'salt',
+  'olive oil', 'garlic', 'onion', 'chicken', 'beef',
+  'pasta', 'rice', 'tomato', 'lemon',
+] as const;
+```
+
+This list defines the SC-004 baseline (≥80% match for common recipe ingredients). The admin extends it by editing the constant and clicking Refresh prices.
+
 ---
 
 ## No Required Additional Tables
