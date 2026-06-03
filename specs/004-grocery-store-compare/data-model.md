@@ -12,20 +12,22 @@ Represents a grocery store included in the price comparison.
 
 ```sql
 CREATE TABLE stores (
-  id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  name       TEXT        NOT NULL,
-  region     TEXT        NOT NULL DEFAULT 'default',
-  is_active  BOOLEAN     NOT NULL DEFAULT TRUE,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  name                TEXT        NOT NULL,
+  region              TEXT        NOT NULL DEFAULT 'default',
+  is_active           BOOLEAN     NOT NULL DEFAULT TRUE,
+  kroger_location_id  TEXT,
+  created_at          TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ```
 
 | Column | Type | Description |
 |--------|------|-------------|
 | `id` | UUID | Primary key |
-| `name` | TEXT | Store display name (e.g., "Whole Foods", "Trader Joe's") |
+| `name` | TEXT | Store display name (e.g., "Kroger — Main St", "Ralphs — Downtown") |
 | `region` | TEXT | Geographic region identifier (FR-012); single value, configured by admin |
 | `is_active` | BOOLEAN | When `false`, store is excluded from comparisons without deleting its price data |
+| `kroger_location_id` | TEXT | Kroger Developer API `locationId` for this store. Required for the sync job to fetch prices; rows with `NULL` are skipped silently by the sync. See [research.md — Decision 1](./research.md). |
 | `created_at` | TIMESTAMPTZ | Row creation timestamp |
 
 ---
@@ -115,6 +117,7 @@ export interface Store {
   name: string;
   region: string;
   is_active: boolean;
+  kroger_location_id: string | null;
 }
 
 export interface IngredientPrice {
@@ -163,13 +166,13 @@ export interface PriceComparisonResult {
 **File**: `supabase/migrations/0009_grocery_store_prices.sql`
 
 Contains:
-1. `CREATE TABLE stores`
+1. `CREATE TABLE stores` (includes `kroger_location_id` column)
 2. `CREATE TABLE ingredient_prices` (with `UNIQUE(store_id, canonical_name)`)
 3. `CREATE INDEX` statements
 4. `CREATE FUNCTION set_updated_at()` + `CREATE TRIGGER ingredient_prices_set_updated_at`
 5. `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` for both tables
 6. `CREATE POLICY "public read"` for both tables
-7. Sample `INSERT` statements for 2+ stores with representative prices (to pass SC-002 and allow immediate testing)
+7. Sample `INSERT` statements for 2+ stores with real Kroger `kroger_location_id` values. No seeded `ingredient_prices` rows — the first manual sync run (see [quickstart.md](./quickstart.md)) populates prices. Until the first sync, the section renders the FR-009 unavailability message; this is intentional and validates the unavailability path on a fresh install.
 
 ---
 

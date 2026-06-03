@@ -6,13 +6,13 @@
 
 ## Summary
 
-Add a "Cheapest Grocery Store" section to the existing grocery page (`app/(utils)/groceries/page.tsx`). The section is conditionally rendered only for authenticated users with a non-empty ingredient list, using the existing `x-user-authenticated` header pattern (same as `Navbar.tsx`). Pricing data is stored in two new Supabase tables (`stores`, `ingredient_prices`) populated by a scheduled sync job that fetches current prices from a third-party API or custom scraper. Price comparison is computed server-side in an async `StoreComparison` Server Component wrapped in a React Suspense boundary, enabling a loading state (FR-014) while the grocery list renders immediately. Staleness and unavailability are derived from `max(ingredient_prices.updated_at)` per store. Zero new npm packages are required.
+Add a "Cheapest Grocery Store" section to the existing grocery page (`app/(utils)/groceries/page.tsx`). The section is conditionally rendered only for authenticated users with a non-empty ingredient list, using the existing `x-user-authenticated` header pattern (same as `Navbar.tsx`). Pricing data is stored in two new Supabase tables (`stores`, `ingredient_prices`) populated by user-initiated sync runs against the Kroger Developer API (free-tier Client Credentials OAuth). Each `stores` row carries a `kroger_location_id` identifying which Kroger-family store to query. The admin triggers sync runs via a "Refresh prices" button rendered inside the section (FR-016), which invokes a Next.js Server Action that runs the sync and calls `revalidatePath('/groceries')` to re-render with fresh data. No cron job, no scheduled background work. Price comparison is computed server-side in an async `StoreComparison` Server Component wrapped in a React Suspense boundary, enabling a loading state (FR-014) while the grocery list renders immediately. Staleness and unavailability are derived from `max(ingredient_prices.updated_at)` per store. Zero new npm packages are required (the Kroger client is plain `fetch`).
 
 ## Technical Context
 
 **Language/Version**: TypeScript 5, Next.js 16 (App Router), React 19
 
-**Primary Dependencies**: Existing: `@supabase/ssr`, `classnames`, Next.js 16, React 19. The sync job (Phase 2) may require additional packages depending on the chosen data source (e.g., an API client library or Playwright for scraping).
+**Primary Dependencies**: Existing: `@supabase/ssr`, `classnames`, Next.js 16, React 19. No new npm packages — the Kroger API client uses plain `fetch`.
 
 **Storage**: Supabase (PostgreSQL) — 2 new tables: `stores`, `ingredient_prices`. See [data-model.md](./data-model.md).
 
@@ -26,7 +26,8 @@ Add a "Cheapest Grocery Store" section to the existing grocery page (`app/(utils
 - All data read from Supabase (locally stored); no live external API calls at page load (SC-001 clarification)
 
 **Constraints**:
-- Zero or low recurring cost — pricing data fetched from free-tier APIs or public scraping; no paid per-query APIs (FR-013)
+- Zero or low recurring cost — pricing data from the Kroger Developer API free tier (FR-013); no paid per-query APIs
+- Kroger-family stores only — non-Kroger US chains (Whole Foods, Trader Joe's, Safeway, Aldi, etc.) are out of scope for this spec
 - Single geographic region; region is a fixed value in the `stores.region` column (FR-012)
 - Single-admin personal site; no concurrency concerns
 
@@ -68,18 +69,18 @@ specs/004-grocery-store-compare/
 ```text
 supabase/
 ├── migrations/
-│   └── 0009_grocery_store_prices.sql     # stores + ingredient_prices tables + seed data (for initial testing; sync job populates ongoing prices)
+│   └── 0009_grocery_store_prices.sql     # stores (with kroger_location_id) + ingredient_prices tables + seed stores (no seeded prices)
 ├── lib/
-│   └── prices.ts                          # Price fetching + normalization + comparison logic
+│   ├── prices.ts                          # Price fetching + normalization + comparison logic
+│   ├── kroger.ts                          # Kroger API client: getAccessToken + searchProduct (uses fetch)
+│   └── sync-prices.ts                     # syncPrices() orchestrator + CANONICAL_INGREDIENTS constant
 ├── components/
-│   └── StoreComparison.tsx               # Async Server Component (auth-gated via props)
+│   ├── StoreComparison.tsx                # Async Server Component (auth-gated via props)
+│   └── RefreshPricesButton.tsx            # Client Component: invokes Server Action, shows pending/error state
 ├── styles/
 │   └── components/
-│       └── store-comparison.module.scss  # Styles for the comparison section
-└── app/
-    └── api/
-        └── sync-prices/
-            └── route.ts                  # Sync Route Handler (cron target — Phase 2)
+│       └── store-comparison.module.scss   # Styles for the comparison section (incl. refresh button + error)
+└── app/(utils)/groceries/actions.ts       # Server Action: refreshPricesAction (auth check + sync + revalidatePath)
 ```
 
 **Existing files to modify:**
@@ -87,8 +88,12 @@ supabase/
 ```text
 supabase/
 ├── app/(utils)/groceries/page.tsx  # Add headers() auth check + Suspense + StoreComparison
-└── types/index.ts                  # Add Store, IngredientPrice, StoreComparisonEntry, PriceComparisonResult types
+└── types/index.ts                  # Add Store (with kroger_location_id), IngredientPrice, StoreComparisonEntry, PriceComparisonResult types
 ```
+
+**Not built** (previously planned, now dropped):
+- `supabase/app/api/sync-prices/route.ts` — no cron means no cron-target route is needed; the Server Action replaces it.
+- `CRON_SECRET` env var — no longer required.
 
 **Structure Decision**: Single-project web application. All new files follow the existing `supabase/` layout: `lib/` for data functions, `components/` for React components, `styles/components/` for component-scoped SCSS, `migrations/` for SQL migrations.
 
@@ -166,6 +171,23 @@ computePriceComparison(ingredientNames: string[]): Promise<PriceComparisonResult
 ```
 
 **Normalization function** (in `lib/prices.ts`): see [research.md — Decision 2](./research.md) for the full rule set.
+
+### Sync Trigger (FR-016, FR-017)
+
+Sync is user-initiated via a "Refresh prices" button rendered inside `StoreComparison`. No cron, no scheduled work.
+
+Flow:
+1. `RefreshPricesButton` (Client Component) calls the `refreshPricesAction` Server Action via `useTransition`.
+2. The action re-checks the `x-user-authenticated` header (defense in depth — the proxy already gates the page), then calls `syncPrices()` from `lib/sync-prices.ts`.
+3. `syncPrices()`:
+   - Fetches active stores with non-null `kroger_location_id` via the service-role Supabase client.
+   - Acquires a Kroger access token via `getAccessToken()` (cached in-memory for the duration of this call).
+   - Iterates the `CANONICAL_INGREDIENTS` constant; for each `(store, canonical)` pair, calls `searchProduct(token, locationId, canonical)` and upserts into `ingredient_prices` (`UNIQUE(store_id, canonical_name)`).
+   - Per-ingredient errors are logged and skipped; auth failure throws and surfaces to the action.
+4. The action calls `revalidatePath('/groceries')`, which causes Next.js to re-render the page server-side. The Suspense boundary kicks back in, `StoreComparison` recomputes with the new data, and the user sees the updated prices on the next paint.
+5. The action returns `{ ok, error?, summary? }`. On error, the button displays "Refresh failed — try again" near itself; previous prices remain visible (FR-017).
+
+Concurrency: `useTransition` disables the button during pending state. Upserts are idempotent (unique constraint), so any rare concurrent run only repeats work — no data corruption.
 
 ### Recalculation Behavior (FR-011)
 

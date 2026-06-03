@@ -88,13 +88,15 @@ The authenticated user wants to know how current the displayed prices are before
 - **FR-010**: The section MUST NOT be shown when the grocery page's ingredient list is empty.
 - **FR-011**: The section MUST recalculate and re-render whenever the ingredient list changes (e.g., a recipe is added or removed from the grocery list). If the ingredient list becomes empty as a result of the change, the section MUST hide per FR-010. During recalculation, the previous comparison result MUST remain visible until the updated result is ready.
 - **FR-012**: The pricing data source MUST cover stores in a single configured geographic region; region selection is not user-configurable.
-- **FR-013**: The system MUST obtain pricing data from at least one source at zero or low recurring cost (e.g., a free-tier grocery API or public scraping); admin-maintained prices are not a compliant implementation.
+- **FR-013**: The system MUST obtain pricing data from the Kroger Developer API (free-tier Client Credentials OAuth). Only Kroger-family stores (Kroger, Ralphs, King Soopers, Fred Meyer, Harris Teeter, Smith's, QFC, Dillons, Pick'n Save, Mariano's, Food 4 Less, Fry's, City Market) are supported. Admin-maintained price entry is not a compliant implementation.
 - **FR-014**: For authenticated users, while the price comparison is being computed on page load, the section MUST display a visible loading state so the user knows the section is in progress and not absent.
 - **FR-015**: Ingredient names from the list MUST be normalized before matching against the pricing database (e.g., "all-purpose flour" matches "flour"). When multiple products at a store match a single ingredient, the lowest-priced match MUST be used for that store's total.
+- **FR-016**: The Cheapest Grocery Store section MUST include a "Refresh prices" button visible only to authenticated users. Clicking the button MUST trigger a server-side sync from the Kroger API and re-render the section with the updated data. While the sync is running, the button MUST display a progress state (e.g., "Refreshing…") and be disabled to prevent concurrent invocations.
+- **FR-017**: If a refresh sync fails (auth failure, network error, all Kroger requests fail), the section MUST display a non-blocking error message near the refresh button (e.g., "Refresh failed — try again") and retain the previously displayed prices. A failed refresh MUST NOT clear or replace existing data with the FR-009 unavailability message; the FR-009 message is reserved for the case where no successful sync has ever occurred.
 
 ### Key Entities
 
-- **Grocery Store**: A retail store included in the price comparison (name, geographic region).
+- **Grocery Store**: A Kroger-family retail store included in the price comparison (name, geographic region, Kroger `locationId` used by the sync job).
 - **Ingredient Price Record**: The known price of a matchable ingredient at a specific store (ingredient name, store, price, unit, last updated timestamp).
 - **Price Comparison Result**: The computed output for a given ingredient list — one entry per store containing: store name, matched ingredient count, unmatched ingredient count, total estimated cost, per-ingredient price list.
 - **Pricing Data Snapshot**: A versioned set of Ingredient Price Records from a specific sync event (source, sync timestamp, record count).
@@ -121,7 +123,9 @@ The authenticated user wants to know how current the displayed prices are before
 - Store coverage is limited to stores that serve the configured geographic region; stores outside that region are not shown even if pricing data exists for them.
 - The data source must have zero or very low ongoing cost (free API tier or publicly available data). Paid per-query APIs are out of scope unless a free tier covers expected usage.
 - If the user's session expires while the Cheapest Grocery Store section is visible, standard session expiry behavior applies (e.g., redirect to login); no special handling is required for this section.
-- Sync operational requirements (scheduling mechanism, retry logic, failure timeouts) are out of scope for this specification and will be addressed during implementation planning.
+- Sync runs are user-initiated: the admin clicks the "Refresh prices" button (FR-016) when they want fresh prices, typically before a shopping trip. No scheduled cron is configured.
+- The Kroger API's Products endpoint returns prices for products at a specific `locationId`. Each `stores` row maps to one Kroger location via a `kroger_location_id` column on the table.
+- Kroger API credentials (`KROGER_CLIENT_ID`, `KROGER_CLIENT_SECRET`) are configured by the admin as environment variables before the first sync run. The Client Credentials grant returns a short-lived access token cached in-memory for the duration of a single sync invocation.
 - The number of stores displayed is bounded by the configured data source; no artificial cap is imposed on the list length.
 
 ## Clarifications
@@ -138,3 +142,9 @@ The authenticated user wants to know how current the displayed prices are before
 - Q: What is the latency target for recalculation when the ingredient list changes? → A: 2 seconds (faster than the 10-second initial load target, since all data is already local). Note: "recalculation" is a full server-side page render triggered by navigation; the 2-second target is a page-load performance goal, not a client-side incremental update.
 - Q: What currency are prices displayed in? → A: The admin's local currency — single-region, single-currency, no conversion. The currency symbol (e.g., `$`) is a display constant in the component; no `currency` field is needed in the database.
 - Q: Why are stores ranked by `totalCost` even when coverage differs across stores? → A: Ranking by total cost of matched ingredients is intentional. FR-005 requires the per-store match count ("X of Y priced") to be clearly visible, giving the user the information needed to weigh coverage against cost. No minimum match threshold is imposed.
+
+### Session 2026-06-03
+
+- Q: Which pricing data source is used? → A: Kroger Developer API (free tier, Client Credentials OAuth). Kroger-family stores only — multi-source / non-Kroger chains are out of scope for this spec.
+- Q: How is the price sync triggered? → A: User clicks a "Refresh prices" button inside the Cheapest Grocery Store section. No scheduled cron job; sync runs are admin-initiated and on-demand.
+- Q: What happens if a refresh sync fails partway through? → A: The previously displayed prices remain visible. An error message appears near the refresh button. The FR-009 unavailability message is NOT shown — that message is reserved for the case where no successful sync has ever occurred.
