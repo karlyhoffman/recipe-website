@@ -49,6 +49,28 @@ CREATE INDEX ingredient_prices_store_id_idx       ON ingredient_prices(store_id)
 CREATE INDEX ingredient_prices_canonical_name_idx ON ingredient_prices(canonical_name);
 ```
 
+**`updated_at` trigger** — auto-sets the timestamp on every `UPDATE` so the admin cannot accidentally leave it stale by omitting it from a manual SQL statement:
+
+```sql
+CREATE OR REPLACE FUNCTION set_updated_at()
+  RETURNS trigger
+  LANGUAGE plpgsql
+  SECURITY INVOKER
+  SET search_path = ''
+AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER ingredient_prices_set_updated_at
+  BEFORE UPDATE ON ingredient_prices
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+```
+
+The trigger ensures `updated_at` always reflects the actual time of the last change, which the staleness indicator (FR-007, FR-008) depends on. `SECURITY INVOKER` and `SET search_path = ''` follow the established pattern from `0004_fix_security_warnings.sql`.
+
 | Column | Type | Description |
 |--------|------|-------------|
 | `id` | UUID | Primary key |

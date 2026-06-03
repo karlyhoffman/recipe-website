@@ -83,17 +83,18 @@ VALUES (
   'bag'             -- unit label shown to user
 );
 
--- Update existing price and refresh timestamp
+-- Update existing price (updated_at is set automatically by the trigger)
 UPDATE ingredient_prices
-SET price = 2.49, updated_at = now()
+SET price = 2.49
 WHERE store_id = '<store-uuid>' AND canonical_name = 'flour';
 ```
 
 ### Marking an item out of stock
 
 ```sql
+-- updated_at is set automatically by the trigger
 UPDATE ingredient_prices
-SET in_stock = false, updated_at = now()
+SET in_stock = false
 WHERE store_id = '<store-uuid>' AND canonical_name = 'butter';
 ```
 
