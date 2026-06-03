@@ -82,6 +82,7 @@ The authenticated user wants to know how current the displayed prices are before
 - **FR-011**: The section MUST recalculate and re-render whenever the ingredient list changes (e.g., a recipe is added or removed from the grocery list).
 - **FR-012**: The pricing data source MUST cover stores in a single configured geographic region; region selection is not user-configurable.
 - **FR-013**: The system MUST obtain pricing data from at least one source at zero or low recurring cost (free tier, open data, or admin-maintained).
+- **FR-014**: While the price comparison is being computed on page load, the section MUST display a visible loading state so the user knows the section is in progress and not absent.
 
 ### Key Entities
 
@@ -94,7 +95,7 @@ The authenticated user wants to know how current the displayed prices are before
 
 ### Measurable Outcomes
 
-- **SC-001**: An authenticated user can view a store price comparison for a non-empty ingredient list within 5 seconds of the grocery page loading.
+- **SC-001**: An authenticated user can view a store price comparison for a non-empty ingredient list within 10 seconds of the grocery page loading. The comparison is computed from locally-stored sync data; no live external API calls are made at page load time.
 - **SC-002**: When full pricing data is available, the comparison covers at least 2 grocery stores simultaneously. When only one store has data, the section renders with that single store and its breakdown (no ranking shown).
 - **SC-003**: Price data is refreshed at least once per week; the last-updated timestamp is always visible alongside the comparison.
 - **SC-004**: At least 80% of commonly used recipe ingredients (e.g., eggs, flour, butter, chicken, milk, olive oil) are matched to pricing data.
@@ -121,3 +122,5 @@ The authenticated user wants to know how current the displayed prices are before
 - Q: What distinguishes "stale" from "completely unavailable" pricing data? → A: Unavailable = last sync failed (or never succeeded); stale = last sync succeeded but data is 7+ days old. These are mutually exclusive states.
 - Q: When an ingredient matches multiple products at a store, which price is used? → A: The lowest-priced match is used for that store's total.
 - Q: Does the per-ingredient breakdown show unit price or extended price for the recipe quantity? → A: Unit price only (e.g., $0.89/lb). Extended pricing based on recipe quantities is out of scope.
+- Q: At page load, does the price comparison read from locally-stored sync data or call an external API live? → A: Local only — always reads from the most recent sync stored locally; no live external calls at page load time.
+- Q: Is a visible loading state required while the price comparison is computing? → A: Yes — a loading indicator must be shown so the section does not appear absent or broken during computation.
