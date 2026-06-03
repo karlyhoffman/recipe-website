@@ -69,6 +69,8 @@ The authenticated user wants to know how current the displayed prices are before
 - What happens during a recalculation while the ingredient list is changing? → The previous comparison result remains visible until the updated calculation completes; the section does not blank out during the 2-second recalculation window.
 - What happens when all ingredients in the list have zero matches across all stores? → The section still renders with each store entry showing 0 matched ingredients and all ingredients listed as "price not available"; the store total is listed as $0 or equivalent.
 - What happens during a partial sync (some stores updated, others not)? → Each store's timestamp reflects its own last successfully refreshed data; a store whose data was not updated in the latest sync retains its previous timestamp and may independently trigger the staleness warning.
+- What happens when a store exists in the `stores` table but has no price records at all? → The store is excluded from `PriceComparisonResult.entries` entirely and is not shown in the UI. It does not appear as $0. If all active stores have no records, `isUnavailable` is true and FR-009 applies.
+- What happens when `computePriceComparison()` throws a database error (e.g., Supabase unreachable)? → The `StoreComparison` component catches the error and renders the FR-009 unavailability message. A 500 is not surfaced to the user.
 
 ## Requirements *(mandatory)*
 
@@ -133,4 +135,6 @@ The authenticated user wants to know how current the displayed prices are before
 - Q: Does the per-ingredient breakdown show unit price or extended price for the recipe quantity? → A: Unit price only (e.g., $0.89/lb). Extended pricing based on recipe quantities is out of scope.
 - Q: At page load, does the price comparison read from locally-stored sync data or call an external API live? → A: Local only — always reads from the most recent sync stored locally; no live external calls at page load time.
 - Q: Is a visible loading state required while the price comparison is computing? → A: Yes — a loading indicator must be shown so the section does not appear absent or broken during computation.
-- Q: What is the latency target for recalculation when the ingredient list changes? → A: 2 seconds (faster than the 10-second initial load target, since all data is already local).
+- Q: What is the latency target for recalculation when the ingredient list changes? → A: 2 seconds (faster than the 10-second initial load target, since all data is already local). Note: "recalculation" is a full server-side page render triggered by navigation; the 2-second target is a page-load performance goal, not a client-side incremental update.
+- Q: What currency are prices displayed in? → A: The admin's local currency — single-region, single-currency, no conversion. The currency symbol (e.g., `$`) is a display constant in the component; no `currency` field is needed in the database.
+- Q: Why are stores ranked by `totalCost` even when coverage differs across stores? → A: Ranking by total cost of matched ingredients is intentional. FR-005 requires the per-store match count ("X of Y priced") to be clearly visible, giving the user the information needed to weigh coverage against cost. No minimum match threshold is imposed.

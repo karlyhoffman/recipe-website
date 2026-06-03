@@ -32,7 +32,7 @@ CREATE TABLE stores (
 
 ### `ingredient_prices`
 
-Stores the known unit price of a canonical ingredient at a specific store. One row per store-per-ingredient combination (lowest price wins when multiple products match — enforced at query time, not schema level, per FR-015).
+Stores the known unit price of a canonical ingredient at a specific store. One row per `(store_id, canonical_name)` pair, enforced by a `UNIQUE` constraint. When multiple canonical names match a single recipe ingredient (via substring matching), the lowest price among all matching rows is used (FR-015).
 
 ```sql
 CREATE TABLE ingredient_prices (
@@ -42,7 +42,8 @@ CREATE TABLE ingredient_prices (
   price          NUMERIC(10,2)  NOT NULL CHECK (price >= 0),
   unit           TEXT           NOT NULL,
   in_stock       BOOLEAN        NOT NULL DEFAULT TRUE,
-  updated_at     TIMESTAMPTZ    NOT NULL DEFAULT now()
+  updated_at     TIMESTAMPTZ    NOT NULL DEFAULT now(),
+  UNIQUE(store_id, canonical_name)
 );
 
 CREATE INDEX ingredient_prices_store_id_idx       ON ingredient_prices(store_id);
@@ -85,6 +86,7 @@ The trigger ensures `updated_at` always reflects the actual time of the last cha
 - `max(updated_at)` across all active rows for a store = "prices as of" timestamp for that store
 - If `max(updated_at) < now() - 7 days` → stale (FR-008)
 - If no rows exist for any active store → unavailable (FR-009)
+- If a store has no rows at all → excluded from `PriceComparisonResult.entries` entirely (not shown as $0)
 
 **Canonical name examples** (admin-maintained):
 
@@ -162,7 +164,7 @@ export interface PriceComparisonResult {
 
 Contains:
 1. `CREATE TABLE stores`
-2. `CREATE TABLE ingredient_prices`
+2. `CREATE TABLE ingredient_prices` (with `UNIQUE(store_id, canonical_name)`)
 3. `CREATE INDEX` statements
 4. `CREATE FUNCTION set_updated_at()` + `CREATE TRIGGER ingredient_prices_set_updated_at`
 5. `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` for both tables

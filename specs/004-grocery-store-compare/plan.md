@@ -142,18 +142,22 @@ Async Server Component. Receives `ingredientNames: string[]` from the grocery pa
 
 ```text
 computePriceComparison(ingredientNames: string[]): Promise<PriceComparisonResult>
+  Wrapped in try/catch — on any DB error, returns { entries: [], isUnavailable: true, totalIngredients: n }
+  so the StoreComparison component renders the FR-009 unavailability message rather than a 500.
+
   1. Fetch active stores from Supabase
   2. Fetch all ingredient_prices for those stores
   3. For each store:
-     a. Normalize each ingredientName from the list
-     b. For each normalized name, find matching price rows (canonical_name substring match)
-     c. When multiple matches: select lowest price (FR-015)
-     d. Classify each ingredient as matched (in_stock=true) or unmatched (no_match | out_of_stock)
-     e. Sum matched prices → totalCost
-     f. Derive lastUpdated = max(ingredient_prices.updated_at) for store
-     g. Derive isStale = lastUpdated < now - 7 days
+     a. If the store has no price records, skip it (excluded from entries; not shown as $0)
+     b. Normalize each ingredientName from the list
+     c. For each normalized name, find matching price rows (canonical_name substring of normalized name)
+     d. When multiple canonicals match: select lowest price (FR-015)
+     e. Classify each ingredient as matched (in_stock=true) or unmatched (no_match | out_of_stock)
+     f. Sum matched prices → totalCost
+     g. Derive lastUpdated = max(ingredient_prices.updated_at) for store
+     h. Derive isStale = lastUpdated < now - 7 days
   4. Sort entries by totalCost ascending (cheapest first, FR-002)
-  5. Set isUnavailable = true if no stores have any price records
+  5. Set isUnavailable = true if entries is empty (all active stores were skipped in step 3a)
   6. Return PriceComparisonResult
 ```
 

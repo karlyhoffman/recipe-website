@@ -30,9 +30,14 @@
 2. Strip leading amounts (numbers, fractions: `"2 cups"`, `"1/2 tsp"`)
 3. Strip common cooking adjectives: `fresh`, `dried`, `frozen`, `organic`, `large`, `small`, `medium`, `extra`, `whole`, `all-purpose`, `plain`, `unsalted`, `salted`, `boneless`, `skinless`, `ground`, `minced`, `chopped`, `diced`, `sliced`, `grated`, `shredded`
 4. Strip trailing parenthetical notes (e.g., `"(or substitute)"`)
-5. Normalize plurals (strip trailing `s` from words longer than 3 characters)
+5. Normalize plurals, applied in order:
+   - `ies` → `y` (e.g., `"berries"` → `"berry"`, `"cherries"` → `"cherry"`)
+   - `oes` → `o` (e.g., `"tomatoes"` → `"tomato"`, `"potatoes"` → `"potato"`)
+   - trailing `s` if word is longer than 3 characters (e.g., `"eggs"` → `"egg"`, `"carrots"` → `"carrot"`)
 
-**Matching**: for each recipe ingredient name (post-normalization), find all `ingredient_prices` rows where `canonical_name` is a substring of the normalized name or vice versa. If multiple rows match (same store, different products), select the lowest price.
+**Matching**: for each recipe ingredient name (post-normalization), find all `ingredient_prices` rows where `canonical_name` is a substring of the normalized name. If multiple rows match (same store, different canonical names), select the lowest price (FR-015).
+
+**Canonical name guideline**: canonical names must be short root forms so they appear as substrings of common recipe ingredient names after normalization. Avoid canonicals that are substrings of unrelated ingredients — for example, `"oil"` would match `"olive oil"`, `"sesame oil"`, and `"fish oil"` simultaneously. Use `"olive oil"` as the canonical if that is the specific product stocked.
 
 **Alternatives considered**:
 - **Fuzzy matching (Levenshtein distance)** — More accurate but adds implementation complexity and risk of false positives. Not needed for a curated admin-maintained dataset. Rejected.
@@ -65,6 +70,8 @@
 - **Current**: for a given store, `max(updated_at)` is within the last 7 days
 
 The "prices as of" timestamp shown in the UI (FR-007) is `max(ingredient_prices.updated_at)` for that store's price records.
+
+**Known limitation**: updating a single price row refreshes `max(updated_at)` for the entire store, marking it current even if most prices were not changed that session. For the expected admin workflow (weekly review of all prices at once), this is an accepted tradeoff — the timestamp is a best-effort signal, not a guarantee that every individual price is fresh.
 
 **Alternatives considered**:
 - **Separate `price_sync_events` table** — Adds schema complexity and a manual admin step (insert a row when updating prices). Unnecessary overhead for a manually maintained dataset. Rejected.

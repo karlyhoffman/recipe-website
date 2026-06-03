@@ -89,12 +89,17 @@ SET price = 2.49
 WHERE store_id = '<store-uuid>' AND canonical_name = 'flour';
 ```
 
-### Marking an item out of stock
+### Marking an item out of stock / back in stock
 
 ```sql
 -- updated_at is set automatically by the trigger
 UPDATE ingredient_prices
 SET in_stock = false
+WHERE store_id = '<store-uuid>' AND canonical_name = 'butter';
+
+-- Restore when back in stock
+UPDATE ingredient_prices
+SET in_stock = true
 WHERE store_id = '<store-uuid>' AND canonical_name = 'butter';
 ```
 
