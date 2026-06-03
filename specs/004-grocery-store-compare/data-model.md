@@ -136,18 +136,30 @@ export interface PriceComparisonResult {
 
 ## Migration File
 
-**File**: `supabase/migrations/0008_grocery_store_prices.sql`
+**File**: `supabase/migrations/0009_grocery_store_prices.sql`
 
 Contains:
 1. `CREATE TABLE stores`
 2. `CREATE TABLE ingredient_prices`
 3. `CREATE INDEX` statements
-4. Sample `INSERT` statements for 2+ stores with representative prices (to pass SC-002 and allow immediate testing)
+4. `CREATE FUNCTION set_updated_at()` + `CREATE TRIGGER ingredient_prices_set_updated_at`
+5. `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` for both tables
+6. `CREATE POLICY "public read"` for both tables
+7. Sample `INSERT` statements for 2+ stores with representative prices (to pass SC-002 and allow immediate testing)
 
 ---
 
 ## Row-Level Security
 
-The `stores` and `ingredient_prices` tables use the same access pattern as other tables in this project (anon key for reads, service_role for writes). Price data is not personally sensitive. Auth gating at the UI layer (checking `x-user-authenticated` header in the grocery page) ensures unauthenticated users never receive the rendered comparison.
+```sql
+ALTER TABLE stores            ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ingredient_prices ENABLE ROW LEVEL SECURITY;
 
-No RLS policies are required beyond the defaults already established in migration `0004_fix_security_warnings.sql`.
+-- Reads are public, matching the "public read" pattern on all other tables in this project.
+-- No INSERT/UPDATE/DELETE policies are defined for anon or authenticated;
+-- service_role (used by Supabase Studio) bypasses RLS and is the only write path.
+CREATE POLICY "public read" ON stores            FOR SELECT USING (true);
+CREATE POLICY "public read" ON ingredient_prices FOR SELECT USING (true);
+```
+
+**Access model**: price data (store names, ingredient prices) is not personally sensitive, and the existing project tables (`recipes`, `ingredient_entries`, etc.) are all publicly readable under the same pattern. The "no trace" requirement (FR-001, SC-005) applies to the rendered UI — enforced by the server component's auth check — not to the Supabase Data API. Enabling RLS explicitly makes the write-block intentional rather than relying on implicit defaults.
