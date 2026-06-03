@@ -59,7 +59,7 @@ The authenticated user wants to know how current the displayed prices are before
 
 ### Edge Cases
 
-- What happens when pricing data is completely unavailable (e.g., external source is down or sync has never run)? → Section shows a "pricing data unavailable — check back later" message rather than broken or empty content.
+- What happens when pricing data is completely unavailable (e.g., the last sync failed or sync has never run)? → Section shows a "pricing data unavailable — check back later" message rather than broken or empty content.
 - What happens when only one store has pricing data? → Section still renders with the single store and its breakdown; no ranking is shown since there is nothing to compare.
 - What happens when an ingredient name from the recipe does not match anything in the pricing database? → The ingredient is listed as "price not available" in the breakdown; the store total reflects only matched ingredients, with a visible count ("X of Y ingredients priced").
 - What happens when the ingredient list changes (recipes added/removed from the grocery list)? → The price comparison recalculates to reflect the updated ingredient list.
@@ -72,12 +72,12 @@ The authenticated user wants to know how current the displayed prices are before
 - **FR-001**: The Cheapest Grocery Store section MUST be visible only to authenticated users; unauthenticated visitors MUST see no trace of the section.
 - **FR-002**: The section MUST display a list of at least two grocery stores ranked from lowest to highest total estimated basket price for the current ingredient list.
 - **FR-003**: Each store entry MUST display the store's name and its total estimated cost for all matched ingredients.
-- **FR-004**: Each store entry MUST include a per-ingredient price breakdown showing the price of each matched ingredient at that store.
+- **FR-004**: Each store entry MUST include a per-ingredient price breakdown showing the unit price of each matched ingredient at that store (e.g., $0.89/lb, $3.49/dozen). Extended pricing based on recipe quantities is out of scope.
 - **FR-005**: The section MUST clearly indicate how many of the total ingredients were successfully matched to pricing data (e.g., "18 of 22 ingredients priced").
 - **FR-006**: Ingredients that could not be matched to any store's pricing data MUST be listed separately in the breakdown and excluded from the store totals.
 - **FR-007**: The section MUST display a "prices as of [date/time]" timestamp reflecting when the underlying pricing data was last refreshed.
 - **FR-008**: When pricing data has not been refreshed within 7 days, the section MUST display a visible staleness warning alongside the timestamp.
-- **FR-009**: When pricing data is completely unavailable, the section MUST display a clear unavailability message rather than empty or broken content.
+- **FR-009**: When the most recent pricing sync failed (or no sync has ever succeeded), the section MUST display a clear unavailability message rather than empty or broken content. Data from a previously successful sync that is now 7+ days old is considered stale (FR-008), not unavailable.
 - **FR-010**: The section MUST NOT be shown when the grocery page's ingredient list is empty.
 - **FR-011**: The section MUST recalculate and re-render whenever the ingredient list changes (e.g., a recipe is added or removed from the grocery list).
 - **FR-012**: The pricing data source MUST cover stores in a single configured geographic region; region selection is not user-configurable.
@@ -95,7 +95,7 @@ The authenticated user wants to know how current the displayed prices are before
 ### Measurable Outcomes
 
 - **SC-001**: An authenticated user can view a store price comparison for a non-empty ingredient list within 5 seconds of the grocery page loading.
-- **SC-002**: The comparison covers at least 2 grocery stores simultaneously in every successful render.
+- **SC-002**: When full pricing data is available, the comparison covers at least 2 grocery stores simultaneously. When only one store has data, the section renders with that single store and its breakdown (no ranking shown).
 - **SC-003**: Price data is refreshed at least once per week; the last-updated timestamp is always visible alongside the comparison.
 - **SC-004**: At least 80% of commonly used recipe ingredients (e.g., eggs, flour, butter, chicken, milk, olive oil) are matched to pricing data.
 - **SC-005**: The section is completely invisible to unauthenticated visitors — verified by loading the grocery page while logged out and confirming no related HTML, text, or loading state appears.
@@ -106,8 +106,18 @@ The authenticated user wants to know how current the displayed prices are before
 - The grocery page already exists and renders an ingredient list derived from one or more saved recipes; this feature adds a new section to that existing page rather than creating the page itself.
 - Authentication state is available on the grocery page via the existing session system; no new auth infrastructure is needed.
 - Geographic scope is a single fixed region matching the admin's location. Configuring the region is an admin setup task, not a runtime user action.
-- Ingredient names from recipes may not exactly match pricing database keys; a normalization or fuzzy-matching step is expected to be part of the implementation (e.g., "all-purpose flour" → "flour").
+- Ingredient names from recipes may not exactly match pricing database keys; a normalization or fuzzy-matching step is expected to be part of the implementation (e.g., "all-purpose flour" → "flour"). When multiple products match a single ingredient, the lowest-priced match is used for that store's total.
 - Pricing data does not need to be real-time. Data refreshed on a scheduled basis (e.g., nightly or weekly) is acceptable, provided the staleness indicator is shown.
 - The feature is intended for personal use by the site's authenticated admin. Scaling to multiple concurrent users is out of scope.
 - Store coverage is limited to stores that serve the configured geographic region; stores outside that region are not shown even if pricing data exists for them.
 - The data source must have zero or very low ongoing cost (free API tier, publicly available data, or manually maintained records). Paid per-query APIs are out of scope unless a free tier covers expected usage.
+
+## Clarifications
+
+### Session 2026-06-02
+
+- Q: Does the price comparison load automatically on page load, or does it require user action? → A: Automatic — prices load immediately when the page loads, no user interaction required.
+- Q: When only one store has pricing data, is that a valid render or an error state? → A: Valid — single-store renders are acceptable degraded behavior; SC-002 applies only when full pricing data is available.
+- Q: What distinguishes "stale" from "completely unavailable" pricing data? → A: Unavailable = last sync failed (or never succeeded); stale = last sync succeeded but data is 7+ days old. These are mutually exclusive states.
+- Q: When an ingredient matches multiple products at a store, which price is used? → A: The lowest-priced match is used for that store's total.
+- Q: Does the per-ingredient breakdown show unit price or extended price for the recipe quantity? → A: Unit price only (e.g., $0.89/lb). Extended pricing based on recipe quantities is out of scope.
