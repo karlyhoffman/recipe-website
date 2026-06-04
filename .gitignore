@@ -63,3 +63,5 @@ skills-lock.json
 .claude
 
 backups/*
+.env*
+!.env.example
