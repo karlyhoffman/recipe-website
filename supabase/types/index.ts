@@ -45,6 +45,52 @@ export interface ImportDraft {
   recipe_tags?: Tag[];
 }
 
+export interface Store {
+  id: string;
+  name: string;
+  region: string;
+  is_active: boolean;
+  kroger_location_id: string | null;
+}
+
+export interface IngredientPrice {
+  id: string;
+  store_id: string;
+  canonical_name: string;
+  price: number;
+  unit: string;
+  in_stock: boolean;
+  updated_at: string;
+}
+
+export interface MatchedIngredient {
+  ingredientName: string;
+  canonicalName: string;
+  price: number;
+  unit: string;
+}
+
+export interface UnmatchedIngredient {
+  name: string;
+  reason: 'no_match';
+}
+
+export interface StoreComparisonEntry {
+  store: Store;
+  matchedIngredients: MatchedIngredient[];
+  unmatchedIngredients: UnmatchedIngredient[];
+  totalCost: number;
+  matchedCount: number;
+  lastUpdated: string;
+  isStale: boolean;
+}
+
+export interface PriceComparisonResult {
+  entries: StoreComparisonEntry[];
+  totalIngredients: number;
+  isUnavailable: boolean;
+}
+
 export interface Recipe extends RecipeSummary {
   prep_minutes?: number;
   total_minutes?: number;
