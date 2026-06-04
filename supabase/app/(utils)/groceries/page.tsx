@@ -1,6 +1,9 @@
 import classNames from 'classnames';
 import Link from 'next/link';
+import { Suspense } from 'react';
+import { headers } from 'next/headers';
 import { Row, Column } from '@/components/Grid';
+import StoreComparison, { StoreComparisonLoading } from '@/components/StoreComparison';
 import { getCookNextRecipes } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import type { Recipe } from '@/types';
@@ -34,9 +37,19 @@ function sortIngredientsByAisle(recipes: Recipe[]) {
 }
 
 export default async function Groceries() {
+  const headersList = await headers();
+  const isAuthenticated = headersList.get('x-user-authenticated') === 'true';
   const cookNextRecipes = await getCookNextRecipes();
   const aisles = sortIngredientsByAisle(cookNextRecipes);
   const start = randomColorStart();
+
+  const ingredientNames = isAuthenticated
+    ? [...new Set(
+        cookNextRecipes.flatMap((r) =>
+          r.ingredients.filter((i) => i.type === 'ingredient').map((i) => i.name),
+        ),
+      )]
+    : [];
 
   return (
     <Row className={styles.groceries}>
@@ -72,6 +85,14 @@ export default async function Groceries() {
           })}
         </div>
       </Column>
+
+      {isAuthenticated && ingredientNames.length > 0 && (
+        <Column>
+          <Suspense fallback={<StoreComparisonLoading />}>
+            <StoreComparison ingredientNames={ingredientNames} />
+          </Suspense>
+        </Column>
+      )}
     </Row>
   );
 }
