@@ -153,7 +153,7 @@ export interface MatchedIngredient {
 
 export interface UnmatchedIngredient {
   name: string;
-  reason: 'no_match' | 'out_of_stock';
+  reason: 'no_match'; // out-of-stock items are treated identically to no-match (searchProduct returns null for both)
 }
 
 export interface StoreComparisonEntry {
