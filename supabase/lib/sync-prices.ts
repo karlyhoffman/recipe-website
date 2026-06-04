@@ -55,20 +55,40 @@ export async function syncPrices(): Promise<SyncResult> {
     CANONICAL_INGREDIENTS.map((canonical) => ({ store, canonical })),
   );
 
-  const rows = await Promise.all(
-    pairs.map(async ({ store, canonical }): Promise<PriceRow | null> => {
-      try {
-        const match = await searchProduct(token, store.kroger_location_id, canonical);
-        return match
-          ? { store_id: store.id, canonical_name: canonical, price: match.price, unit: match.unit, in_stock: true }
-          : { store_id: store.id, canonical_name: canonical, price: 0, unit: 'each', in_stock: false };
-      } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        errors.push(`${store.name}/${canonical}: ${message}`);
-        return null;
+  // Concurrency and retry/backoff to reduce Kroger rate-limit and network errors.
+  const CONCURRENCY = Number(process.env.KROGER_SYNC_CONCURRENCY) || 5;
+  const MAX_RETRIES = 2;
+  const BACKOFF_BASE_MS = 500;
+
+  function sleep(ms: number) {
+    return new Promise((res) => setTimeout(res, ms));
+  }
+
+  const rows: (PriceRow | null)[] = [];
+  for (let i = 0; i < pairs.length; i += CONCURRENCY) {
+    const batch = pairs.slice(i, i + CONCURRENCY);
+    const batchResults = await Promise.all(batch.map(async ({ store, canonical }): Promise<PriceRow | null> => {
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const match = await searchProduct(token, store.kroger_location_id, canonical);
+          return match
+            ? { store_id: store.id, canonical_name: canonical, price: match.price, unit: match.unit, in_stock: true }
+            : { store_id: store.id, canonical_name: canonical, price: 0, unit: 'each', in_stock: false };
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          if (attempt < MAX_RETRIES) {
+            const delay = BACKOFF_BASE_MS * Math.pow(2, attempt);
+            await sleep(delay);
+            continue;
+          }
+          errors.push(`${store.name}/${canonical}: ${message}`);
+          return null;
+        }
       }
-    }),
-  );
+      return null;
+    }));
+    rows.push(...batchResults);
+  }
 
   const upsertRows = rows.filter((r): r is PriceRow => r !== null);
   if (upsertRows.length === 0) {

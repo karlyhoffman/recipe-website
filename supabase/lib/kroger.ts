@@ -29,10 +29,13 @@ export async function getAccessToken(): Promise<string> {
   });
 
   if (!res.ok) {
-    // Log the body server-side for debugging, but throw a sanitized message
-    // so the OAuth error detail doesn't reach the browser via the Server Action response.
+    // Read the body for server-side logs but avoid exposing it in production logs.
     const body = await res.text().catch(() => '');
-    console.error(`Kroger token request failed: ${res.status}`, body);
+    if (process.env.DEBUG === 'true') {
+      console.error(`Kroger token request failed: ${res.status}`, body);
+    } else {
+      console.error(`Kroger token request failed: ${res.status}`);
+    }
     throw new Error(`Kroger token request failed: ${res.status}`);
   }
 

@@ -136,12 +136,13 @@ export async function computePriceComparison(
       if (matched.length === 0) continue;
 
       const totalCost = matched.reduce((sum, m) => sum + m.price, 0);
-      const lastUpdatedMs = storePrices.reduce(
-        (max, p) => Math.max(max, Date.parse(p.updated_at)),
-        0,
-      );
-      const lastUpdated = new Date(lastUpdatedMs).toISOString();
-      const isStale = now - lastUpdatedMs > STALE_AFTER_MS;
+      const lastUpdatedMs = storePrices.reduce((max, p) => {
+        const parsed = Date.parse(p.updated_at);
+        const ts = Number.isFinite(parsed) ? parsed : 0;
+        return Math.max(max, ts);
+      }, 0);
+      const lastUpdated = lastUpdatedMs > 0 ? new Date(lastUpdatedMs).toISOString() : '';
+      const isStale = lastUpdatedMs === 0 || (now - lastUpdatedMs > STALE_AFTER_MS);
 
       entries.push({
         store,
