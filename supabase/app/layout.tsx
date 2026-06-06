@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from 'next';
 import { Alegreya, Merriweather_Sans } from 'next/font/google';
 import Navbar from '@/components/Navbar';
@@ -29,6 +30,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <Analytics/>
       </body>
     </html>
   );
