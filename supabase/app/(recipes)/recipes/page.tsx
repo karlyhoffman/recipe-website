@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
 import PaginationMenu from '@/components/PaginationMenu';
-import { getAllRecipes } from '@/lib/data';
+import { getRecipesPaginated } from '@/lib/data';
 import { highlightStyle, randomColorStart } from '@/utils/highlight';
 import styles from '@/styles/pages/recipe-overview.module.scss';
 
@@ -14,7 +14,10 @@ export default async function RecipesOverview({
 }) {
   const { page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
-  const allRecipes = await getAllRecipes();
+  const { recipes, total } = await getRecipesPaginated(PAGE_SIZE, (page - 1) * PAGE_SIZE) || {
+    recipes: [],
+    total: 0
+  };
   const start = randomColorStart();
 
   return (
@@ -51,9 +54,9 @@ export default async function RecipesOverview({
 
         <h2 className="h4 outline">All Recipes</h2>
 
-        {allRecipes.length > 0 ? (
+        {recipes.length > 0 ? (
           <ul className="recipe-list">
-            {allRecipes.map((recipe, i) => (
+            {recipes.map((recipe, i) => (
               <li key={recipe.id}>
                 <Link href={`/recipes/${recipe.uid}`} className="h5 highlight" style={highlightStyle(i, start)}>
                   {recipe.title}
@@ -65,7 +68,7 @@ export default async function RecipesOverview({
           <p>No recipes found.</p>
         )}
 
-        <PaginationMenu totalCount={allRecipes.length} pageSize={PAGE_SIZE} page={page} />
+        <PaginationMenu totalCount={total} pageSize={PAGE_SIZE} page={page} />
       </Column>
     </Row>
   );

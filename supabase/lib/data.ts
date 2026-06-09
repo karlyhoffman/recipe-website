@@ -397,6 +397,24 @@ export async function getRecentRecipes(): Promise<RecipeSummary[]> {
   }
 }
 
+export async function getRecipesPaginated(
+  limit: number,
+  offset: number = 0,
+): Promise<{ recipes: RecipeSummary[]; total: number }> {
+  try {
+    const { data, error, count } = await createClient()
+      .from('recipes')
+      .select('id, uid, title', { count: 'exact' })
+      .eq('status', 'published')
+      .order('title')
+      .range(offset, offset + limit - 1);
+    if (error) return { recipes: [], total: 0 };
+    return { recipes: (data as RecipeSummary[]) ?? [], total: count ?? 0 };
+  } catch {
+    return { recipes: [], total: 0 };
+  }
+}
+
 export async function getRandomRecipes(): Promise<RecipeSummary[]> {
   try {
     // Fetch all and shuffle client-side — acceptable at < 500 recipes
