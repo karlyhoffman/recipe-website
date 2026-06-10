@@ -3,6 +3,10 @@
 @use 'layout';
 @use 'typography';
 
+@view-transition {
+  navigation: auto;
+}
+
 html {
   font-size: 100%;
 }
