@@ -2,6 +2,12 @@
 
 A collection of recipe website iterations built with Next.js over the years. Within each directory is a standalone project representing a different version of the site.
 
+Production: 
+
+## GitHub Finish-Up-A-Thon Challenge
+
+This repository was a part of a Dev.to retrospective highlighting Spec-Driven Development (SDD): [https://dev.to/karlyhoffman/reviving-an-abandoned-side-project-with-speckit-and-copilot-3517](https://dev.to/karlyhoffman/reviving-an-abandoned-side-project-with-speckit-and-copilot-3517)
+
 ## Projects
 
 | Directory | Next.js | Router Type | React | CMS |
