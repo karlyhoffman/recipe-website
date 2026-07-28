@@ -15,14 +15,14 @@
     "@anthropic-ai/sdk": "^0.100.1",
     "@supabase/ssr": "^0.10.3",
     "@vercel/analytics": "^2.0.1",
-    "@vercel/functions": "^3.7.5",
+    "@vercel/functions": "^3.7.6",
     "bcryptjs": "^3.0.3",
     "classnames": "^2.5.1",
-    "jose": "^6.2.3",
-    "next": "16.2.6",
+    "jose": "^6.2.4",
+    "next": "16.2.12",
     "pdf-parse": "^2.4.5",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -32,8 +32,8 @@
     "@types/react-dom": "^19",
     "dotenv": "^17.4.2",
     "eslint": "^9.39.5",
-    "eslint-config-next": "16.2.6",
-    "postcss": "^8.5.19",
+    "eslint-config-next": "16.2.12",
+    "postcss": "^8.5.23",
     "sass": "^1.101.0",
     "typescript": "^5"
   }
