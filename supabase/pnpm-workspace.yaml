@@ -1,0 +1,10 @@
+# Transitive security patches for deps pinned by next@16.2.12.
+# Drop an entry once next ships a fixed version upstream.
+overrides:
+  postcss: ^8.5.23 # next pins 8.4.31 — GHSA-6g55-p6wh-862q, -r28c-9q8g-f849, -qx2v-qp2m-jg93
+  sharp: ^0.35.3 # next pins ^0.34.5 — GHSA-f88m-g3jw-g9cj (libvips CVEs)
+# Not overridden: brace-expansion (GHSA-mh99-v99m-4gvg, dev-only via eslint).
+# The patched 5.0.8 switched to a named export and breaks minimatch@3, which
+# eslint-plugin-{import,jsx-a11y,react} all depend on. No compatible patch
+# exists in the 1.x/2.x lines. Exploit needs attacker-controlled glob patterns,
+# which lint configs are not. Revisit when those plugins move off minimatch@3.
