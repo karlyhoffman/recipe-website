@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Row, Column } from '@/components/Grid';
 import { getRecipeByUid, getAllRecipes } from '@/lib/data';
@@ -13,6 +14,12 @@ function formatTime(minutes: number) {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
   return hours > 0 ? `${hours}:${mins < 10 ? `0${mins}` : mins}` : `${mins} min`;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ recipe: string }> }): Promise<Metadata> {
+  const { recipe: uid } = await params;
+  const recipe = await getRecipeByUid(uid);
+  return { title: recipe?.title || 'Recipe' };
 }
 
 function parseSourceInfo(source: string | null) {
