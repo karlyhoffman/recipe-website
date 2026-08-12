@@ -1,7 +1,7 @@
 import { createClient } from 'prismicio';
 import * as prismic from '@prismicio/client';
-import { PrismicText, PrismicLink } from '@prismicio/react';
-import { Row, Column, PaginationMenu } from 'components';
+import { PrismicText } from '@prismicio/react';
+import { Row, Column, PaginationMenu, PrismicLink } from 'components';
 
 const QUERY_SIZE = 100;
 

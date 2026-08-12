@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { createClient } from 'prismicio';
-import { PrismicText, PrismicLink } from '@prismicio/react';
-import { Row, Column, PaginationMenu } from 'components';
+import { PrismicText } from '@prismicio/react';
+import { Row, Column, PaginationMenu, PrismicLink } from 'components';
 import styles from 'styles/pages/recipe-overview.module.scss';
 
 const QUERY_SIZE = 60;

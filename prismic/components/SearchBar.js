@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from 'styles/components/search-bar.module.scss';
@@ -7,6 +7,12 @@ function SearchBar() {
   const router = useRouter();
   const { asPath } = router;
   const [searchTerm, setSearchTerm] = useState('');
+  const [prevAsPath, setPrevAsPath] = useState(asPath);
+
+  if (asPath !== prevAsPath) {
+    setPrevAsPath(asPath);
+    setSearchTerm('');
+  }
 
   const handleEnter = (e) => {
     if (e.key === 'Enter' && searchTerm.length) {
@@ -16,12 +22,6 @@ function SearchBar() {
       });
     }
   };
-
-  const clearSearch = () => {
-    setSearchTerm('');
-  };
-
-  useEffect(clearSearch, [asPath]);
 
   return (
     <div className={styles.search}>

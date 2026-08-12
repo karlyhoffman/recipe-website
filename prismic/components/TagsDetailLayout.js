@@ -1,5 +1,5 @@
-import { PrismicText, PrismicLink } from '@prismicio/react';
-import { Row, Column } from 'components';
+import { PrismicText } from '@prismicio/react';
+import { Row, Column, PrismicLink } from 'components';
 
 function TagsDetailLayout({ recipes = [], children: tagName }) {
   const headline = tagName ? `${tagName} Recipes` : 'Recipes by Tag';

@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { createClient } from 'prismicio';
-import * as prismicH from '@prismicio/helpers';
-import { PrismicRichText, PrismicText, PrismicLink } from '@prismicio/react';
+import * as prismic from '@prismicio/client';
+import { PrismicText } from '@prismicio/react';
 import classNames from 'classnames';
-import { Row, Column } from 'components';
+import { Row, Column, PrismicLink, PrismicRichText } from 'components';
 import styles from 'styles/pages/recipe-detail.module.scss';
 
 function formatTime(time) {
@@ -67,14 +67,14 @@ export default function RecipeDetail({
             </Column>
           )}
 
-          {!!prismicH.asText(notes)?.length && (
+          {!!prismic.asText(notes)?.length && (
             <Column className={styles.notes}>
               <strong>Notes:</strong>
               <PrismicRichText field={notes} />
             </Column>
           )}
 
-          {!!prismicH.asText(source)?.length && (
+          {!!prismic.asText(source)?.length && (
             <Column className={styles.source}>
               <p className={styles.label}>Source:</p>
               <PrismicRichText field={source} />
@@ -239,7 +239,7 @@ export async function getStaticPaths() {
   const pages = await client.getAllByType('recipe');
 
   return {
-    paths: pages.map((page) => prismicH.asLink(page)),
+    paths: pages.map((page) => prismic.asLink(page)),
     fallback: 'blocking',
   };
 }

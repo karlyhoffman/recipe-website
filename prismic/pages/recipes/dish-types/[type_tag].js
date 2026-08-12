@@ -1,6 +1,5 @@
 import { createClient } from 'prismicio';
 import * as prismic from '@prismicio/client';
-import * as prismicH from '@prismicio/helpers';
 import { TagsDetailLayout } from 'components';
 
 const TAG_TYPE = 'type_tag';
@@ -39,7 +38,7 @@ export async function getStaticPaths() {
   const pages = await client.getAllByType(TAG_TYPE);
 
   return {
-    paths: pages.map((page) => prismicH.asLink(page)),
+    paths: pages.map((page) => prismic.asLink(page)),
     fallback: 'blocking',
   };
 }

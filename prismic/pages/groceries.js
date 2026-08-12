@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { createClient } from 'prismicio';
-import { PrismicRichText, PrismicText, PrismicLink } from '@prismicio/react';
-import * as prismicH from '@prismicio/helpers';
-import { Row, Column } from 'components';
+import * as prismic from '@prismicio/client';
+import { PrismicText } from '@prismicio/react';
+import { Row, Column, PrismicLink, PrismicRichText } from 'components';
 import styles from 'styles/pages/groceries.module.scss';
 
 export default function Groceries({ recipes }) {
@@ -81,8 +81,8 @@ function sortIngredientsByAisle(recipes = []) {
             return {
               ...primary,
               recipe: next_recipe,
-              ingredientText: prismicH.asHTML(primary.ingredient),
-              id: (id + prismicH.asHTML(primary.ingredient)).replace(/[^A-Z0-9]+/gi, ''),
+              ingredientText: prismic.asHTML(primary.ingredient),
+              id: (id + prismic.asHTML(primary.ingredient)).replace(/[^A-Z0-9]+/gi, ''),
             };
           });
 

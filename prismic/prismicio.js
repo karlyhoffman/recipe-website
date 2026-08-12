@@ -1,5 +1,5 @@
 import * as prismic from '@prismicio/client';
-import * as prismicNext from '@prismicio/next';
+import * as prismicNext from '@prismicio/next/pages';
 
 const apiEndpoint = process.env.NEXT_PUBLIC_PRISMIC_API_URL;
 const accessToken = process.env.NEXT_PUBLIC_PRISMIC_ACCESS_TOKEN;

@@ -1,5 +1,4 @@
-import { PrismicLink } from '@prismicio/react';
-import { Row, Column, PaginationMenu } from 'components';
+import { Row, Column, PaginationMenu, PrismicLink } from 'components';
 
 function TagOverviewLayout({ tags = [], type, children: tagName = 'Tags', totalCount, pageSize, page }) {
   if (!tags.length) {

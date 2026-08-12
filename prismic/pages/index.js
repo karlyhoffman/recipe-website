@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { createClient } from 'prismicio';
-import { PrismicText, PrismicLink } from '@prismicio/react';
-import { Row, Column } from 'components';
+import { PrismicText } from '@prismicio/react';
+import { Row, Column, PrismicLink } from 'components';
 import styles from 'styles/pages/homepage.module.scss';
 
 export default function Homepage({
